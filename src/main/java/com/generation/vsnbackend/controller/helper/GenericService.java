@@ -3,6 +3,7 @@ package com.generation.vsnbackend.controller.helper;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public class GenericService<X,ID> implements GenericServiceImpl<X,ID>
 {
@@ -20,7 +21,8 @@ public class GenericService<X,ID> implements GenericServiceImpl<X,ID>
 
 	@Override
 	public X getOneById(ID id) {
-		return repository.findById(id).get();
+		Optional<X> optional = repository.findById(id);
+        return optional.orElse(null);
 	}
 
 	@Override
