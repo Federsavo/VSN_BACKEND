@@ -32,7 +32,8 @@ public class CredentialService
 			throw new InvalidUsernameException("Username already exists");
 
 		user.setUsername(userDTOReq.getUsername());
-
+		user.setSteamId(userDTOReq.getSteamId());
+		user.setDateOfBirth(userDTOReq.getDateOfBirth());
 		user.setEmail(userDTOReq.getEmail());
 		String hashedPassword = DigestUtils.md5DigestAsHex(userDTOReq.getPassword().getBytes());
 		user.setPassword(hashedPassword);
@@ -62,7 +63,7 @@ public class CredentialService
 			suffix += Math.round(Math.random()*10);
 		}
 
-		return prefix + user.getId() + suffix;
+		return prefix + "-" + user.getId() + "-" + suffix;
 	}
 
 	public User getUserByToken()

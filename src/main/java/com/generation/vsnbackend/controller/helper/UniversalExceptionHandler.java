@@ -1,5 +1,6 @@
 package com.generation.vsnbackend.controller.helper;
 
+import com.generation.vsnbackend.controller.exception.IllegalRegisterException;
 import com.generation.vsnbackend.controller.exception.InvalidPasswordException;
 import com.generation.vsnbackend.controller.exception.InvalidUsernameException;
 import org.springframework.http.HttpStatus;
@@ -23,4 +24,9 @@ public class UniversalExceptionHandler
 	{
 		return ex.getMessage();
 	}
+
+	@ExceptionHandler(IllegalRegisterException.class)
+	@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
+	public String handleWrongRegister(IllegalRegisterException ex) { return ex.getMessage(); }
+
 }

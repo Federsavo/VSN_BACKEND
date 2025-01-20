@@ -17,7 +17,7 @@ public class DTOConverter
 		return user;
 	}
 
-	public UserDTOResp toUserRegister(User user)
+	public UserDTOResp toDTOResp(User user)
 	{
 		UserDTOResp userDTOResp = new UserDTOResp();
 		userDTOResp.setUsername(user.getUsername());

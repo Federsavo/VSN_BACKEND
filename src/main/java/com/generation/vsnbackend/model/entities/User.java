@@ -12,7 +12,6 @@ public class User extends BaseEntity
 	private String steamId;
 	private String email;
 	private LocalDate dateOfBirth;
-	private String SteamId;
 
 	public String getUsername()
 	{
