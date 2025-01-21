@@ -8,6 +8,7 @@ import com.generation.vsnbackend.model.dto.UserDTOReq;
 import com.generation.vsnbackend.model.entities.User;
 import com.generation.vsnbackend.model.repositories.UserRepository;
 import com.generation.vsnbackend.model.signin.SignIn;
+import com.generation.vsnbackend.model.signin.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -43,7 +44,7 @@ public class CredentialService
         return new SignIn("Successfully");
 	}
 
-	public String login(UserDTOLoginReq userDTOLoginReq) {
+	public Token login(UserDTOLoginReq userDTOLoginReq) {
 
 		if(userDTOLoginReq.getUsername().isBlank() || userDTOLoginReq.getPassword().isBlank())
 			throw new InvalidUsernameException("Invalid username or password");
@@ -59,16 +60,7 @@ public class CredentialService
 		if(!user.getPassword().equals(hashedPassword))
 			throw new InvalidPasswordException("Invalid username or password");
 
-		String prefix = "";
-		String suffix = "";
-
-		for(int i=0;i < 10;i++)
-		{
-			prefix += Math.round(Math.random()*10);
-			suffix += Math.round(Math.random()*10);
-		}
-
-		return prefix + "-" + user.getId() + "-" + suffix;
+		return new Token(user.getId());
 	}
 
 	public User getUserByToken()

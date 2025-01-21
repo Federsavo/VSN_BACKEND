@@ -2,14 +2,14 @@ package com.generation.vsnbackend.model.entities;
 
 import jakarta.persistence.*;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
 public class Post extends BaseEntity {
     private PostType whatIs;//post di che tipo?
-    private LocalDate pubblicationDate;
+    private Date pubblicationDate;
     private String content;
     private int nLike;
 
@@ -30,11 +30,11 @@ public class Post extends BaseEntity {
         this.whatIs = whatIs;
     }
 
-    public LocalDate getPubblicationDate() {
+    public Date getPubblicationDate() {
         return pubblicationDate;
     }
 
-    public void setPubblicationDate(LocalDate pubblicationDate) {
+    public void setPubblicationDate(Date pubblicationDate) {
         this.pubblicationDate = pubblicationDate;
     }
 

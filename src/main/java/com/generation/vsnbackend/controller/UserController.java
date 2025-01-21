@@ -23,22 +23,9 @@ public class UserController
 	ControllerHelper ch;
 
 	@Autowired
-	CredentialService credentialService;
-
-	@Autowired
 	DTOConverter dtoConverter;
 
-	@PostMapping("/authentication/register")
-	SignIn registerUser(@RequestBody UserDTOReq userDTOReq)
-	{
-		return credentialService.registration(userDTOReq);
-	}
 
-	@PostMapping("/authentication/login")
-	String loginUser(@RequestBody UserDTOLoginReq userDTOlLoginReq)
-	{
-		return credentialService.login(userDTOlLoginReq);
-	}
 
 	@GetMapping("/users")
 	List<UserDTOResp> getListUsers()
