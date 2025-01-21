@@ -26,6 +26,14 @@ public class Profile extends BaseEntity
 	@OneToOne(mappedBy = "profile")
 	private User user;
 
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
 	@OneToMany(mappedBy = "profile", fetch= FetchType.EAGER)
 	private List<Videogame> videogames=new ArrayList<>();
 
