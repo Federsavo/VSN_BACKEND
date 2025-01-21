@@ -18,11 +18,11 @@ public class Post extends BaseEntity {
     private List<Comment> comments=new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "profile_id")
-    private Profile profile;
+    @JoinColumn(name = "author_id")
+    private User author;
 
-    public PostType getWhatIs()
-    {
+
+    public PostType getWhatIs() {
         return whatIs;
     }
 
@@ -57,14 +57,12 @@ public class Post extends BaseEntity {
         comments.add(comment);
     }
 
-    public Profile getProfile()
-    {
-        return profile;
+    public User getAuthor() {
+        return author;
     }
 
-    public void setProfile(Profile profile)
-    {
-        this.profile = profile;
+    public void setAuthor(User author) {
+        this.author = author;
     }
 
     public int getnLike() {
