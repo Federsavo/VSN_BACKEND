@@ -1,5 +1,6 @@
 package com.generation.vsnbackend.model.dto;
 
+import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.User;
 import org.springframework.stereotype.Service;
 
