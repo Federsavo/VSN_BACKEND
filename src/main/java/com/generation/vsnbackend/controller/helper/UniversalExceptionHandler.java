@@ -3,7 +3,9 @@ package com.generation.vsnbackend.controller.helper;
 import com.generation.vsnbackend.controller.exception.IllegalRegisterException;
 import com.generation.vsnbackend.controller.exception.InvalidPasswordException;
 import com.generation.vsnbackend.controller.exception.InvalidUsernameException;
+import com.generation.vsnbackend.model.errors.ErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -12,21 +14,39 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class UniversalExceptionHandler
 {
 	@ExceptionHandler(InvalidPasswordException.class)
-	@ResponseStatus(HttpStatus.FORBIDDEN)
-	public String handleWrongPassword(InvalidPasswordException ex)
+	public ResponseEntity<ErrorResponse> handleWrongPassword(InvalidPasswordException ex)
 	{
-		return ex.getMessage();
+		ErrorResponse error = new ErrorResponse(
+				HttpStatus.FORBIDDEN.value(),
+				ex.getMessage(),
+				System.currentTimeMillis()
+		);
+
+		return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
 	}
 
 	@ExceptionHandler(InvalidUsernameException.class)
-	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public String handleWrongUsername(InvalidUsernameException ex)
+	public ResponseEntity<ErrorResponse> handleWrongUsername(InvalidUsernameException ex)
 	{
-		return ex.getMessage();
+		ErrorResponse error = new ErrorResponse(
+				HttpStatus.FORBIDDEN.value(),
+				ex.getMessage(),
+				System.currentTimeMillis()
+		);
+
+		return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
 	}
 
 	@ExceptionHandler(IllegalRegisterException.class)
-	@ResponseStatus(HttpStatus.NOT_ACCEPTABLE)
-	public String handleWrongRegister(IllegalRegisterException ex) { return ex.getMessage(); }
+	public ResponseEntity<ErrorResponse> handleWrongRegister(IllegalRegisterException ex)
+	{
+		ErrorResponse error = new ErrorResponse(
+				HttpStatus.FORBIDDEN.value(),
+				ex.getMessage(),
+				System.currentTimeMillis()
+		);
+
+		return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
+	}
 
 }

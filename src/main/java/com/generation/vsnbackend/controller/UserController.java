@@ -6,6 +6,7 @@ import com.generation.vsnbackend.model.dto.UserDTOLoginReq;
 import com.generation.vsnbackend.model.dto.UserDTOReq;
 import com.generation.vsnbackend.model.dto.UserDTOResp;
 import com.generation.vsnbackend.model.entities.User;
+import com.generation.vsnbackend.model.signin.SignIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +29,7 @@ public class UserController
 	DTOConverter dtoConverter;
 
 	@PostMapping("/authentication/register")
-	String registerUser(@RequestBody UserDTOReq userDTOReq)
+	SignIn registerUser(@RequestBody UserDTOReq userDTOReq)
 	{
 		return credentialService.registration(userDTOReq);
 	}

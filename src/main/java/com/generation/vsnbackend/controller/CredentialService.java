@@ -7,6 +7,7 @@ import com.generation.vsnbackend.model.dto.UserDTOLoginReq;
 import com.generation.vsnbackend.model.dto.UserDTOReq;
 import com.generation.vsnbackend.model.entities.User;
 import com.generation.vsnbackend.model.repositories.UserRepository;
+import com.generation.vsnbackend.model.signin.SignIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -25,7 +26,7 @@ public class CredentialService
 	@Autowired
 	UserRepository userRepo;
 
-	public String registration(UserDTOReq userDTOReq)
+	public SignIn registration(UserDTOReq userDTOReq)
 	{
 		User user = new User();
 		if (userRepo.findByUsername(userDTOReq.getUsername()).isPresent())
@@ -38,21 +39,25 @@ public class CredentialService
 		String hashedPassword = DigestUtils.md5DigestAsHex(userDTOReq.getPassword().getBytes());
 		user.setPassword(hashedPassword);
 		ch.userService.save(user);
-		return "Registered successfully";
+
+        return new SignIn("Successfully");
 	}
 
 	public String login(UserDTOLoginReq userDTOLoginReq) {
 
+		if(userDTOLoginReq.getUsername().isBlank() || userDTOLoginReq.getPassword().isBlank())
+			throw new InvalidUsernameException("Invalid username or password");
+
 		Optional<User> User = userRepo.findByUsername(userDTOLoginReq.getUsername());
 
 		if(User.isEmpty())
-			throw new InvalidUsernameException("Invalid username");
+			throw new InvalidUsernameException("Invalid username or password");
 
 		User user = User.get();
 		String hashedPassword = DigestUtils.md5DigestAsHex(userDTOLoginReq.getPassword().getBytes());
 
 		if(!user.getPassword().equals(hashedPassword))
-			throw new InvalidPasswordException("Invalid password");
+			throw new InvalidPasswordException("Invalid username or password");
 
 		String prefix = "";
 		String suffix = "";
