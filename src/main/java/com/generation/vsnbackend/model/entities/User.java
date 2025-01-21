@@ -17,9 +17,6 @@ public class User extends BaseEntity
 	private String email;
 	private LocalDate dateOfBirth;
 
-	@OneToMany(mappedBy = "user", fetch= FetchType.EAGER)
-	private List<Videogame> videogames=new ArrayList<>();
-
 	public String getUsername()
 	{
 		return username;
