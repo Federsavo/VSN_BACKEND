@@ -19,7 +19,7 @@ public class Post extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    private User author;
+    private Profile author;
 
 
     public PostType getWhatIs() {
@@ -57,11 +57,11 @@ public class Post extends BaseEntity {
         comments.add(comment);
     }
 
-    public User getAuthor() {
+    public Profile getAuthor() {
         return author;
     }
 
-    public void setAuthor(User author) {
+    public void setAuthor(Profile author) {
         this.author = author;
     }
 
