@@ -1,8 +1,12 @@
 package com.generation.vsnbackend.model.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.OneToMany;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User extends BaseEntity
@@ -12,6 +16,9 @@ public class User extends BaseEntity
 	private String steamId;
 	private String email;
 	private LocalDate dateOfBirth;
+
+	@OneToMany(mappedBy = "user", fetch= FetchType.EAGER)
+	private List<Videogame> videogames=new ArrayList<>();
 
 	public String getUsername()
 	{

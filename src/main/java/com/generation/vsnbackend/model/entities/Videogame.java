@@ -17,9 +17,21 @@ public class Videogame extends BaseEntity {
     private boolean preferred;
     private LocalDate releaseDate;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
     @OneToMany(mappedBy = "videogame", fetch= FetchType.EAGER)
     private List<Review> reviews=new ArrayList<>();
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 
     public boolean isPreferred() {
         return preferred;
