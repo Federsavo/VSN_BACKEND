@@ -20,11 +20,14 @@ public class FileDataService
 
 	private final static String FOLDER_PATH = System.getProperty("user.dir")+"\\images\\";
 
-	public FileData uploadImageToFileSystem(MultipartFile file) throws IOException
+	public FileData uploadImageToFileSystem(MultipartFile file, Long id) throws IOException
 	{
-		String filePath=FOLDER_PATH+file.getOriginalFilename();
-
-		FileData fileData=fileDataRepository.save(new FileData(file.getOriginalFilename(),file.getContentType(),filePath));
+		String fileName = id+"-"+file.getOriginalFilename();
+		String filePath=FOLDER_PATH+fileName;
+		Optional<FileData> fileDataToDelete=fileDataRepository.findByName(fileName);
+		if(fileDataToDelete.isPresent())
+			fileDataRepository.delete(fileDataToDelete.get());
+		FileData fileData=fileDataRepository.save(new FileData(fileName,file.getContentType(),filePath));
 		File folder = new File(filePath);
 		file.transferTo(folder);
 
