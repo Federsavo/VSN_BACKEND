@@ -1,15 +1,16 @@
 package com.generation.vsnbackend.model.entities;
 
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 public class Post extends BaseEntity {
     private PostType whatIs;//post di che tipo?
-    private Date pubblicationDate;
+    private LocalDateTime pubblicationDate;
     private String content;
     private int nLike;
     private String image;
@@ -31,11 +32,11 @@ public class Post extends BaseEntity {
         this.whatIs = whatIs;
     }
 
-    public Date getPubblicationDate() {
+    public LocalDateTime getPubblicationDate() {
         return pubblicationDate;
     }
 
-    public void setPubblicationDate(Date pubblicationDate) {
+    public void setPubblicationDate(LocalDateTime pubblicationDate) {
         this.pubblicationDate = pubblicationDate;
     }
 
