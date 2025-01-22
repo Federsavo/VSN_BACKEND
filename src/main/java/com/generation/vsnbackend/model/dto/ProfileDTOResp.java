@@ -15,7 +15,9 @@ public class ProfileDTOResp
 	private String steamName;
 	private String playstationName;
 	private String xboxName;
-	private String profileImageUrl;
+
+	private Long profileImgId;
+	private Long profileBackdropImgId;
 
 	public Long getId()
 	{
@@ -117,13 +119,23 @@ public class ProfileDTOResp
 		this.xboxName = xboxName;
 	}
 
-	public String getProfileImageUrl()
+	public Long getProfileImgId()
 	{
-		return profileImageUrl;
+		return profileImgId;
 	}
 
-	public void setProfileImageUrl(String profileImageUrl)
+	public void setProfileImgId(Long profileImgId)
 	{
-		this.profileImageUrl = profileImageUrl;
+		this.profileImgId = profileImgId;
+	}
+
+	public Long getProfileBackdropImgId()
+	{
+		return profileBackdropImgId;
+	}
+
+	public void setProfileBackdropImgId(Long profileBackdropImgId)
+	{
+		this.profileBackdropImgId = profileBackdropImgId;
 	}
 }

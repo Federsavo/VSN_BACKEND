@@ -13,7 +13,6 @@ public class Videogame extends BaseEntity {
     private String nameVideogame;
     private String softwareHouse;
     private String description;
-    private String urlImage;
     private boolean preferred;
     private LocalDate releaseDate;
 
@@ -64,15 +63,6 @@ public class Videogame extends BaseEntity {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public String getUrlImage() {
-        return urlImage;
-    }
-
-    public void setUrlImage(String urlImage) {
-        this.urlImage = urlImage;
-    }
-
 
     public LocalDate getReleaseDate() {
         return releaseDate;

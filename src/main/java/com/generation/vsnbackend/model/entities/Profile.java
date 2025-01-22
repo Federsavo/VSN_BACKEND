@@ -21,7 +21,8 @@ public class Profile extends BaseEntity
 	private String steamName;
 	private String playstationName;
 	private String xboxName;
-	private String profileImageUrl;
+	private Long profileImgId;
+	private Long profileBackdropImgId;
 
 	@OneToOne(mappedBy = "profile" )
 	private User user;
@@ -120,17 +121,6 @@ public class Profile extends BaseEntity
 		this.xboxName = xboxName;
 	}
 
-	public String getProfileImageUrl()
-	{
-		return profileImageUrl;
-	}
-
-	public void setProfileImageUrl(String profileImageUrl)
-	{
-		this.profileImageUrl = profileImageUrl;
-	}
-
-
 	public List<Videogame> getVideogames()
 	{
 		return videogames;
@@ -149,5 +139,25 @@ public class Profile extends BaseEntity
 	public void setPosts(List<Post> posts)
 	{
 		this.posts = posts;
+	}
+
+	public Long getProfileImgId()
+	{
+		return profileImgId;
+	}
+
+	public void setProfileImgId(Long profileImgId)
+	{
+		this.profileImgId = profileImgId;
+	}
+
+	public Long getProfileBackdropImgId()
+	{
+		return profileBackdropImgId;
+	}
+
+	public void setProfileBackdropImgId(Long profileBackdropImgId)
+	{
+		this.profileBackdropImgId = profileBackdropImgId;
 	}
 }

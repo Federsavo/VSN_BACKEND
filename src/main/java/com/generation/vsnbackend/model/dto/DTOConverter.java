@@ -57,7 +57,8 @@ public class DTOConverter
 		profileDTOResp.setSteamName(profile.getSteamName());
 		profileDTOResp.setPlaystationName(profile.getPlaystationName());
 		profileDTOResp.setXboxName(profile.getXboxName());
-		profileDTOResp.setProfileImageUrl(profile.getProfileImageUrl());
+
+
 
 		return profileDTOResp;
 
@@ -76,7 +77,6 @@ public class DTOConverter
 		profile.setSteamName(profileDTOReq.getSteamName());
 		profile.setXboxName(profileDTOReq.getXboxName());
 		profile.setPlaystationName(profileDTOReq.getPlaystationName());
-		profile.setProfileImageUrl(profileDTOReq.getProfileImageUrl());
 		return profile;
 	}
 
