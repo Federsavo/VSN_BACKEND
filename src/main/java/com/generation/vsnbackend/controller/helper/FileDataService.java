@@ -1,4 +1,4 @@
-package com.generation.vsnbackend.controller.images;
+package com.generation.vsnbackend.controller.helper;
 
 import com.generation.vsnbackend.controller.exception.ImageNotFoundException;
 import com.generation.vsnbackend.model.entities.images.FileData;
