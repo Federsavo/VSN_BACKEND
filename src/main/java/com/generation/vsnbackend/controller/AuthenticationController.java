@@ -3,7 +3,7 @@ package com.generation.vsnbackend.controller;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.model.dto.UserDTOLoginReq;
 import com.generation.vsnbackend.model.dto.UserDTOReq;
-import com.generation.vsnbackend.model.entities.signin.SignIn;
+import com.generation.vsnbackend.model.entities.signin.Response;
 import com.generation.vsnbackend.model.entities.signin.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +20,7 @@ public class AuthenticationController
 	CredentialService credentialService;
 
     @PostMapping("/authentication/register")
-    SignIn registerUser(@RequestBody UserDTOReq userDTOReq)
+	Response registerUser(@RequestBody UserDTOReq userDTOReq)
     {
         return credentialService.registration(userDTOReq);
     }

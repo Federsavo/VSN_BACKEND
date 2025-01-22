@@ -1,10 +1,11 @@
 package com.generation.vsnbackend.model.entities.signin;
 
-public class SignIn {
+public class Response
+{
 
     private String message;
 
-    public SignIn(String message) {
+    public Response(String message) {
         this.message = message;
     }
 

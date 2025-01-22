@@ -6,7 +6,7 @@ import com.generation.vsnbackend.model.dto.DTOConverter;
 import com.generation.vsnbackend.model.dto.ProfileDTOResp;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.images.FileData;
-import com.generation.vsnbackend.model.entities.signin.SignIn;
+import com.generation.vsnbackend.model.entities.signin.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -55,7 +55,7 @@ public class ProfileController {
     }
 
     @PostMapping("/saveBackdropImage")
-    SignIn saveBackdropImage(
+    Response saveBackdropImage(
             @RequestParam("imgBackdrop") MultipartFile imgBackdrop
 
     ) throws IOException
@@ -65,11 +65,11 @@ public class ProfileController {
         if(img1!=null)
             profile.setProfileBackdropImgId(img1.getId());
         ch.profileService.save(profile);
-        return new SignIn("Backdrop image saved successfully");
+        return new Response("Backdrop image saved successfully");
     }
 
     @PostMapping("/saveProfileImage")
-    SignIn saveProfileImage(
+    Response saveProfileImage(
             @RequestParam("imgProfile") MultipartFile imgProfile
     ) throws IOException
 	{
@@ -78,6 +78,6 @@ public class ProfileController {
         if(img1!=null)
             profile.setProfileBackdropImgId(img1.getId());
         ch.profileService.save(profile);
-        return new SignIn("Profile image saved successfully");
+        return new Response("Profile image saved successfully");
     }
 }

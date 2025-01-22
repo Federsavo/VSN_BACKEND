@@ -8,7 +8,7 @@ import com.generation.vsnbackend.model.dto.UserDTOReq;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.User;
 import com.generation.vsnbackend.model.repositories.UserRepository;
-import com.generation.vsnbackend.model.entities.signin.SignIn;
+import com.generation.vsnbackend.model.entities.signin.Response;
 import com.generation.vsnbackend.model.entities.signin.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,7 +27,7 @@ public class CredentialService
 	@Autowired
 	UserRepository userRepo;
 
-	public SignIn registration(UserDTOReq userDTOReq)
+	public Response registration(UserDTOReq userDTOReq)
 	{
 		User user = new User();
 		if (userRepo.findByUsername(userDTOReq.getUsername()).isPresent())
@@ -46,7 +46,7 @@ public class CredentialService
 		ch.userService.save(user);
 		ch.profileService.save(profile);
 
-        return new SignIn("Successfully");
+        return new Response("Successfully");
 	}
 
 	public Token login(UserDTOLoginReq userDTOLoginReq) {
