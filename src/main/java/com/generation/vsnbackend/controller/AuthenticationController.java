@@ -3,8 +3,8 @@ package com.generation.vsnbackend.controller;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.model.dto.UserDTOLoginReq;
 import com.generation.vsnbackend.model.dto.UserDTOReq;
-import com.generation.vsnbackend.model.signin.SignIn;
-import com.generation.vsnbackend.model.signin.Token;
+import com.generation.vsnbackend.model.entities.signin.SignIn;
+import com.generation.vsnbackend.model.entities.signin.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
