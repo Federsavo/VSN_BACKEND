@@ -180,7 +180,6 @@ public class DTOConverter
 		review.setTitle(reviewDTOReq.getTitle());
 		review.setNumberOfStar(reviewDTOReq.getNumberOfStar());
 		review.setContent(reviewDTOReq.getContent());
-		review.setVideogame();
 
 		return review;
 	}
