@@ -21,16 +21,15 @@ public class Videogame extends BaseEntity {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
+
     @OneToMany(mappedBy = "videogame", fetch= FetchType.EAGER)
     private List<Review> reviews=new ArrayList<>();
 
-    public Profile getProfile()
-    {
+    public Profile getProfile() {
         return profile;
     }
 
-    public void setProfile(Profile profile)
-    {
+    public void setProfile(Profile profile) {
         this.profile = profile;
     }
 

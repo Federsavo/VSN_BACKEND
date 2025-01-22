@@ -23,14 +23,22 @@ public class Profile extends BaseEntity
 	private String xboxName;
 	private String profileImageUrl;
 
-	@OneToOne(mappedBy = "profile")
+	@OneToOne(mappedBy = "profile" )
 	private User user;
 
 	@OneToMany(mappedBy = "profile", fetch= FetchType.EAGER)
-	private List<Videogame> videogames=new ArrayList<>();
+	private List<Videogame> videogames = new ArrayList<>();
 
 	@OneToMany(mappedBy = "profile", fetch= FetchType.EAGER)
-	private List<Post> posts=new ArrayList<>();
+	private List<Post> posts = new ArrayList<>();
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public int getFollowersCount()
 	{

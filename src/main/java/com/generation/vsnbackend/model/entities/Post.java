@@ -1,17 +1,19 @@
 package com.generation.vsnbackend.model.entities;
 
 import jakarta.persistence.*;
+import org.springframework.cglib.core.Local;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
 public class Post extends BaseEntity {
     private PostType whatIs;//post di che tipo?
-    private Date pubblicationDate;
+    private LocalDateTime pubblicationDate;
     private String content;
     private int nLike;
+    private String image;
 
 
     @OneToMany(mappedBy = "post", fetch= FetchType.EAGER)
@@ -21,8 +23,7 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-    public PostType getWhatIs()
-    {
+    public PostType getWhatIs() {
         return whatIs;
     }
 
@@ -30,11 +31,11 @@ public class Post extends BaseEntity {
         this.whatIs = whatIs;
     }
 
-    public Date getPubblicationDate() {
+    public LocalDateTime getPubblicationDate() {
         return pubblicationDate;
     }
 
-    public void setPubblicationDate(Date pubblicationDate) {
+    public void setPubblicationDate(LocalDateTime pubblicationDate) {
         this.pubblicationDate = pubblicationDate;
     }
 
@@ -57,13 +58,11 @@ public class Post extends BaseEntity {
         comments.add(comment);
     }
 
-    public Profile getProfile()
-    {
+    public Profile getProfile() {
         return profile;
     }
 
-    public void setProfile(Profile profile)
-    {
+    public void setProfile(Profile profile) {
         this.profile = profile;
     }
 
@@ -73,5 +72,13 @@ public class Post extends BaseEntity {
 
     public void setnLike(int nLike) {
         this.nLike = nLike;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }

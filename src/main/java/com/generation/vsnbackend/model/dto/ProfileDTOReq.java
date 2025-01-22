@@ -2,7 +2,7 @@ package com.generation.vsnbackend.model.dto;
 
 public class ProfileDTOReq
 {
-	private String steamId;
+	private Long userId;
 
 	private int followersCount;
 	private int followingCount;
@@ -16,14 +16,13 @@ public class ProfileDTOReq
 	private String xboxName;
 	private String profileImageUrl;
 
-	public String getSteamId()
-	{
-		return steamId;
+
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setSteamId(String steamId)
-	{
-		this.steamId = steamId;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public int getFollowersCount()
