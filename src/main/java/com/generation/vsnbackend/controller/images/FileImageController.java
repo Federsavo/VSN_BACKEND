@@ -1,5 +1,6 @@
 package com.generation.vsnbackend.controller.images;
 
+import com.generation.vsnbackend.model.entities.images.FileData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class FileImageController
 	@PostMapping("/fileSystem")
 	public ResponseEntity<?> uploadImageToFIleSystem(@RequestParam("image") MultipartFile file) throws IOException
 	{
-		String uploadImage = service.uploadImageToFileSystem(file);
+		FileData uploadImage = service.uploadImageToFileSystem(file);
 		return ResponseEntity.status(HttpStatus.OK).body(uploadImage);
 	}
 

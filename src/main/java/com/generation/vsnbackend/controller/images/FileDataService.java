@@ -20,7 +20,7 @@ public class FileDataService
 
 	private final static String FOLDER_PATH = System.getProperty("user.dir")+"\\images\\";
 
-	public String uploadImageToFileSystem(MultipartFile file) throws IOException
+	public FileData uploadImageToFileSystem(MultipartFile file) throws IOException
 	{
 		String filePath=FOLDER_PATH+file.getOriginalFilename();
 
@@ -28,10 +28,7 @@ public class FileDataService
 		File folder = new File(filePath);
 		file.transferTo(folder);
 
-		if (fileData != null) {
-			return "file uploaded successfully : " + filePath;
-		}
-		return null;
+		return fileData;
 	}
 
 	public byte[] downloadImageFromFileSystem(Long id) throws IOException {
