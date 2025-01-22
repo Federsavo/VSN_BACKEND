@@ -8,12 +8,11 @@ import com.generation.vsnbackend.model.dto.UserDTOReq;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.User;
 import com.generation.vsnbackend.model.repositories.UserRepository;
-import com.generation.vsnbackend.model.signin.SignIn;
-import com.generation.vsnbackend.model.signin.Token;
+import com.generation.vsnbackend.model.entities.signin.SignIn;
+import com.generation.vsnbackend.model.entities.signin.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 

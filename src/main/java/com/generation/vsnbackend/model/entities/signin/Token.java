@@ -1,4 +1,4 @@
-package com.generation.vsnbackend.model.signin;
+package com.generation.vsnbackend.model.entities.signin;
 
 public class Token {
 

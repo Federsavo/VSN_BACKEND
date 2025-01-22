@@ -1,4 +1,4 @@
-package com.generation.vsnbackend.model.errors;
+package com.generation.vsnbackend.model.entities.errors;
 
 public class ErrorResponse {
     private int status;

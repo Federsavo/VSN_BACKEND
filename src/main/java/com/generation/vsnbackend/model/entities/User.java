@@ -16,7 +16,7 @@ public class User extends BaseEntity
 	private LocalDate dateOfBirth;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "profile_id", referencedColumnName = "id")
+	@JoinColumn(name = "profile_id")
 	private Profile profile;
 
 	public Profile getProfile() {

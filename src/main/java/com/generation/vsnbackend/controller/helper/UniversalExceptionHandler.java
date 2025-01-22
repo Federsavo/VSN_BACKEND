@@ -3,11 +3,10 @@ package com.generation.vsnbackend.controller.helper;
 import com.generation.vsnbackend.controller.exception.IllegalRegisterException;
 import com.generation.vsnbackend.controller.exception.InvalidPasswordException;
 import com.generation.vsnbackend.controller.exception.InvalidUsernameException;
-import com.generation.vsnbackend.model.errors.ErrorResponse;
+import com.generation.vsnbackend.model.entities.errors.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
@@ -48,5 +47,4 @@ public class UniversalExceptionHandler
 
 		return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
 	}
-
 }
