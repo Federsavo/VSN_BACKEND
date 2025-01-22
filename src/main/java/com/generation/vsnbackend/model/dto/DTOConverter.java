@@ -82,15 +82,14 @@ public class DTOConverter
 
 	public Post toPostEntity(PostDTOReq postDTOReq){
 		Post post = new Post();
-		Profile p=ch.profileService.getOneById(postDTOReq.getProfileId());
+
+//		Profile p=ch.profileService.getOneById(postDTOReq.getProfileId());
 
 		post.setWhatIs(postDTOReq.getWhatIs());
 		post.setPubblicationDate(LocalDateTime.now());
 		post.setContent(postDTOReq.getContent());
 		post.setnLike(postDTOReq.getnLike());
-		post.setnLike(postDTOReq.getnLike());
 
-		post.setProfile(p);
 		return post;
 	}
 

@@ -23,7 +23,6 @@ public class Post extends BaseEntity {
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
-
     public PostType getWhatIs() {
         return whatIs;
     }

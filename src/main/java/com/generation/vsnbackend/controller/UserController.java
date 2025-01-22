@@ -25,8 +25,6 @@ public class UserController
 	@Autowired
 	DTOConverter dtoConverter;
 
-
-
 	@GetMapping("/users")
 	List<UserDTOResp> getListUsers()
 	{

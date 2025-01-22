@@ -5,6 +5,7 @@ import com.generation.vsnbackend.controller.exception.InvalidUsernameException;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.model.dto.UserDTOLoginReq;
 import com.generation.vsnbackend.model.dto.UserDTOReq;
+import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.User;
 import com.generation.vsnbackend.model.repositories.UserRepository;
 import com.generation.vsnbackend.model.signin.SignIn;
@@ -39,7 +40,12 @@ public class CredentialService
 		user.setEmail(userDTOReq.getEmail());
 		String hashedPassword = DigestUtils.md5DigestAsHex(userDTOReq.getPassword().getBytes());
 		user.setPassword(hashedPassword);
+		Profile profile = new Profile();
+		user.setProfile(profile);
+		profile.setUser(user);
+
 		ch.userService.save(user);
+		ch.profileService.save(profile);
 
         return new SignIn("Successfully");
 	}

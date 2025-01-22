@@ -27,4 +27,5 @@ public class ControllerHelper
 		this.videogameService=new GenericService<>(videogameRepo);
 		this.profileService=new GenericService<>(profileRepo);
 	}
+
 }

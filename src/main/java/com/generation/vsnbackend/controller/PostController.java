@@ -46,7 +46,15 @@ public class PostController {
 //    }
 
     @PostMapping
-    Post insertPost(@RequestBody PostDTOReq postDTOReq){
-        return ch.postService.save(dtoConverter.toPostEntity(postDTOReq));
+    PostDTOResp insertPost(@RequestBody PostDTOReq postDTOReq){
+
+        Profile profile = credentialService.getUserByToken().getProfile();
+        Post post = dtoConverter.toPostEntity(postDTOReq);
+        ch.profileService.save(profile);
+        profile.getPosts().add(post);
+        post.setProfile(profile);
+        ch.postService.save(post);
+
+        return dtoConverter.toPostDTOResp(post);
     }
 }
