@@ -47,5 +47,4 @@ public class UniversalExceptionHandler
 
 		return new ResponseEntity<>(error, HttpStatus.FORBIDDEN);
 	}
-
 }

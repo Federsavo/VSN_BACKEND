@@ -1,5 +1,6 @@
 package com.generation.vsnbackend.controller.images;
 
+import com.generation.vsnbackend.controller.exception.ImageNotFoundException;
 import com.generation.vsnbackend.model.entities.images.FileData;
 import com.generation.vsnbackend.model.repositories.FileDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,26 +18,14 @@ public class FileDataService
 	@Autowired
 	private FileDataRepository fileDataRepository;
 
-	private final static String FOLDER_PATH = System.getProperty("user.dir")+"\\Desktop\\test\\";
+	private final static String FOLDER_PATH = System.getProperty("user.dir")+"\\images\\";
 
 	public String uploadImageToFileSystem(MultipartFile file) throws IOException
 	{
 		String filePath=FOLDER_PATH+file.getOriginalFilename();
 
 		FileData fileData=fileDataRepository.save(new FileData(file.getOriginalFilename(),file.getContentType(),filePath));
-
-		// Creiamo l'oggetto File
 		File folder = new File(filePath);
-
-		// Verifichiamo che non sia già esistente come cartella
-		if(!folder.isDirectory()){
-
-			// In caso non sia già presente, la creiamo
-			folder.mkdir();
-
-		}
-
-
 		file.transferTo(folder);
 
 		if (fileData != null) {
@@ -45,15 +34,15 @@ public class FileDataService
 		return null;
 	}
 
-	public byte[] downloadImageFromFileSystem(String fileName) throws IOException {
-		Optional<FileData> fileData = fileDataRepository.findByName(fileName);
+	public byte[] downloadImageFromFileSystem(Long id) throws IOException {
+		Optional<FileData> fileData = fileDataRepository.findById(id);
 		if(fileData.isPresent())
 		{
 			String filePath = fileData.get().getFilePath();
 			byte[] image = Files.readAllBytes(new File(filePath).toPath());
 			return image;
 		}
-		return null;
+		throw new ImageNotFoundException("Image not found");
 	}
 
 }
