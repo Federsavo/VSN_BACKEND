@@ -57,7 +57,6 @@ public class ProfileController {
     @PostMapping("/saveBackdropImage")
     Response saveBackdropImage(
             @RequestParam("imgBackdrop") MultipartFile imgBackdrop
-
     ) throws IOException
 	{
         Profile profile=credentialService.getUserByToken().getProfile();
