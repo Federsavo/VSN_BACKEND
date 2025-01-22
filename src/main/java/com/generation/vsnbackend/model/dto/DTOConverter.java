@@ -54,7 +54,7 @@ public class DTOConverter
 		profileDTOResp.setFollowingCount(profile.getFollowingCount());
 		profileDTOResp.setFavoriteVideogameAppId(profile.getFavoriteVideogameAppId());
 		profileDTOResp.setLastPlayedVideogameAppId(profile.getLastPlayedVideogameAppId());
-		profileDTOResp.setProfileName(profile.getProfileName());
+		profileDTOResp.setProfileName(profile.getUser().getUsername());
 		profileDTOResp.setSteamName(profile.getSteamName());
 		profileDTOResp.setPlaystationName(profile.getPlaystationName());
 		profileDTOResp.setXboxName(profile.getXboxName());
