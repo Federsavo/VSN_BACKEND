@@ -8,6 +8,7 @@ import com.generation.vsnbackend.model.dto.ProfileDTOReq;
 import com.generation.vsnbackend.model.dto.ProfileDTOResp;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.images.FileData;
+import com.generation.vsnbackend.model.entities.signin.SignIn;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
@@ -60,22 +61,22 @@ public class ProfileController {
                 .body(imageData);
     }
 
-    @PostMapping
-    String addProfile(
-            @RequestParam("imgBackdrop") MultipartFile imgBackdrop,
-            @RequestParam("imgProfile") MultipartFile imgProfile,
-            @RequestBody ProfileDTOReq profileDTOReq
+//    @RequestParam("imgProfile") MultipartFile imgProfile,
+//    @RequestBody ProfileDTOReq profileDTOReq
+    @PostMapping("/saveBackdropImage")
+    SignIn addProfile(
+            @RequestParam("imgBackdrop") MultipartFile imgBackdrop
+
     ) throws IOException
 	{
         Profile profile=credentialService.getUserByToken().getProfile();
         FileData img1=fileDataService.uploadImageToFileSystem(imgBackdrop);
-        FileData img2=fileDataService.uploadImageToFileSystem(imgProfile);
+//        FileData img2=fileDataService.uploadImageToFileSystem(imgProfile);
 
         if(img1!=null)
             profile.setProfileBackdropImgId(img1.getId());
-        if(img2!=null)
-            profile.setProfileImgId(img2.getId());
+
         ch.profileService.save(profile);
-        return "Tutto ok";
+        return new SignIn("Tutto ok");
     }
 }
