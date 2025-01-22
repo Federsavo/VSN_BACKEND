@@ -12,6 +12,7 @@ public class Post extends BaseEntity {
     private Date pubblicationDate;
     private String content;
     private int nLike;
+    private String image;
 
 
     @OneToMany(mappedBy = "post", fetch= FetchType.EAGER)
@@ -71,5 +72,13 @@ public class Post extends BaseEntity {
 
     public void setnLike(int nLike) {
         this.nLike = nLike;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
