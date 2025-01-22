@@ -1,7 +1,9 @@
 package com.generation.vsnbackend.model.entities;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.MappedSuperclass;
 
-@Entity
-public class Friend extends Profile{
+@MappedSuperclass
+public class Friend extends Profile
+{
 }

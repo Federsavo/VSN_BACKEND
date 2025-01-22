@@ -139,7 +139,6 @@ public class DTOConverter
 		videogameDTOResp.setNameVideogame(videogame.getNameVideogame());
 		videogameDTOResp.setDescription(videogame.getDescription());
 		videogameDTOResp.setSoftwareHouse(videogame.getSoftwareHouse());
-		videogameDTOResp.setUrlImage(videogame.getUrlImage());
 		videogameDTOResp.isPreferred(videogame.isPreferred());
 		videogameDTOResp.setReleaseDate(String.valueOf(videogame.getReleaseDate()));
 		videogameDTOResp.setStarReviews(videogame.getStarReviews());
@@ -154,7 +153,6 @@ public class DTOConverter
 		videogame.setNameVideogame(videogameDTOReq.getNameVideogame());
 		videogame.setDescription(videogameDTOReq.getDescription());
 		videogame.setSoftwareHouse(videogameDTOReq.getSoftwareHouse());
-		videogame.setUrlImage(videogameDTOReq.getUrlImage());
 		videogame.setPreferred(videogameDTOReq.isPreferred());
 		videogame.setReleaseDate(LocalDate.parse(videogameDTOReq.getReleaseDate()));
 
