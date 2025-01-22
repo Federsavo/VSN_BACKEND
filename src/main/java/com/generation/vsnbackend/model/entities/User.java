@@ -1,8 +1,6 @@
 package com.generation.vsnbackend.model.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -16,6 +14,18 @@ public class User extends BaseEntity
 	private String steamId;
 	private String email;
 	private LocalDate dateOfBirth;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "profile_id", referencedColumnName = "id")
+	private Profile profile;
+
+	public Profile getProfile() {
+		return profile;
+	}
+
+	public void setProfile(Profile profile) {
+		this.profile = profile;
+	}
 
 	public String getUsername()
 	{

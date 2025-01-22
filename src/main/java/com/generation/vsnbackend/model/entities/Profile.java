@@ -26,6 +26,13 @@ public class Profile extends BaseEntity
 	@OneToOne(mappedBy = "profile")
 	private User user;
 
+
+	@OneToMany(mappedBy = "profile", fetch= FetchType.EAGER)
+	private List<Videogame> videogames=new ArrayList<>();
+
+	@OneToMany(mappedBy = "profile", fetch= FetchType.EAGER)
+	private List<Post> posts=new ArrayList<>();
+
 	public User getUser() {
 		return user;
 	}
@@ -33,12 +40,6 @@ public class Profile extends BaseEntity
 	public void setUser(User user) {
 		this.user = user;
 	}
-
-	@OneToMany(mappedBy = "profile", fetch= FetchType.EAGER)
-	private List<Videogame> videogames=new ArrayList<>();
-
-	@OneToMany(mappedBy = "profile", fetch= FetchType.EAGER)
-	private List<Post> posts=new ArrayList<>();
 
 	public int getFollowersCount()
 	{
