@@ -1,13 +1,11 @@
 package com.generation.vsnbackend.model.dto;
 
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
-import com.generation.vsnbackend.model.entities.Comment;
-import com.generation.vsnbackend.model.entities.Post;
-import com.generation.vsnbackend.model.entities.Profile;
-import com.generation.vsnbackend.model.entities.User;
+import com.generation.vsnbackend.model.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -132,5 +130,57 @@ public class DTOConverter
 
 		return comment;
 
+	}
+
+	public VideogameDTOResp toVideogameDTOResp(Videogame videogame){
+		VideogameDTOResp videogameDTOResp = new VideogameDTOResp();
+
+		videogameDTOResp.setId(videogame.getId());
+		videogameDTOResp.setNameVideogame(videogame.getNameVideogame());
+		videogameDTOResp.setDescription(videogame.getDescription());
+		videogameDTOResp.setSoftwareHouse(videogame.getSoftwareHouse());
+		videogameDTOResp.setUrlImage(videogame.getUrlImage());
+		videogameDTOResp.isPreferred(videogame.isPreferred());
+		videogameDTOResp.setReleaseDate(String.valueOf(videogame.getReleaseDate()));
+		videogameDTOResp.setStarReviews(videogame.getStarReviews());
+
+		return videogameDTOResp;
+
+	}
+
+	public Videogame toVideogameEntity(VideogameDTOReq videogameDTOReq){
+		Videogame videogame = new Videogame();
+
+		videogame.setNameVideogame(videogameDTOReq.getNameVideogame());
+		videogame.setDescription(videogameDTOReq.getDescription());
+		videogame.setSoftwareHouse(videogameDTOReq.getSoftwareHouse());
+		videogame.setUrlImage(videogameDTOReq.getUrlImage());
+		videogame.setPreferred(videogameDTOReq.isPreferred());
+		videogame.setReleaseDate(LocalDate.parse(videogameDTOReq.getReleaseDate()));
+
+		return videogame;
+	}
+
+	public ReviewDTOResp toReviewDTOResp(Review review){
+		ReviewDTOResp reviewDTOResp = new ReviewDTOResp();
+
+		reviewDTOResp.setId(review.getId());
+		reviewDTOResp.setAuthor(review.getAuthor());
+		reviewDTOResp.setContent(review.getContent());
+		reviewDTOResp.setTitle(review.getTitle());
+		reviewDTOResp.setNumberOfStar(review.getNumberOfStar());
+
+		return reviewDTOResp;
+	}
+
+	public Review toReviewEntity(ReviewDTOReq reviewDTOReq){
+		Review review = new Review();
+
+		review.setAuthor(reviewDTOReq.getAuthor());
+		review.setTitle(reviewDTOReq.getTitle());
+		review.setNumberOfStar(reviewDTOReq.getNumberOfStar());
+		review.setContent(reviewDTOReq.getContent());
+
+		return review;
 	}
 }
