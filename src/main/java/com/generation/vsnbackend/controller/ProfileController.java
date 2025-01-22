@@ -61,10 +61,23 @@ public class ProfileController {
 	{
         Profile profile=credentialService.getUserByToken().getProfile();
         Long id=profile.getId();
-        FileData img1=fileDataService.uploadImageToFileSystem(imgBackdrop,id);
-        if(img1!=null)
-            profile.setProfileBackdropImgId(img1.getId());
+        FileData img=fileDataService.uploadImageToFileSystem(imgBackdrop,id);
+        if(img!=null)
+            profile.setProfileBackdropImgId(img.getId());
         ch.profileService.save(profile);
         return new Response("Backdrop image saved successfully");
+    }
+    @PostMapping("/saveProfileImage")
+    Response saveProfileImage(
+            @RequestParam("imgProfile") MultipartFile imgBackdrop
+    ) throws IOException
+	{
+        Profile profile=credentialService.getUserByToken().getProfile();
+        Long id=profile.getId();
+        FileData img=fileDataService.uploadImageToFileSystem(imgBackdrop,id);
+        if(img!=null)
+            profile.setProfileBackdropImgId(img.getId());
+        ch.profileService.save(profile);
+        return new Response("Profile image saved successfully");
     }
 }
