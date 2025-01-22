@@ -1,6 +1,7 @@
 package com.generation.vsnbackend.model.dto;
 
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
+import com.generation.vsnbackend.model.entities.Comment;
 import com.generation.vsnbackend.model.entities.Post;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.User;
@@ -98,12 +99,38 @@ public class DTOConverter
 
 		postDTOResp.setId(post.getId());
 		postDTOResp.setWhatIs(post.getWhatIs());
-		postDTOResp.setPubblicationDate(postDTOResp.getPubblicationDate());
+		postDTOResp.setPubblicationDate(String.valueOf(post.getPubblicationDate()));
 		postDTOResp.setContent(post.getContent());
 		postDTOResp.setnLike(post.getnLike());
 		postDTOResp.setImage(post.getImage());
 		postDTOResp.setProfileId(post.getProfile().getId());
 
 		return postDTOResp;
+	}
+
+	public CommentDTOResp toCommentDTOResp(Comment comment){
+		CommentDTOResp commentDTOResp = new CommentDTOResp();
+
+		commentDTOResp.setId(comment.getId());
+		commentDTOResp.setAuthor(comment.getAuthor());
+		commentDTOResp.setTheComment(comment.getTheComment());
+		commentDTOResp.setnLike(comment.getnLike());
+		commentDTOResp.setPubblicationDate(String.valueOf(comment.getPubblicationDate()));
+		commentDTOResp.setPostId(comment.getPost().getId());
+
+		return commentDTOResp;
+
+	}
+
+	public Comment toCommentEntity(CommentDTOReq commentDTOReq){
+		Comment comment = new Comment();
+
+		comment.setTheComment(commentDTOReq.getTheComment());
+		comment.setnLike(commentDTOReq.getnLike());
+		comment.setAuthor(commentDTOReq.getAuthor());
+		comment.setPubblicationDate(LocalDateTime.now());
+
+		return comment;
+
 	}
 }

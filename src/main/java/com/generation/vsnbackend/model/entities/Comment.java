@@ -2,11 +2,14 @@ package com.generation.vsnbackend.model.entities;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
+
 @Entity
 public class Comment extends BaseEntity{
     private String theComment;
     private int nLike;
     private String author;
+    private LocalDateTime pubblicationDate;
 
     @ManyToOne
     @JoinColumn(name = "post_id")
@@ -42,5 +45,13 @@ public class Comment extends BaseEntity{
 
     public void setPost(Post post) {
         this.post = post;
+    }
+
+    public LocalDateTime getPubblicationDate() {
+        return pubblicationDate;
+    }
+
+    public void setPubblicationDate(LocalDateTime pubblicationDate) {
+        this.pubblicationDate = pubblicationDate;
     }
 }
