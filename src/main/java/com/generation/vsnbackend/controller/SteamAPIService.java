@@ -7,7 +7,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class SteamAPIService {
 
-    private static String key="F94F9544AEB0C802112742B29BB670DD";
+    private static final String key="F94F9544AEB0C802112742B29BB670DD";
     private static final int COUNT=5;
     private static final int MAXLENGTH=300;
 
