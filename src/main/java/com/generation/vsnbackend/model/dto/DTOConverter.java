@@ -56,6 +56,8 @@ public class DTOConverter
 		profileDTOResp.setSteamName(profile.getSteamName());
 		profileDTOResp.setPlaystationName(profile.getPlaystationName());
 		profileDTOResp.setXboxName(profile.getXboxName());
+		profileDTOResp.setProfileImgId(profile.getProfileImgId());
+		profileDTOResp.setProfileBackdropImgId(profile.getProfileBackdropImgId());
 
 
 

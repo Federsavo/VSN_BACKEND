@@ -18,7 +18,7 @@ public class FileDataService
 	@Autowired
 	private FileDataRepository fileDataRepository;
 
-	private final static String FOLDER_PATH = System.getProperty("user.dir")+"/images/";
+	private final static String FOLDER_PATH = System.getProperty("user.dir")+"\\images\\";
 
 	public FileData uploadImageToFileSystem(MultipartFile file, Long id) throws IOException
 	{
@@ -49,6 +49,7 @@ public class FileDataService
 		if(fileData.isPresent())
 		{
 			String filePath = fileData.get().getFilePath();
+			System.out.println(filePath);
 			byte[] image = Files.readAllBytes(new File(filePath).toPath());
 			return image;
 		}
