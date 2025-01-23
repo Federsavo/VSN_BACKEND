@@ -56,4 +56,12 @@ public class SteamAPIService {
         return url;
     }
 
+    public String getVideogameNews(Long appId){
+        //solo 5 news
+        String url="http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid="+appId+"&count=5&maxlength=300&format=json";
+        return restTemplate.getForObject(url, String.class);
+    }
+
+
+
 }

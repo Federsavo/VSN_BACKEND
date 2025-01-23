@@ -5,6 +5,7 @@ import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.controller.helper.FileDataService;
 import com.generation.vsnbackend.model.dto.DTOConverter;
 import com.generation.vsnbackend.model.dtoSteam.DTOSteamConverter;
+import com.generation.vsnbackend.model.dtoSteam.NewsDTO;
 import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
 import com.generation.vsnbackend.model.dtoSteam.SingleGameAchievementsDTO;
 import com.generation.vsnbackend.model.entities.Profile;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/steams")
@@ -37,6 +39,13 @@ public class SteamController {
     public PlayerDTO getPlayerDto() throws JsonProcessingException {
         Profile profile=credentialService.getUserByToken().getProfile();
         return dtoSteamConverter.toPlayerDTO(steamAPIService.getPlayerSummary(profile.getUser().getSteamId()));
+    }
+
+    @GetMapping("/news/{videogameId}")
+    public List<NewsDTO> getNewsVideogame(@PathVariable Long videogameId) throws JsonProcessingException {
+        String json= steamAPIService.getVideogameNews(videogameId);
+
+        return dtoSteamConverter.toNewsDTOs(json);
     }
 
 }
