@@ -32,7 +32,7 @@ public class SteamController {
     @Autowired
     ControllerHelper ch;
 
-    @GetMapping
+    @GetMapping("/player")
     public PlayerDTO getPlayerDto() throws JsonProcessingException {
         Profile profile=credentialService.getUserByToken().getProfile();
         return dtoSteamConverter.toPlayerDTO(steamAPIService.getPlayerSummary(profile.getUser().getSteamId()));
