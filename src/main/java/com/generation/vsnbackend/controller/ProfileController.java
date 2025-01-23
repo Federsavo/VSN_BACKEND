@@ -54,7 +54,7 @@ public class ProfileController {
         // Naviga nel JSON fino alla lista dei giocatori
         JsonNode lastVideogame = rootNode.path("response").path("games").get(0);
         profile.setLastPlayedVideogameAppId(lastVideogame.path("appid").asLong());
-        profile.setLastPlayedGameImgUrl(steamAPIService.getUrlImageLastVideogame(profile.getLastPlayedVideogameAppId(),lastVideogame.path("img_icon_url").asText()));
+        profile.setLastPlayedGameImgUrl(steamAPIService.getUrlImageVideogame(profile.getLastPlayedVideogameAppId(),lastVideogame.path("img_icon_url").asText()));
 
         return dtoConverter.toProfileDtoResp(profile);
     }
