@@ -1,5 +1,7 @@
 package com.generation.vsnbackend.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.controller.helper.FileDataService;
 import com.generation.vsnbackend.model.dto.DTOConverter;
@@ -30,6 +32,8 @@ public class ProfileController {
     DTOConverter dtoConverter;
     @Autowired
     private CredentialService credentialService;
+    @Autowired
+    SteamAPIService steamAPIService;
 
     @GetMapping("/all")
     List<ProfileDTOResp> getAllProfiles() {
@@ -43,6 +47,15 @@ public class ProfileController {
     ProfileDTOResp getProfile() throws IOException
 	{
         Profile profile=credentialService.getUserByToken().getProfile();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(steamAPIService.getLastPlayedGame(profile.getUser().getSteamId()));
+
+        // Naviga nel JSON fino alla lista dei giocatori
+        JsonNode lastVideogame = rootNode.path("response").path("games").get(0);
+        profile.setLastPlayedVideogameAppId(lastVideogame.path("appid").asLong());
+        profile.setLastPlayedGameImgUrl(steamAPIService.getUrlImageLastVideogame(profile.getLastPlayedVideogameAppId(),lastVideogame.path("img_icon_url").asText()));
+
         return dtoConverter.toProfileDtoResp(profile);
     }
 

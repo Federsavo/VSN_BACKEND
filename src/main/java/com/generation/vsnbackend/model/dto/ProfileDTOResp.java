@@ -19,6 +19,8 @@ public class ProfileDTOResp
 	private Long profileImgId;
 	private Long profileBackdropImgId;
 
+	private String lastPlayedGameImgUrl;
+
 	public Long getId()
 	{
 		return id;
@@ -137,5 +139,13 @@ public class ProfileDTOResp
 	public void setProfileBackdropImgId(Long profileBackdropImgId)
 	{
 		this.profileBackdropImgId = profileBackdropImgId;
+	}
+
+	public String getLastPlayedGameImgUrl() {
+		return lastPlayedGameImgUrl;
+	}
+
+	public void setLastPlayedGameImgUrl(String lastPlayedGameImgUrl) {
+		this.lastPlayedGameImgUrl = lastPlayedGameImgUrl;
 	}
 }
