@@ -1,4 +1,4 @@
-package com.generation.vsnbackend.model.dto;
+package com.generation.vsnbackend.model.dtoSteam;
 
 import java.time.LocalDate;
 
