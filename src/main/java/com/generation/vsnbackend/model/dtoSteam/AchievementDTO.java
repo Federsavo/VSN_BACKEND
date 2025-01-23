@@ -2,20 +2,9 @@ package com.generation.vsnbackend.model.dtoSteam;
 
 public class AchievementDTO
 {
-	private String gameName;
 	private String achievementName;
 	private String description;
 	private String iconUrl;
-
-	public String getGameName()
-	{
-		return gameName;
-	}
-
-	public void setGameName(String gameName)
-	{
-		this.gameName = gameName;
-	}
 
 	public String getAchievementName()
 	{

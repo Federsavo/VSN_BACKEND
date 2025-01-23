@@ -17,7 +17,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/steam")
@@ -61,7 +64,11 @@ public class SteamController {
     public List<AchievementDTO> getListOfAchievements(@PathVariable String appid) throws JsonProcessingException
     {
         Profile profile=credentialService.getUserByToken().getProfile();
-        return dtoSteamConverter.toListOfObtainedAchievements(steamAPIService.getPlayerAchievements(profile.getUser().getSteamId(),appid));
+        String steamId=profile.getUser().getSteamId();
+        Set<String> setAchievements=new HashSet<>();
+        setAchievements= dtoSteamConverter.toSetOfObtainedAchievements(steamAPIService.getPlayerAchievements(steamId,appid));
+        return dtoSteamConverter.toListOfObtainedAchievements(steamAPIService.getAchievementsInfo(appid),setAchievements);
+
     }
 
 }

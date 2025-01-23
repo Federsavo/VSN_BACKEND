@@ -27,9 +27,9 @@ public class SteamAPIService {
         return restTemplate.getForObject(url, String.class);
     }
 
-    public String getAchievementsIcons(String steamId, String appId)
+    public String getAchievementsInfo(String appId)
     {
-        String url="https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key="+steamId+"&appid="+appId+"&l=english&format=json";
+        String url="https://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key="+key+"&appid="+appId+"&l=english&format=json";
         return restTemplate.getForObject(url, String.class);
     }
 
@@ -44,8 +44,6 @@ public class SteamAPIService {
         String url="https://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/?key="+key+"&steamid="+steamId+"&include_appinfo=true&format=json";
         return restTemplate.getForObject(url, String.class);
     }
-
-
 
     public String getLastPlayedGame(String steamId){
 
@@ -64,7 +62,5 @@ public class SteamAPIService {
         String url="http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid="+appId+"&count="+COUNT+"&maxlength="+MAXLENGTH+"&format=json";
         return restTemplate.getForObject(url, String.class);
     }
-
-
 
 }
