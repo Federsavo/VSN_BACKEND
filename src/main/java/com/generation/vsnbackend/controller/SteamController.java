@@ -6,6 +6,7 @@ import com.generation.vsnbackend.controller.helper.FileDataService;
 import com.generation.vsnbackend.model.dto.DTOConverter;
 import com.generation.vsnbackend.model.dtoSteam.DTOSteamConverter;
 import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
+import com.generation.vsnbackend.model.dtoSteam.SingleGameAchievementsDTO;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.images.FileData;
 import com.generation.vsnbackend.model.entities.signin.Response;
