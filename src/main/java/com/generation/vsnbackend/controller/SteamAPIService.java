@@ -8,6 +8,9 @@ import org.springframework.web.client.RestTemplate;
 public class SteamAPIService {
 
     private static String key="F94F9544AEB0C802112742B29BB670DD";
+    private static final int COUNT=5;
+    private static final int MAXLENGTH=300;
+
 
     @Autowired
     private RestTemplate restTemplate;
@@ -42,6 +45,8 @@ public class SteamAPIService {
         return restTemplate.getForObject(url, String.class);
     }
 
+
+
     public String getLastPlayedGame(String steamId){
 
         String url="https://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key="+key+"&steamid="+steamId+"&format=json";
@@ -53,4 +58,13 @@ public class SteamAPIService {
         String url="https://media.steampowered.com/steamcommunity/public/images/apps/"+appId+"/"+imageIcon+".jpg";
         return url;
     }
+
+    public String getVideogameNews(Long appId){
+        //solo 5 news
+        String url="http://api.steampowered.com/ISteamNews/GetNewsForApp/v0002/?appid="+appId+"&count="+COUNT+"&maxlength="+MAXLENGTH+"&format=json";
+        return restTemplate.getForObject(url, String.class);
+    }
+
+
+
 }

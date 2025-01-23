@@ -36,13 +36,13 @@ public class DTOSteamConverter {
         playerDTO.setAvatarFull(playerNode.path("avatarfull").asText());
         playerDTO.setRealName(playerNode.path("realname").asText());
 
-        int secondi = playerNode.path("lastlogoff").asInt();
+        int secondi=playerNode.path("lastlogoff").asInt();
         LocalDate lastLogOff = Instant.ofEpochSecond(secondi)
                 .atZone(ZoneId.systemDefault()) // Use the system's default timezone
                 .toLocalDate();
         playerDTO.setLastLogOff(lastLogOff);
 
-        secondi = playerNode.path("timecreated").asInt();
+        secondi=playerNode.path("timecreated").asInt();
         LocalDate timeCreated = Instant.ofEpochSecond(secondi)
                 .atZone(ZoneId.systemDefault()) // Use the system's default timezone
                 .toLocalDate();
@@ -51,6 +51,8 @@ public class DTOSteamConverter {
 
         playerDTO.setLocCountryCode(playerNode.path("loccountrycode").asText());
         playerDTO.setPrimaryClanId(playerNode.path("primaryclanid").asText());
+
+
         return playerDTO;
     }
 
@@ -101,4 +103,35 @@ public class DTOSteamConverter {
         }
         return achievements;
     }
+
+    public List<NewsDTO> toNewsDTOs(String json) throws JsonProcessingException {
+        List<NewsDTO> newsDTOs = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(json);
+
+        for(int i=0; i<5; i++) {
+
+            NewsDTO newsDTO = new NewsDTO();
+            JsonNode news = rootNode.path("appnews").path("newsitems").get(i);
+
+            newsDTO.setUrl(news.path("url").asText());
+            newsDTO.setTitle(news.path("title").asText());
+            newsDTO.setAuthor(news.path("author").asText());
+            newsDTO.setContents(news.path("contents").asText());
+            newsDTO.setFeedLabel(news.path("feedlabel").asText());
+            newsDTO.setFeedName(news.path("feedname").asText());
+            newsDTO.setTags(news.path("tags").asText());
+            int secondi=news.path("date").asInt();
+            LocalDate date = Instant.ofEpochSecond(secondi)
+                    .atZone(ZoneId.systemDefault()) // Use the system's default timezone
+                    .toLocalDate();
+            newsDTO.setDate(date);
+
+            newsDTOs.add(newsDTO);
+        }
+
+        return newsDTOs;
+
+    }
+
 }
