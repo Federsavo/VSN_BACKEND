@@ -1,12 +1,18 @@
 package com.generation.vsnbackend.model.dto;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
+import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
 import com.generation.vsnbackend.model.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Service
 public class DTOConverter
@@ -58,6 +64,9 @@ public class DTOConverter
 		profileDTOResp.setXboxName(profile.getXboxName());
 		profileDTOResp.setProfileImgId(profile.getProfileImgId());
 		profileDTOResp.setProfileBackdropImgId(profile.getProfileBackdropImgId());
+
+
+		profileDTOResp.setLastPlayedGameImgUrl(profile.getLastPlayedGameImgUrl());
 
 
 
@@ -183,4 +192,6 @@ public class DTOConverter
 
 		return review;
 	}
+
+
 }
