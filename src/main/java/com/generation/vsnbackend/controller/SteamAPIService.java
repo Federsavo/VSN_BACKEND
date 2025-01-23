@@ -17,4 +17,20 @@ public class SteamAPIService {
         String url="http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key="+key+"&steamids="+steamId;
         return restTemplate.getForObject(url, String.class);
     }
+
+    public String getPlayerAchievements(String steamId, String appId)
+    {
+        String url="http://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid="+appId+"&key="+key+"&steamid="+steamId;
+        return restTemplate.getForObject(url, String.class);
+    }
+
+    public String getAchievementsIcons(String steamId, String appId)
+    {
+        String url="http://api.steampowered.com/ISteamUserStats/GetSchemaForGame/v0002/?key="+steamId+"&appid="+appId+"&l=english&format=json";
+        return restTemplate.getForObject(url, String.class);
+    }
+
+
+
+
 }

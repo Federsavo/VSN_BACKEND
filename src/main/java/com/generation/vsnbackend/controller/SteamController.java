@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.generation.vsnbackend.model.dto.DTOConverter;
 import com.generation.vsnbackend.model.dtoSteam.DTOSteamConverter;
 import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
+import com.generation.vsnbackend.model.dtoSteam.SingleGameAchievementsDTO;
 import com.generation.vsnbackend.model.entities.Profile;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
