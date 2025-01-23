@@ -64,6 +64,9 @@ public class DTOConverter
 		profileDTOResp.setXboxName(profile.getXboxName());
 
 
+		profileDTOResp.setLastPlayedGameImgUrl(profile.getLastPlayedGameImgUrl());
+
+
 
 		return profileDTOResp;
 

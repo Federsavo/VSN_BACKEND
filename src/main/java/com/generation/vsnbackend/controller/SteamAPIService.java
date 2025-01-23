@@ -17,4 +17,17 @@ public class SteamAPIService {
         String url="http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/?key="+key+"&steamids="+steamId;
         return restTemplate.getForObject(url, String.class);
     }
+
+    public String getLastPlayedGame(String steamId){
+
+        String url="http://api.steampowered.com/IPlayerService/GetRecentlyPlayedGames/v0001/?key="+key+"&steamid="+steamId+"&format=json";
+        return restTemplate.getForObject(url, String.class);
+    }
+
+    public String getUrlImageLastVideogame(Long appId, String imageIcon){
+
+        String url="http://media.steampowered.com/steamcommunity/public/images/apps/"+appId+"/"+imageIcon+".jpg";
+        return url;
+    }
+
 }
