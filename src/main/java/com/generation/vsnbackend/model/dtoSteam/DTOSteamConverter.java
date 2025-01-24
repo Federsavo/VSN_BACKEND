@@ -79,8 +79,8 @@ public class DTOSteamConverter {
             singleOwnedGameDTO.setAppId(playerNode.path("appid").asText());
             singleOwnedGameDTO.setVideogameName(playerNode.path("name").asText());
             String imgUrl = playerNode.path("img_icon_url").asText();
-            singleOwnedGameDTO.setIconImgUrl(steamAPIService.getUrlImageVideogame(playerNode.path("appid").asLong(),imgUrl));
-
+            Long appId = playerNode.path("appid").asLong();
+            singleOwnedGameDTO.setIconImgUrl(steamAPIService.getUrlImageVideogame(appId,imgUrl));
             ownedGames.add(singleOwnedGameDTO);
         }
         return ownedGames;

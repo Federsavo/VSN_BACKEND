@@ -49,7 +49,6 @@ public class SteamController {
     @GetMapping("/news/{videogameId}")
     public List<NewsDTO> getNewsVideogame(@PathVariable Long videogameId) throws JsonProcessingException {
         String json= steamAPIService.getVideogameNews(videogameId);
-
         return dtoSteamConverter.toNewsDTOs(json);
     }
 
