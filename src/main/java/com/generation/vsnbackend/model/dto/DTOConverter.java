@@ -3,6 +3,7 @@ package com.generation.vsnbackend.model.dto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.generation.vsnbackend.controller.SteamAPIService;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
 import com.generation.vsnbackend.model.entities.*;
@@ -64,6 +65,7 @@ public class DTOConverter
 		profileDTOResp.setXboxName(profile.getXboxName());
 		profileDTOResp.setProfileImgId(profile.getProfileImgId());
 		profileDTOResp.setLastPlayedGameImgUrl(profile.getLastPlayedGameImgUrl());
+		profileDTOResp.setLastPlayedGameName(profile.getLastPlayedGameName());
 		return profileDTOResp;
 
 	}

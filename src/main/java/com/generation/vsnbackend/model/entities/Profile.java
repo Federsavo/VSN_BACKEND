@@ -24,6 +24,7 @@ public class Profile extends BaseEntity
 	private Long profileImgId;
 	private Long profileBackdropImgId;
 	private String lastPlayedGameImgUrl;
+	private String LastPlayedGameName;
 
 	@OneToOne(mappedBy = "profile" )
 	private User user;
@@ -168,5 +169,15 @@ public class Profile extends BaseEntity
 
 	public void setLastPlayedGameImgUrl(String lastPlayedGameImgUrl) {
 		this.lastPlayedGameImgUrl = lastPlayedGameImgUrl;
+	}
+
+	public String getLastPlayedGameName()
+	{
+		return LastPlayedGameName;
+	}
+
+	public void setLastPlayedGameName(String lastPlayedGameName)
+	{
+		LastPlayedGameName = lastPlayedGameName;
 	}
 }

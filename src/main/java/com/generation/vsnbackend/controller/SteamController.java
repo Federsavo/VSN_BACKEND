@@ -68,7 +68,6 @@ public class SteamController {
         Set<String> setAchievements=new HashSet<>();
         setAchievements= dtoSteamConverter.toSetOfObtainedAchievements(steamAPIService.getPlayerAchievements(steamId,appid));
         return dtoSteamConverter.toListOfObtainedAchievements(steamAPIService.getAchievementsInfo(appid),setAchievements);
-
     }
 
 }
