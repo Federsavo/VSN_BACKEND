@@ -47,9 +47,9 @@ public class SteamController {
         return dtoSteamConverter.toPlayerDTO(steamAPIService.getPlayerSummary(profile.getUser().getSteamId()));
     }
 
-    @GetMapping("/news/{videogameId}")
-    public List<NewsDTO> getNewsVideogame(@PathVariable Long videogameId) throws JsonProcessingException {
-        String json= steamAPIService.getVideogameNews(videogameId);
+    @GetMapping("/news/{appId}")
+    public List<NewsDTO> getNewsVideogame(@PathVariable Long appId) throws JsonProcessingException {
+        String json= steamAPIService.getVideogameNews(appId);
         return dtoSteamConverter.toNewsDTOs(json);
     }
 
