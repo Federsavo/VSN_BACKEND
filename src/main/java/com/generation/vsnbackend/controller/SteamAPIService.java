@@ -63,4 +63,8 @@ public class SteamAPIService {
         return restTemplate.getForObject(url, String.class);
     }
 
+    public String getOneVideogame(Long appId){
+        String url="https://store.steampowered.com/api/appdetails?appids="+appId;
+        return restTemplate.getForObject(url, String.class);
+    }
 }
