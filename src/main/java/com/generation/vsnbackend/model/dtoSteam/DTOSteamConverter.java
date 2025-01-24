@@ -206,11 +206,11 @@ public class DTOSteamConverter {
         videogameDetailDTO.setReleaseDate(String.valueOf(videogame.getReleaseDate()));
         videogameDetailDTO.setGenre(videogame.getGenre());
         videogameDetailDTO.setStarReviews(videogame.getStarReviews());
-        videogameDetailDTO.setAppId(videogame.getSteamId());
+        videogameDetailDTO.setAppId(videogame.getAppId());
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(json);
-        JsonNode videogameSteam = rootNode.path(String.valueOf(videogame.getSteamId())).path("data").get(0);
+        JsonNode videogameSteam = rootNode.path(String.valueOf(videogame.getAppId())).path("data").get(0);
 
         videogameDetailDTO.setRequiredAge(videogameSteam.path("required_age").asInt());
         videogameDetailDTO.setDetailedDescription(videogameSteam.path("detailed_description").asText());
