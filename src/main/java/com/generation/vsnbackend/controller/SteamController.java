@@ -49,7 +49,6 @@ public class SteamController {
     @GetMapping("/news/{videogameId}")
     public List<NewsDTO> getNewsVideogame(@PathVariable Long videogameId) throws JsonProcessingException {
         String json= steamAPIService.getVideogameNews(videogameId);
-
         return dtoSteamConverter.toNewsDTOs(json);
     }
 
@@ -57,7 +56,9 @@ public class SteamController {
     public List<SingleOwnedGameDTO> getListOwnedGamesDto() throws JsonProcessingException
     {
         Profile profile=credentialService.getUserByToken().getProfile();
-        return dtoSteamConverter.toListOfOwnedGames(steamAPIService.getPlayerGames(profile.getUser().getSteamId()));
+        List<SingleOwnedGameDTO> games=dtoSteamConverter.toListOfOwnedGames(steamAPIService.getPlayerGames(profile.getUser().getSteamId()));
+
+        return null;
     }
 
     @GetMapping("/achievements/{appid}")

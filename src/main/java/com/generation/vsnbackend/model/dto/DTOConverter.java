@@ -1,6 +1,7 @@
 package com.generation.vsnbackend.model.dto;
 
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
+import com.generation.vsnbackend.model.dtoSteam.VideogameDTOReq;
 import com.generation.vsnbackend.model.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -134,32 +135,7 @@ public class DTOConverter
 
 	}
 
-	public VideogameDTOResp toVideogameDTOResp(Videogame videogame){
-		VideogameDTOResp videogameDTOResp = new VideogameDTOResp();
 
-		videogameDTOResp.setId(videogame.getId());
-		videogameDTOResp.setNameVideogame(videogame.getNameVideogame());
-		videogameDTOResp.setDescription(videogame.getDescription());
-		videogameDTOResp.setSoftwareHouse(videogame.getSoftwareHouse());
-		videogameDTOResp.isPreferred(videogame.isPreferred());
-		videogameDTOResp.setReleaseDate(String.valueOf(videogame.getReleaseDate()));
-		videogameDTOResp.setStarReviews(videogame.getStarReviews());
-
-		return videogameDTOResp;
-
-	}
-
-	public Videogame toVideogameEntity(VideogameDTOReq videogameDTOReq){
-		Videogame videogame = new Videogame();
-
-		videogame.setNameVideogame(videogameDTOReq.getNameVideogame());
-		videogame.setDescription(videogameDTOReq.getDescription());
-		videogame.setSoftwareHouse(videogameDTOReq.getSoftwareHouse());
-		videogame.setPreferred(videogameDTOReq.isPreferred());
-		videogame.setReleaseDate(LocalDate.parse(videogameDTOReq.getReleaseDate()));
-
-		return videogame;
-	}
 
 	public ReviewDTOResp toReviewDTOResp(Review review){
 		ReviewDTOResp reviewDTOResp = new ReviewDTOResp();

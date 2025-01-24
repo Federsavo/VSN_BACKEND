@@ -5,6 +5,8 @@ public class SingleOwnedGameDTO
 	private String appId;
 	private String videogameName;
 	private String iconImgUrl;
+	private int numberOfStars;//da 1 a 10
+	private boolean preferred;
 
 	public String getAppId()
 	{
@@ -34,5 +36,25 @@ public class SingleOwnedGameDTO
 	public void setIconImgUrl(String iconImgUrl)
 	{
 		this.iconImgUrl = iconImgUrl;
+	}
+
+	public int getNumberOfStars()
+	{
+		return numberOfStars;
+	}
+
+	public void setNumberOfStars(int numberOfStars)
+	{
+		this.numberOfStars = numberOfStars;
+	}
+
+	public boolean isPreferred()
+	{
+		return preferred;
+	}
+
+	public void setPreferred(boolean preferred)
+	{
+		this.preferred = preferred;
 	}
 }

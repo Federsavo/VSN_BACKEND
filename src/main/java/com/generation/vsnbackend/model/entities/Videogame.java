@@ -11,10 +11,13 @@ import java.util.List;
 @Entity
 public class Videogame extends BaseEntity {
     private String nameVideogame;
-    private String softwareHouse;
-    private String description;
+    private String publishers;
+    private String developers;
     private boolean preferred;
     private LocalDate releaseDate;
+    private Long appId;
+    private String genre;
+
 
     @ManyToOne
     @JoinColumn(name = "profile_id")
@@ -48,20 +51,20 @@ public class Videogame extends BaseEntity {
         this.nameVideogame = nameVideogame;
     }
 
-    public String getSoftwareHouse() {
-        return softwareHouse;
+    public String getPublishers() {
+        return publishers;
     }
 
-    public void setSoftwareHouse(String softwareHouse) {
-        this.softwareHouse = softwareHouse;
+    public void setPublishers(String publishers) {
+        this.publishers = publishers;
     }
 
-    public String getDescription() {
-        return description;
+    public String getDevelopers() {
+        return developers;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setDevelopers(String developers) {
+        this.developers = developers;
     }
 
     public LocalDate getReleaseDate() {
@@ -95,5 +98,23 @@ public class Videogame extends BaseEntity {
 
     public void addReviews(Review review) {
         reviews.add(review);
+    }
+
+    public Long getAppId()
+    {
+        return appId;
+    }
+
+    public void setAppId(Long appId)
+    {
+        this.appId = appId;
+    }
+
+    public String getGenre() {
+        return genre;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
     }
 }

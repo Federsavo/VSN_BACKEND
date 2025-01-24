@@ -1,14 +1,17 @@
-package com.generation.vsnbackend.model.dto;
+package com.generation.vsnbackend.model.dtoSteam;
 
 
 public class VideogameDTOReq {
 
     private String nameVideogame;
-    private String softwareHouse;
+    private String developers;
+    private String publishers;
     private String description;
     private String urlImage;
     private boolean preferred;
     private String releaseDate;
+    private String genre;
+    private Long steamId;
 
     public String getNameVideogame() {
         return nameVideogame;
@@ -18,12 +21,20 @@ public class VideogameDTOReq {
         this.nameVideogame = nameVideogame;
     }
 
-    public String getSoftwareHouse() {
-        return softwareHouse;
+    public String getDevelopers() {
+        return developers;
     }
 
-    public void setSoftwareHouse(String softwareHouse) {
-        this.softwareHouse = softwareHouse;
+    public void setDevelopers(String developers) {
+        this.developers = developers;
+    }
+
+    public String getPublishers() {
+        return publishers;
+    }
+
+    public void setPublishers(String publishers) {
+        this.publishers = publishers;
     }
 
     public String getDescription() {
@@ -58,5 +69,19 @@ public class VideogameDTOReq {
         return releaseDate;
     }
 
+    public String getGenre() {
+        return genre;
+    }
 
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public Long getSteamId() {
+        return steamId;
+    }
+
+    public void setSteamId(Long steamId) {
+        this.steamId = steamId;
+    }
 }
