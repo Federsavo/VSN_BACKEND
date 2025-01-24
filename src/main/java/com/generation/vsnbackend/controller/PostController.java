@@ -22,7 +22,6 @@ public class PostController {
 
     @Autowired
     ControllerHelper ch;
-
     @Autowired
     DTOConverter dtoConverter;
     @Autowired

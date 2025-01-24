@@ -1,19 +1,12 @@
 package com.generation.vsnbackend.model.dto;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.generation.vsnbackend.controller.SteamAPIService;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
-import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
 import com.generation.vsnbackend.model.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @Service
 public class DTOConverter
@@ -92,7 +85,7 @@ public class DTOConverter
 //		Profile p=ch.profileService.getOneById(postDTOReq.getProfileId());
 
 		post.setWhatIs(postDTOReq.getWhatIs());
-		post.setPubblicationDate(LocalDateTime.now());
+		post.setPublicationDate(LocalDateTime.now());
 		post.setContent(postDTOReq.getContent());
 		post.setnLike(postDTOReq.getnLike());
 
@@ -104,7 +97,7 @@ public class DTOConverter
 
 		postDTOResp.setId(post.getId());
 		postDTOResp.setWhatIs(post.getWhatIs());
-		postDTOResp.setPubblicationDate(String.valueOf(post.getPubblicationDate()));
+		postDTOResp.setPublicationDate(String.valueOf(post.getPublicationDate()));
 		postDTOResp.setContent(post.getContent());
 		postDTOResp.setnLike(post.getnLike());
 		postDTOResp.setImage(post.getImage());

@@ -22,11 +22,14 @@ public class FileDataService
 
 	public FileData uploadImageToFileSystem(MultipartFile file, Long id) throws IOException
 	{
+		createDirectoryIfNotExists(FOLDER_PATH);
 		String fileName = id+"-"+file.getOriginalFilename();
 		String filePath=FOLDER_PATH+fileName;
 		Optional<FileData> fileDataToDelete=fileDataRepository.findByName(fileName);
+
 		if(fileDataToDelete.isPresent())
 			fileDataRepository.delete(fileDataToDelete.get());
+
 		FileData fileData=fileDataRepository.save(new FileData(fileName,file.getContentType(),filePath));
 		File folder = new File(filePath);
 		file.transferTo(folder);
@@ -34,11 +37,19 @@ public class FileDataService
 		return fileData;
 	}
 
+	public void createDirectoryIfNotExists(String path) {
+		File directory = new File(path);
+		if (!directory.exists()) {
+			directory.mkdirs();
+		}
+	}
+
 	public byte[] downloadImageFromFileSystem(Long id) throws IOException {
 		Optional<FileData> fileData = fileDataRepository.findById(id);
 		if(fileData.isPresent())
 		{
 			String filePath = fileData.get().getFilePath();
+			System.out.println(filePath);
 			byte[] image = Files.readAllBytes(new File(filePath).toPath());
 			return image;
 		}

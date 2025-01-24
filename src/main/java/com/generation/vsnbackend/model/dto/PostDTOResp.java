@@ -7,7 +7,7 @@ public class PostDTOResp {
 
     private Long id;
     private PostType whatIs;//post di che tipo?
-    private String pubblicationDate;
+    private String publicationDate;
     private String content;
     private int nLike;
     private String image;
@@ -29,12 +29,12 @@ public class PostDTOResp {
         this.whatIs = whatIs;
     }
 
-    public String getPubblicationDate() {
-        return pubblicationDate;
+    public String getPublicationDate() {
+        return publicationDate;
     }
 
-    public void setPubblicationDate(String pubblicationDate) {
-        this.pubblicationDate = pubblicationDate;
+    public void setPublicationDate(String publicationDate) {
+        this.publicationDate = publicationDate;
     }
 
     public String getContent() {
