@@ -162,14 +162,20 @@ public class DTOSteamConverter {
 
         videogame.setDevelopers(videogameSteam.path("data").path("developers").get(0).asText());
         videogame.setPublishers(videogameSteam.path("data").path("publishers").get(0).asText());
-//
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy",  Locale.ENGLISH);
+
+
+        DateTimeFormatter formatter;
+        if(Character.isDigit(videogameSteam.path("data").path("release_date").path("date").asText().charAt(1)))
+             formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy",  Locale.ENGLISH);
+        else {
+            formatter = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale.ENGLISH);
+        }
         videogame.setReleaseDate(LocalDate.parse(videogameSteam.path("data").path("release_date").path("date").asText(), formatter));
 
 
 
         String generi="";
-        int numberOfGenres = videogameSteam.path("genres").size();
+        int numberOfGenres = videogameSteam.path("data").path("genres").size();
         for(int i=0;i<numberOfGenres;i++) {
             if (videogameSteam.path("data").path("genres").get(i) != null)
                 generi += videogameSteam.path("data").path("genres").get(i).path("description").asText() + ", ";
@@ -216,12 +222,16 @@ public class DTOSteamConverter {
         videogameDetailDTO.setPrice(videogameSteam.path("data").path("price_overview").path("final_formatted").asText());
 
         String platform="";
-        if(videogameSteam.path("data").path("platforms").path("windows").equals("true"))
+        if(videogameSteam.path("data").path("platforms").path("windows").asBoolean(false))
             platform +="windows-";
-        if(videogameSteam.path("data").path("platforms").path("mac").equals("true"))
+        if(videogameSteam.path("data").path("platforms").path("mac").asBoolean(false))
             platform +="mac-";
-        if(videogameSteam.path("data").path("platforms").path("linux").equals("true"))
+        if(videogameSteam.path("data").path("platforms").path("linux").asBoolean(false))
             platform +="linux";
+        //togli - se finisce con -
+        if (platform.endsWith("-")) {
+            platform = platform.substring(0, platform.length() - 1);
+        }
         videogameDetailDTO.setPlatforms(platform);
 
         videogameDetailDTO.setTotalAchievements(Integer.parseInt(videogameSteam.path("data").path("achievements").path("total").asText()));
