@@ -1,6 +1,7 @@
 package com.generation.vsnbackend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.generation.vsnbackend.controller.exception.NoAchievementException;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.controller.helper.FileDataService;
 import com.generation.vsnbackend.model.dto.DTOConverter;
@@ -54,15 +55,22 @@ public class SteamController {
     }
 
 
-
     @GetMapping("/achievements/{appid}")
     public List<AchievementDTO> getListOfAchievements(@PathVariable String appid) throws JsonProcessingException
-    {
-        Profile profile=credentialService.getUserByToken().getProfile();
-        String steamId=profile.getUser().getSteamId();
-        Set<String> setAchievements=new HashSet<>();
-        setAchievements= dtoSteamConverter.toSetOfObtainedAchievements(steamAPIService.getPlayerAchievements(steamId,appid));
-        return dtoSteamConverter.toListOfObtainedAchievements(steamAPIService.getAchievementsInfo(appid),setAchievements);
+	{
+        try
+        {
+            Profile profile = credentialService.getUserByToken().getProfile();
+            String steamId = profile.getUser().getSteamId();
+            Set<String> setAchievements = new HashSet<>();
+            setAchievements = dtoSteamConverter.toSetOfObtainedAchievements(steamAPIService.getPlayerAchievements(steamId, appid));
+            System.out.println(setAchievements);
+            return dtoSteamConverter.toListOfObtainedAchievements(steamAPIService.getAchievementsInfo(appid), setAchievements);
+        }
+        catch (NoAchievementException e)
+        {
+            return null;
+        }
     }
 
 }

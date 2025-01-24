@@ -22,7 +22,6 @@ public class VideogameDetailDTO {
     private String website;
     private String price;
     private String platforms;
-    private int totalAchievements;
 
     public Long getId() {
         return id;
@@ -127,14 +126,6 @@ public class VideogameDetailDTO {
 
     public void setPlatforms(String platforms) {
         this.platforms = platforms;
-    }
-
-    public int getTotalAchievements() {
-        return totalAchievements;
-    }
-
-    public void setTotalAchievements(int totalAchievements) {
-        this.totalAchievements = totalAchievements;
     }
 
     public String getDevelopers() {

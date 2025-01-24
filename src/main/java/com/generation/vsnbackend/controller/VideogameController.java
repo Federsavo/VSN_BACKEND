@@ -58,7 +58,6 @@ public class VideogameController {
         Videogame videogame = ch.findOneVideogameByAppId(appId);
         videogame=dtoSteamConverter.toVideogameFromSteam(steamAPIService.getOneVideogameDetail(appId),videogame);
         ch.videogameService.save(videogame);
-
         return dtoSteamConverter.toVideogameDetailFromSteam(videogame,steamAPIService.getOneVideogameDetail(videogame.getAppId()));
     }
 

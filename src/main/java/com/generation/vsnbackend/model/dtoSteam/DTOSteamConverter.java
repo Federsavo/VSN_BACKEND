@@ -234,7 +234,7 @@ public class DTOSteamConverter {
         }
         videogameDetailDTO.setPlatforms(platform);
 
-        videogameDetailDTO.setTotalAchievements(Integer.parseInt(videogameSteam.path("data").path("achievements").path("total").asText()));
+        //videogameDetailDTO.setTotalAchievements(Integer.parseInt(videogameSteam.path("data").path("achievements").path("total").asText()));
 
 
         return videogameDetailDTO;
