@@ -1,5 +1,6 @@
 package com.generation.vsnbackend.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.model.dtoSteam.DTOSteamConverter;
 import com.generation.vsnbackend.model.dtoSteam.VideogameDetailDTO;
@@ -24,9 +25,17 @@ public class VideogameController {
     ControllerHelper ch;
 
 
-    @GetMapping("/{id}")
-    public VideogameDetailDTO getVideogameDetail(@PathVariable("id") Long id) {
-        Videogame videogame = new Videogame();
-                return null;
+
+
+
+    @GetMapping("/{appId}")
+    public VideogameDetailDTO getVideogameDetail(@PathVariable("appId") Long appId) throws JsonProcessingException {
+        String videogameDetailJson = steamAPIService.getOneVideogameDetail(appId);
+        Videogame videogame = ch.findOneVideogameByAppId(appId);
+        System.out.println(videogame.getGenre());
+        videogame=dtoSteamConverter.toVideogameFromSteam(steamAPIService.getOneVideogameDetail(appId),videogame);
+
+        return dtoSteamConverter.toVideogameDetailFromSteam(videogame,steamAPIService.getOneVideogameDetail(videogame.getAppId()));
+
     }
 }

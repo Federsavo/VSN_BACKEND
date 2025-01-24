@@ -157,39 +157,36 @@ public class DTOSteamConverter {
 
     }
 
-    public Videogame toVideogameFromSteam (String json, Long appId) throws JsonProcessingException {
-        Videogame videogame = new Videogame();
+    public Videogame toVideogameFromSteam (String json, Videogame videogame) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(json);
-
-        JsonNode videogameSteam = rootNode.path(String.valueOf(appId)).path("data").get(0);
-
-        videogame.setAppId(appId);
-        videogame.setNameVideogame(videogameSteam.path("name").asText());
-        videogame.setDevelopers(videogameSteam.path("developers").asText());
-        videogame.setPublishers(videogameSteam.path("publishers").asText());
-
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy");
-        videogame.setReleaseDate(LocalDate.parse(videogameSteam.path("release_date").path("date").asText(), formatter));
+        JsonNode videogameSteam = rootNode.path(videogame.getAppId().toString()); // Assicurati che questo sia corretto
 
 
+        videogame.setDevelopers(videogameSteam.path("data").path("developers").get(0).asText());
+        videogame.setPublishers(videogameSteam.path("data").path("publishers").get(0).asText());
 
-        String generi="";
-        int numberOfGenres = videogameSteam.path("genres").size();
-        for(int i=0;i<numberOfGenres;i++) {
-            if (videogameSteam.path("genres").get(i) != null)
-                generi += videogameSteam.path("genres").get(i).path("description").asText() + ", ";
-            else {
-                // Se non ci sono più elementi nell'array "genres", usciamo dal ciclo
-                break;
-            }
-        }
-        //levo la virgola
-        if (!generi.isEmpty()) {
-            generi = generi.substring(0, generi.length() - 2);
-        }
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy");
+//        videogame.setReleaseDate(LocalDate.parse(videogameSteam.path("data").path("release_date").path("date").asText(), formatter));
 
-        videogame.setGenre(generi);
+
+//
+//        String generi="";
+//        int numberOfGenres = videogameSteam.path("genres").size();
+//        for(int i=0;i<numberOfGenres;i++) {
+//            if (videogameSteam.path("data").path("genres").get(i) != null)
+//                generi += videogameSteam.path("data").path("genres").get(i).path("description").asText() + ", ";
+//            else {
+//                // Se non ci sono più elementi nell'array "genres", usciamo dal ciclo
+//                break;
+//            }
+//        }
+//        //levo la virgola
+//        if (!generi.isEmpty()) {
+//            generi = generi.substring(0, generi.length() - 2);
+//        }
+//
+//        videogame.setGenre(generi);
 
         return videogame;
 
@@ -210,22 +207,23 @@ public class DTOSteamConverter {
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(json);
-        JsonNode videogameSteam = rootNode.path(String.valueOf(videogame.getAppId())).path("data").get(0);
 
-        videogameDetailDTO.setRequiredAge(videogameSteam.path("required_age").asInt());
-        videogameDetailDTO.setDetailedDescription(videogameSteam.path("detailed_description").asText());
-        videogameDetailDTO.setShortDescription(videogameSteam.path("short_description").asText());
-        videogameDetailDTO.setSupportedLanguages(videogameSteam.path("supported_languages").asText());
-        videogameDetailDTO.setHeaderImageUrl(videogameSteam.path("header_image_url").asText());
-        videogameDetailDTO.setWebsite(videogameSteam.path("website").asText());
-        videogameDetailDTO.setPrice(videogameSteam.path("price_overview").path("final_formatted").asText());
+        JsonNode videogameSteam = rootNode.path(videogame.getAppId().toString());
+
+        videogameDetailDTO.setRequiredAge(videogameSteam.path("data").path("required_age").asInt());
+        videogameDetailDTO.setDetailedDescription(videogameSteam.path("data").path("detailed_description").asText());
+        videogameDetailDTO.setShortDescription(videogameSteam.path("data").path("short_description").asText());
+        videogameDetailDTO.setSupportedLanguages(videogameSteam.path("data").path("supported_languages").asText());
+        videogameDetailDTO.setHeaderImageUrl(videogameSteam.path("data").path("header_image").asText());
+        videogameDetailDTO.setWebsite(videogameSteam.path("data").path("website").asText());
+        videogameDetailDTO.setPrice(videogameSteam.path("data").path("price_overview").path("final_formatted").asText());
 
         String platform="";
-        if(videogameSteam.path("platforms").path("windows").equals("true"))
+        if(videogameSteam.path("data").path("platforms").path("windows").equals("true"))
             platform +="windows-";
-        if(videogameSteam.path("platforms").path("mac").equals("true"))
+        if(videogameSteam.path("data").path("platforms").path("mac").equals("true"))
             platform +="mac-";
-        if(videogameSteam.path("platforms").path("linux").equals("true"))
+        if(videogameSteam.path("data").path("platforms").path("linux").equals("true"))
             platform +="linux";
         videogameDetailDTO.setPlatforms(platform);
 
