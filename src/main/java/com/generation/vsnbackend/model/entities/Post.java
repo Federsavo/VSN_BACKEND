@@ -1,7 +1,6 @@
 package com.generation.vsnbackend.model.entities;
 
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,7 +9,7 @@ import java.util.List;
 @Entity
 public class Post extends BaseEntity {
     private PostType whatIs;//post di che tipo?
-    private LocalDateTime pubblicationDate;
+    private LocalDateTime publicationDate;
     private String content;
     private int nLike;
     private String image;
@@ -31,12 +30,12 @@ public class Post extends BaseEntity {
         this.whatIs = whatIs;
     }
 
-    public LocalDateTime getPubblicationDate() {
-        return pubblicationDate;
+    public LocalDateTime getPublicationDate() {
+        return publicationDate;
     }
 
-    public void setPubblicationDate(LocalDateTime pubblicationDate) {
-        this.pubblicationDate = pubblicationDate;
+    public void setPublicationDate(LocalDateTime pubblicationDate) {
+        this.publicationDate = pubblicationDate;
     }
 
     public String getContent() {
@@ -54,6 +53,7 @@ public class Post extends BaseEntity {
     public void setComments(List<Comment> comments) {
         this.comments = comments;
     }
+
     public void addComment(Comment comment) {
         comments.add(comment);
     }
