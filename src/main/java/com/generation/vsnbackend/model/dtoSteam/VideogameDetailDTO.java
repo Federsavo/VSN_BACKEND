@@ -20,7 +20,7 @@ public class VideogameDetailDTO {
     private String supportedLanguages;
     private String headerImageUrl;
     private String website;
-    private double price;
+    private String price;
     private String platforms;
     private int totalAchievements;
 
@@ -113,11 +113,11 @@ public class VideogameDetailDTO {
         this.website = website;
     }
 
-    public double getPrice() {
+    public String getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(String price) {
         this.price = price;
     }
 

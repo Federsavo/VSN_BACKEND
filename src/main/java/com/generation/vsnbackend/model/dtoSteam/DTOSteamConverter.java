@@ -168,11 +168,13 @@ public class DTOSteamConverter {
         videogame.setNameVideogame(videogameSteam.path("name").asText());
         videogame.setDevelopers(videogameSteam.path("developers").asText());
         videogame.setPublishers(videogameSteam.path("publishers").asText());
-        videogame.setPreferred(false);
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy");
         videogame.setReleaseDate(LocalDate.parse(videogameSteam.path("release_date").path("date").asText(), formatter));
 
+
+
+        //da sistemare
         videogame.setGenre(videogameSteam.path("genres").path("description").asText());
 
         return videogame;
@@ -181,11 +183,42 @@ public class DTOSteamConverter {
 
     public VideogameDetailDTO toVideogameDetailFromSteam (Videogame videogame, String json) throws JsonProcessingException {
         VideogameDetailDTO videogameDetailDTO = new VideogameDetailDTO();
+
+        videogameDetailDTO.setId(videogame.getId());
+        videogameDetailDTO.setNameVideogame(videogame.getNameVideogame());
+        videogameDetailDTO.setDevelopers(videogame.getDevelopers());
+        videogameDetailDTO.setPublishers(videogame.getPublishers());
+        videogameDetailDTO.setPreferred(videogame.isPreferred());
+        videogameDetailDTO.setReleaseDate(String.valueOf(videogame.getReleaseDate()));
+        videogameDetailDTO.setGenre(videogame.getGenre());
+        videogameDetailDTO.setStarReviews(videogame.getStarReviews());
+        videogameDetailDTO.setAppId(videogame.getSteamId());
+
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(json);
-        JsonNode videogameDetail = rootNode.path("data").get(0);
+        JsonNode videogameSteam = rootNode.path(String.valueOf(videogame.getSteamId())).path("data").get(0);
 
-        return null;
+        videogameDetailDTO.setRequiredAge(videogameSteam.path("required_age").asInt());
+        videogameDetailDTO.setDetailedDescription(videogameSteam.path("detailed_description").asText());
+        videogameDetailDTO.setShortDescription(videogameSteam.path("short_description").asText());
+        videogameDetailDTO.setSupportedLanguages(videogameSteam.path("supported_languages").asText());
+        videogameDetailDTO.setHeaderImageUrl(videogameSteam.path("header_image_url").asText());
+        videogameDetailDTO.setWebsite(videogameSteam.path("website").asText());
+        videogameDetailDTO.setPrice(videogameSteam.path("price_overview").path("final_formatted").asText());
+
+        String platform="";
+        if(videogameSteam.path("platforms").path("windows").equals("true"))
+            platform +="windows-";
+        if(videogameSteam.path("platforms").path("mac").equals("true"))
+            platform +="mac-";
+        if(videogameSteam.path("platforms").path("linux").equals("true"))
+            platform +="linux";
+        videogameDetailDTO.setPlatforms(platform);
+
+        videogameDetailDTO.setTotalAchievements(videogameSteam.path("achievements").path("total").asInt());
+
+
+        return videogameDetailDTO;
 
     }
 
