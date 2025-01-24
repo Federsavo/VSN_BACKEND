@@ -140,6 +140,7 @@ public class DTOSteamConverter {
             newsDTO.setContents(news.path("contents").asText());
             newsDTO.setFeedLabel(news.path("feedlabel").asText());
             newsDTO.setFeedName(news.path("feedname").asText());
+            //da sistemare
             newsDTO.setTags(news.path("tags").asText());
             int secondi=news.path("date").asInt();
             LocalDate date = Instant.ofEpochSecond(secondi)
