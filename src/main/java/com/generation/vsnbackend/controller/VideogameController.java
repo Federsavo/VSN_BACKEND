@@ -40,7 +40,7 @@ public class VideogameController {
 
 
     @PutMapping
-    public Response updatePreferredVideogame(@RequestBody Videogame videogame)
+    public Response updateVideogame(@RequestBody Videogame videogame)
     {
         ch.videogameService.save(videogame);
         return new Response("Successfully updated videogame");
