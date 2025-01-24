@@ -7,6 +7,7 @@ import com.generation.vsnbackend.model.dto.PostDTOReq;
 import com.generation.vsnbackend.model.dto.PostDTOResp;
 import com.generation.vsnbackend.model.entities.Post;
 import com.generation.vsnbackend.model.entities.Profile;
+import com.generation.vsnbackend.model.entities.signin.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,7 +50,6 @@ public class PostController {
 
     @PostMapping
     PostDTOResp insertPost(@RequestBody PostDTOReq postDTOReq){
-
         if(postDTOReq.getContent().isBlank()||postDTOReq.getContent().length()>MAX_POSTS_CONTENT_SIZE)
             throw new PostContentException("Post content is too big or empty");
         Profile profile = credentialService.getUserByToken().getProfile();
@@ -59,5 +59,15 @@ public class PostController {
         post.setProfile(profile);
         ch.postService.save(post);
         return dtoConverter.toPostDTOResp(post);
+    }
+
+    @DeleteMapping("/{postId}")
+    Response deletePost(@PathVariable Long postId)
+    {
+        Profile profile = credentialService.getUserByToken().getProfile();
+        for(Post post:profile.getPosts())
+            if(post.getId().equals(postId))
+                ch.postService.deleteById(postId);
+        return new Response("Deleted post");
     }
 }

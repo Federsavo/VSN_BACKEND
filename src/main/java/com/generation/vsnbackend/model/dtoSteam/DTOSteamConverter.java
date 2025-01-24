@@ -164,7 +164,7 @@ public class DTOSteamConverter {
 
         JsonNode videogameSteam = rootNode.path(String.valueOf(appId)).path("data").get(0);
 
-        videogame.setSteamId(appId);
+        videogame.setAppId(appId);
         videogame.setNameVideogame(videogameSteam.path("name").asText());
         videogame.setDevelopers(videogameSteam.path("developers").asText());
         videogame.setPublishers(videogameSteam.path("publishers").asText());

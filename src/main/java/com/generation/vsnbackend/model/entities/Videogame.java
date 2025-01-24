@@ -15,7 +15,7 @@ public class Videogame extends BaseEntity {
     private String developers;
     private boolean preferred;
     private LocalDate releaseDate;
-    private Long steamId;
+    private Long appId;
     private String genre;
 
 
@@ -100,12 +100,14 @@ public class Videogame extends BaseEntity {
         reviews.add(review);
     }
 
-    public Long getSteamId() {
-        return steamId;
+    public Long getAppId()
+    {
+        return appId;
     }
 
-    public void setSteamId(Long steamId) {
-        this.steamId = steamId;
+    public void setAppId(Long appId)
+    {
+        this.appId = appId;
     }
 
     public String getGenre() {
