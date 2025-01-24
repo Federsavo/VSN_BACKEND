@@ -12,10 +12,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class DTOSteamConverter {
@@ -165,28 +162,28 @@ public class DTOSteamConverter {
 
         videogame.setDevelopers(videogameSteam.path("data").path("developers").get(0).asText());
         videogame.setPublishers(videogameSteam.path("data").path("publishers").get(0).asText());
-
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy");
-//        videogame.setReleaseDate(LocalDate.parse(videogameSteam.path("data").path("release_date").path("date").asText(), formatter));
-
-
 //
-//        String generi="";
-//        int numberOfGenres = videogameSteam.path("genres").size();
-//        for(int i=0;i<numberOfGenres;i++) {
-//            if (videogameSteam.path("data").path("genres").get(i) != null)
-//                generi += videogameSteam.path("data").path("genres").get(i).path("description").asText() + ", ";
-//            else {
-//                // Se non ci sono più elementi nell'array "genres", usciamo dal ciclo
-//                break;
-//            }
-//        }
-//        //levo la virgola
-//        if (!generi.isEmpty()) {
-//            generi = generi.substring(0, generi.length() - 2);
-//        }
-//
-//        videogame.setGenre(generi);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy",  Locale.ENGLISH);
+        videogame.setReleaseDate(LocalDate.parse(videogameSteam.path("data").path("release_date").path("date").asText(), formatter));
+
+
+
+        String generi="";
+        int numberOfGenres = videogameSteam.path("genres").size();
+        for(int i=0;i<numberOfGenres;i++) {
+            if (videogameSteam.path("data").path("genres").get(i) != null)
+                generi += videogameSteam.path("data").path("genres").get(i).path("description").asText() + ", ";
+            else {
+                // Se non ci sono più elementi nell'array "genres", usciamo dal ciclo
+                break;
+            }
+        }
+        //levo la virgola
+        if (!generi.isEmpty()) {
+            generi = generi.substring(0, generi.length() - 2);
+        }
+
+        videogame.setGenre(generi);
 
         return videogame;
 
@@ -210,7 +207,7 @@ public class DTOSteamConverter {
 
         JsonNode videogameSteam = rootNode.path(videogame.getAppId().toString());
 
-        videogameDetailDTO.setRequiredAge(videogameSteam.path("data").path("required_age").asInt());
+        videogameDetailDTO.setRequiredAge(Integer.parseInt( videogameSteam.path("data").path("required_age").asText()));
         videogameDetailDTO.setDetailedDescription(videogameSteam.path("data").path("detailed_description").asText());
         videogameDetailDTO.setShortDescription(videogameSteam.path("data").path("short_description").asText());
         videogameDetailDTO.setSupportedLanguages(videogameSteam.path("data").path("supported_languages").asText());
@@ -227,7 +224,7 @@ public class DTOSteamConverter {
             platform +="linux";
         videogameDetailDTO.setPlatforms(platform);
 
-        videogameDetailDTO.setTotalAchievements(videogameSteam.path("achievements").path("total").asInt());
+        videogameDetailDTO.setTotalAchievements(Integer.parseInt(videogameSteam.path("data").path("achievements").path("total").asText()));
 
 
         return videogameDetailDTO;
