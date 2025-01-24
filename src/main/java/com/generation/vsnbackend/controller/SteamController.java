@@ -10,6 +10,7 @@ import com.generation.vsnbackend.model.dtoSteam.NewsDTO;
 import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
 import com.generation.vsnbackend.model.dtoSteam.SingleGameAchievementsDTO;
 import com.generation.vsnbackend.model.entities.Profile;
+import com.generation.vsnbackend.model.entities.Videogame;
 import com.generation.vsnbackend.model.entities.images.FileData;
 import com.generation.vsnbackend.model.entities.signin.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,7 +58,9 @@ public class SteamController {
     {
         Profile profile=credentialService.getUserByToken().getProfile();
         List<SingleOwnedGameDTO> games=dtoSteamConverter.toListOfOwnedGames(steamAPIService.getPlayerGames(profile.getUser().getSteamId()));
-
+        List<Videogame> gamesDb=profile.getVideogames();
+        if(gamesDb==null)
+            System.out.println("aaa");
         return null;
     }
 
