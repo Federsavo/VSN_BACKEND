@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Post extends BaseEntity {
+public class Post extends BaseEntity
+{
     private PostType whatIs;//post di che tipo?
     private LocalDateTime pubblicationDate;
     private String content;
