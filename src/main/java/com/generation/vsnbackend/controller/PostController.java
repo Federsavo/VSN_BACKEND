@@ -28,11 +28,11 @@ public class PostController {
     private CredentialService credentialService;
 
     @GetMapping()
-    List<PostDTOResp> getAllPosts(){
+    List<PostDTOResp> getUserPosts(){
         List<PostDTOResp> posts = new ArrayList<>();
         Profile profile=credentialService.getUserByToken().getProfile();
-        for (Post post:profile.getPosts()){
-            posts.add(dtoConverter.toPostDTOResp(post));
+        for (int i=profile.getPosts().size()-1;i>=0;i--){
+            posts.add(dtoConverter.toPostDTOResp(profile.getPosts().get(i)));
         }
         return posts;
     }
