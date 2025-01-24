@@ -59,9 +59,22 @@ public class SteamController {
         Profile profile=credentialService.getUserByToken().getProfile();
         List<SingleOwnedGameDTO> games=dtoSteamConverter.toListOfOwnedGames(steamAPIService.getPlayerGames(profile.getUser().getSteamId()));
         List<Videogame> gamesDb=profile.getVideogames();
-        if(gamesDb==null)
-            System.out.println("aaa");
-        return null;
+        if(gamesDb!=null&&gamesDb.isEmpty())
+        {
+            for (SingleOwnedGameDTO game : games)
+            {
+                Videogame v = new Videogame();
+                v.setPreferred(false);
+                v.setNumberOfStars(0);
+                v.setAppId(game.getAppId());
+                v.setNameVideogame(game.getVideogameName());
+                profile.getVideogames().add(v);
+                v.setProfile(profile);
+                ch.videogameService.save(v);
+                ch.profileService.save(profile);
+            }
+        }
+        return games;
     }
 
     @GetMapping("/achievements/{appid}")

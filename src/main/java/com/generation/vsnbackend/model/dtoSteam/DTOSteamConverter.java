@@ -75,7 +75,7 @@ public class DTOSteamConverter {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(json);
             JsonNode playerNode = rootNode.path("response").path("games").get(i);
-            singleOwnedGameDTO.setAppId(playerNode.path("appid").asText());
+            singleOwnedGameDTO.setAppId(Long.valueOf(playerNode.path("appid").asText()));
             singleOwnedGameDTO.setVideogameName(playerNode.path("name").asText());
             String imgUrl = playerNode.path("img_icon_url").asText();
             Long appId = playerNode.path("appid").asLong();

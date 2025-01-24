@@ -2,18 +2,18 @@ package com.generation.vsnbackend.model.dtoSteam;
 
 public class SingleOwnedGameDTO
 {
-	private String appId;
+	private Long appId;
 	private String videogameName;
 	private String iconImgUrl;
 	private int numberOfStars;//da 1 a 10
 	private boolean preferred;
 
-	public String getAppId()
+	public Long getAppId()
 	{
 		return appId;
 	}
 
-	public void setAppId(String appId)
+	public void setAppId(Long appId)
 	{
 		this.appId = appId;
 	}
