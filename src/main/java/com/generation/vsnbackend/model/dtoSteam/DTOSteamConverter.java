@@ -4,12 +4,14 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.generation.vsnbackend.controller.SteamAPIService;
+import com.generation.vsnbackend.model.entities.Videogame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -152,6 +154,38 @@ public class DTOSteamConverter {
         }
 
         return newsDTOs;
+
+    }
+
+    public Videogame toVideogameFromSteam (String json, Long appId) throws JsonProcessingException {
+        Videogame videogame = new Videogame();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(json);
+
+        JsonNode videogameSteam = rootNode.path(String.valueOf(appId)).path("data").get(0);
+
+        videogame.setSteamId(appId);
+        videogame.setNameVideogame(videogameSteam.path("name").asText());
+        videogame.setDevelopers(videogameSteam.path("developers").asText());
+        videogame.setPublishers(videogameSteam.path("publishers").asText());
+        videogame.setPreferred(false);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy");
+        videogame.setReleaseDate(LocalDate.parse(videogameSteam.path("release_date").path("date").asText(), formatter));
+
+        videogame.setGenre(videogameSteam.path("genres").path("description").asText());
+
+        return videogame;
+
+    }
+
+    public VideogameDetailDTO toVideogameDetailFromSteam (Videogame videogame, String json) throws JsonProcessingException {
+        VideogameDetailDTO videogameDetailDTO = new VideogameDetailDTO();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(json);
+        JsonNode videogameDetail = rootNode.path("data").get(0);
+
+        return null;
 
     }
 

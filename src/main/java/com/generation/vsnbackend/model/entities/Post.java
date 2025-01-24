@@ -35,8 +35,8 @@ public class Post extends BaseEntity
         return publicationDate;
     }
 
-    public void setPublicationDate(LocalDateTime pubblicationDate) {
-        this.publicationDate = pubblicationDate;
+    public void setPublicationDate(LocalDateTime publicationDate) {
+        this.publicationDate = publicationDate;
     }
 
     public String getContent() {
