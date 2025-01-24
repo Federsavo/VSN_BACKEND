@@ -97,6 +97,7 @@ public class DTOConverter
 
 		postDTOResp.setId(post.getId());
 		postDTOResp.setWhatIs(post.getWhatIs());
+		System.out.println(post.getPublicationDate());
 		postDTOResp.setPublicationDate(String.valueOf(post.getPublicationDate()));
 		postDTOResp.setContent(post.getContent());
 		postDTOResp.setnLike(post.getnLike());
