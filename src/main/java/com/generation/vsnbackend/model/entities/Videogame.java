@@ -18,6 +18,8 @@ public class Videogame extends BaseEntity {
     private Long appId;
     private String genre;
 
+    private int numberOfStars;
+    private String iconImgUrl;
 
     @ManyToOne
     @JoinColumn(name = "profile_id")
@@ -116,5 +118,25 @@ public class Videogame extends BaseEntity {
 
     public void setGenre(String genre) {
         this.genre = genre;
+    }
+
+    public int getNumberOfStars()
+    {
+        return numberOfStars;
+    }
+
+    public void setNumberOfStars(int numberOfStars)
+    {
+        this.numberOfStars = numberOfStars;
+    }
+
+    public String getIconImgUrl()
+    {
+        return iconImgUrl;
+    }
+
+    public void setIconImgUrl(String iconImgUrl)
+    {
+        this.iconImgUrl = iconImgUrl;
     }
 }

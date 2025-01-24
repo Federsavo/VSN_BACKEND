@@ -1,5 +1,6 @@
 package com.generation.vsnbackend.controller;
 
+import com.generation.vsnbackend.controller.exception.NoAchievementException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -21,10 +22,17 @@ public class SteamAPIService {
         return restTemplate.getForObject(url, String.class);
     }
 
-    public String getPlayerAchievements(String steamId, String appId)
-    {
-        String url="https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid="+appId+"&key="+key+"&steamid="+steamId;
-        return restTemplate.getForObject(url, String.class);
+    public String getPlayerAchievements(String steamId, String appId) throws NoAchievementException
+	{
+        try
+        {
+            String url = "https://api.steampowered.com/ISteamUserStats/GetPlayerAchievements/v0001/?appid=" + appId + "&key=" + key + "&steamid=" + steamId;
+            return restTemplate.getForObject(url, String.class);
+        }
+        catch (Exception e)
+        {
+            throw new NoAchievementException();
+        }
     }
 
     public String getAchievementsInfo(String appId)

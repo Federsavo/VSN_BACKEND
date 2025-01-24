@@ -6,6 +6,9 @@ import com.generation.vsnbackend.model.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Objects;
+
 @Service
 public class ControllerHelper
 {
@@ -28,4 +31,14 @@ public class ControllerHelper
 		this.profileService=new GenericService<>(profileRepo);
 	}
 
+	public Videogame findOneVideogameByAppId(Long appId)
+	{
+		List<Videogame> videogames=videogameService.getList();
+		for(Videogame videogame : videogames)
+		{
+			if(videogame.getAppId().equals(appId))
+				return videogame;
+		}
+		return null;
+	}
 }
