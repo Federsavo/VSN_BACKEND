@@ -3,6 +3,7 @@ package com.generation.vsnbackend.model.dto;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.generation.vsnbackend.controller.SteamAPIService;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
 import com.generation.vsnbackend.model.entities.*;
@@ -63,13 +64,8 @@ public class DTOConverter
 		profileDTOResp.setPlaystationName(profile.getPlaystationName());
 		profileDTOResp.setXboxName(profile.getXboxName());
 		profileDTOResp.setProfileImgId(profile.getProfileImgId());
-		profileDTOResp.setProfileBackdropImgId(profile.getProfileBackdropImgId());
-
-
 		profileDTOResp.setLastPlayedGameImgUrl(profile.getLastPlayedGameImgUrl());
-
-
-
+		profileDTOResp.setLastPlayedGameName(profile.getLastPlayedGameName());
 		return profileDTOResp;
 
 	}
@@ -108,7 +104,7 @@ public class DTOConverter
 
 		postDTOResp.setId(post.getId());
 		postDTOResp.setWhatIs(post.getWhatIs());
-		postDTOResp.setPublicationDate(String.valueOf(post.getPubblicationDate()));
+		postDTOResp.setPubblicationDate(String.valueOf(post.getPubblicationDate()));
 		postDTOResp.setContent(post.getContent());
 		postDTOResp.setnLike(post.getnLike());
 		postDTOResp.setImage(post.getImage());
