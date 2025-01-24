@@ -174,8 +174,22 @@ public class DTOSteamConverter {
 
 
 
-        //da sistemare
-        videogame.setGenre(videogameSteam.path("genres").path("description").asText());
+        String generi="";
+        int numberOfGenres = videogameSteam.path("genres").size();
+        for(int i=0;i<numberOfGenres;i++) {
+            if (videogameSteam.path("genres").get(i) != null)
+                generi += videogameSteam.path("genres").get(i).path("description").asText() + ", ";
+            else {
+                // Se non ci sono più elementi nell'array "genres", usciamo dal ciclo
+                break;
+            }
+        }
+        //levo la virgola
+        if (!generi.isEmpty()) {
+            generi = generi.substring(0, generi.length() - 2);
+        }
+
+        videogame.setGenre(generi);
 
         return videogame;
 
