@@ -72,8 +72,6 @@ public class VideogameController {
         return res;
     }
 
-
-
     @GetMapping("/{appId}")
     public VideogameDetailDTO getVideogameDetail(@PathVariable("appId") Long appId) throws JsonProcessingException {
         String videogameDetailJson = steamAPIService.getOneVideogameDetail(appId);

@@ -80,7 +80,7 @@ public class DTOSteamConverter {
             String imgUrl = playerNode.path("img_icon_url").asText();
             Long appId = playerNode.path("appid").asLong();
             singleOwnedGameDTO.setIconImgUrl(steamAPIService.getUrlImageVideogame(appId,imgUrl));
-            if(gamesDb!=null)
+            if(gamesDb!=null&&!gamesDb.isEmpty())
             {
                 singleOwnedGameDTO.setNumberOfStars(gamesDb.get(i).getNumberOfStars());
                 singleOwnedGameDTO.setPreferred(gamesDb.get(i).isPreferred());
