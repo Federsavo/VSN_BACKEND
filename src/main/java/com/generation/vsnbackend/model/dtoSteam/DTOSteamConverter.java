@@ -194,7 +194,7 @@ public class DTOSteamConverter {
         int numberOfGenres = videogameSteam.path("data").path("genres").size();
         for(int i=0;i<numberOfGenres;i++) {
             if (videogameSteam.path("data").path("genres").get(i) != null)
-                generi += videogameSteam.path("data").path("genres").get(i).path("description").asText() + ", ";
+                generi += videogameSteam.path("data").path("genres").get(i).path("description").asText() + ",";
             else {
                 // Se non ci sono più elementi nell'array "genres", usciamo dal ciclo
                 break;
