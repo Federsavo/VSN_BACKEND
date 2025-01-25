@@ -3,22 +3,6 @@ package com.generation.vsnbackend.model.dtoSteam;
 import java.time.LocalDate;
 
 public class NewsDTO {
-//    [
-//    {
-//      "gid": "1789039014379251",
-//              "title": "Left 4 Dead 2 - Update",
-//              "url": "https://steamstore-a.akamaihd.net/news/externalpost/steam_community_announcements/1789039014379251",
-//              "is_external_url": true,
-//              "author": "Kerry",
-//              "contents": "An update has been released for Left 4 Dead 2. - Fixed exploits used to crash remote servers.",
-//              "feedlabel": "Community Announcements",
-//              "date": 1737148598,
-//              "feedname": "steam_community_announcements",
-//              "feed_type": 1,
-//              "appid": 550,
-//              "tags": [
-//              "patchnotes"
-//              ]
 
     private String url;
     private String title;
