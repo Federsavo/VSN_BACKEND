@@ -18,10 +18,11 @@ public class ControllerHelper
 	public final GenericService<Review, Long> reviewService;
 	public final GenericService<Videogame, Long> videogameService;
 	public final GenericService<Profile, Long> profileService;
+	public final GenericService<Friend, Long> friendService;
 
 
 	@Autowired
-	public ControllerHelper(UserRepository userRepo, CommentRepository commentRepo, PostRepository postRepo, ReviewRepository reviewRepo, VideogameRepository videogameRepo, ProfileRepository profileRepo)
+	public ControllerHelper(UserRepository userRepo, CommentRepository commentRepo, PostRepository postRepo, ReviewRepository reviewRepo, VideogameRepository videogameRepo, ProfileRepository profileRepo, FriendRepository friendRepo)
 	{
 		this.userService = new GenericService<>(userRepo);
 		this.commentService=new GenericService<>(commentRepo);
@@ -29,6 +30,7 @@ public class ControllerHelper
 		this.reviewService=new GenericService<>(reviewRepo);
 		this.videogameService=new GenericService<>(videogameRepo);
 		this.profileService=new GenericService<>(profileRepo);
+		this.friendService=new GenericService<>(friendRepo);
 	}
 
 

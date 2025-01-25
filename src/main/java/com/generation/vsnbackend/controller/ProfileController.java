@@ -73,6 +73,7 @@ public class ProfileController {
             profile.setLastPlayedVideogameAppId(lastVideogame.path("appid").asLong());
             profile.setLastPlayedGameImgUrl(steamAPIService.getUrlImageVideogame(profile.getLastPlayedVideogameAppId(), lastVideogame.path("img_icon_url").asText()));
             profile.setLastPlayedGameName(lastVideogame.path("name").asText());
+            ch.profileService.save(profile);
             return dtoConverter.toProfileDtoResp(profile);
         }
         catch(Exception e)
@@ -119,6 +120,19 @@ public class ProfileController {
         ch.profileService.save(profile);
         return new Response("Backdrop image saved successfully");
     }
+
+    /**
+     * Saves the profile image for the currently authenticated user.
+     *
+     * This method allows users to upload a profile image, which is stored in the file system.
+     * The uploaded image is associated with the user's profile by saving the image's ID.
+     *
+     *
+     * @param imgProfile The {@link MultipartFile} representing the uploaded profile image.
+     *                   This parameter must be provided in the HTTP request as "imgProfile".
+     * @return A {@link Response} object containing a success message indicating that the profile image was saved successfully.
+     * @throws IOException If an error occurs during file upload or storage.
+     */
     @PostMapping("/saveProfileImage")
     Response saveProfileImage(
             @RequestParam("imgProfile") MultipartFile imgProfile
