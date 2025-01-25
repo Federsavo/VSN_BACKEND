@@ -90,6 +90,17 @@ public class DTOSteamConverter {
         return ownedGames;
     }
 
+    public SingleOwnedGameDTO toOwnedGame(Videogame videogame)
+    {
+        SingleOwnedGameDTO singleOwnedGameDTO = new SingleOwnedGameDTO();
+        singleOwnedGameDTO.setAppId(videogame.getAppId());
+        singleOwnedGameDTO.setPreferred(videogame.isPreferred());
+        singleOwnedGameDTO.setIconImgUrl(videogame.getIconImgUrl());
+        singleOwnedGameDTO.setNumberOfStars(videogame.getNumberOfStars());
+        singleOwnedGameDTO.setVideogameName(videogame.getNameVideogame());
+        return singleOwnedGameDTO;
+    }
+
     public Set<String> toSetOfObtainedAchievements(String json) throws JsonProcessingException
 	{
         Set<String> achievements = new HashSet<>();

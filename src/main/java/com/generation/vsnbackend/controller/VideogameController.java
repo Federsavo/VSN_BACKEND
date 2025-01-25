@@ -11,8 +11,10 @@ import com.generation.vsnbackend.model.entities.signin.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/videogames")
@@ -57,6 +59,20 @@ public class VideogameController {
         return games;
     }
 
+    @GetMapping("/preferred")
+    public List<SingleOwnedGameDTO> getListPreferredOwnedGamesDto() throws JsonProcessingException
+    {
+        Profile profile=credentialService.getUserByToken().getProfile();
+        List<Videogame> gamesPreferred=profile.getVideogames().stream().filter(v -> v.isPreferred()).toList();
+        List<SingleOwnedGameDTO> res=new ArrayList<>();
+        for(Videogame v : gamesPreferred)
+        {
+            res.add(dtoSteamConverter.toOwnedGame(v));
+        }
+        return res;
+    }
+
+
 
     @GetMapping("/{appId}")
     public VideogameDetailDTO getVideogameDetail(@PathVariable("appId") Long appId) throws JsonProcessingException {
@@ -77,7 +93,8 @@ public class VideogameController {
             videogame.setNumberOfStars(req.getNumberOfStars());
             videogame.setPreferred(req.isPreferred());
             ch.videogameService.save(videogame);
+            return new Response("Successfully updated videogame");
         }
-        return new Response("Successfully updated videogame");
+        return new Response("Could not find videogame");
     }
 }
