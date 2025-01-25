@@ -139,4 +139,22 @@ public class Videogame extends BaseEntity {
     {
         this.iconImgUrl = iconImgUrl;
     }
+
+    @Override
+    public String toString()
+    {
+        return
+                "nameVideogame:" + nameVideogame + "\n" +
+                        "publishers:" + publishers + "\n" +
+                        "developers:" + developers + "\n" +
+                        "preferred:" + preferred + "\n" +
+                        "releaseDate:" + releaseDate + "\n" +
+                        "appId:" + appId + "\n" +
+                        "genre:" + genre + "\n" +
+                        "numberOfStars:" + numberOfStars + "\n" +
+                        "iconImgUrl:" + iconImgUrl + "\n" +
+                        "profile:" + profile + "\n" +
+                        "reviews:" + reviews + "\n" +
+                        "";
+    }
 }

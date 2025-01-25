@@ -1,12 +1,10 @@
 package com.generation.vsnbackend.model.dto;
 
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
-import com.generation.vsnbackend.model.dtoSteam.VideogameDTOReq;
 import com.generation.vsnbackend.model.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Service
@@ -15,6 +13,18 @@ public class DTOConverter
 	@Autowired
 	ControllerHelper ch;
 
+	/**
+	 * Converts a UserDTOReq object (DTO for user registration requests) to a User entity.
+	 * This method takes a UserDTOReq object, which contains the user information
+	 * required for registration or updating a user profile, and maps its fields
+	 * to a new User entity.
+	 *
+	 * This method is typically used during user registration or when updating
+	 * user information to persist the data in the database.
+	 *
+	 * @param userDTOReq the UserDTOReq object containing user information
+	 * @return a User entity populated with the data from the UserDTOReq
+	 */
 	public User toUserEntity(UserDTOReq userDTOReq)
 	{
 		User user = new User();
@@ -26,6 +36,19 @@ public class DTOConverter
 		return user;
 	}
 
+	/**
+	 * Converts a User entity to a UserDTOResp object.
+	 * This method takes a User entity, which represents a user in the system,
+	 * and maps its fields to a UserDTOResp object, which is intended for
+	 * use in API responses.
+	 *
+	 * This transformation is commonly used when retrieving user information
+	 * from the database to present it in a structured format suitable for
+	 * client-side applications.
+	 *
+	 * @param user the User entity to be converted
+	 * @return a UserDTOResp object populated with data from the User entity
+	 */
 	public UserDTOResp toDTOResp(User user)
 	{
 		UserDTOResp userDTOResp = new UserDTOResp();
@@ -36,6 +59,17 @@ public class DTOConverter
 		return userDTOResp;
 	}
 
+	/**
+	 * Converts a UserDTOLoginReq object (DTO for user login requests) to a User entity.
+	 * This method takes a UserDTOLoginReq object, which contains the username
+	 * and password for user login, and maps its fields to a new User entity.
+	 *
+	 * This transformation is typically used during the login process to
+	 * authenticate users based on the provided credentials.
+	 *
+	 * @param userDTOLoginReq the UserDTOLoginReq object containing login credentials
+	 * @return a User entity populated with the username and password from the UserDTOLoginReq
+	 */
 	public User toLoginEntity(UserDTOLoginReq userDTOLoginReq)
 	{
 		User user = new User();
@@ -44,6 +78,15 @@ public class DTOConverter
 		return user;
 	}
 
+	/**
+	 * Converts a Profile entity to a ProfileDTOResp object.
+	 * This method maps the properties of a Profile entity to a ProfileDTOResp
+	 * data transfer object, which is used to transfer profile information
+	 * in a format suitable for API responses.
+	 *
+	 * @param profile the Profile entity to convert
+	 * @return a ProfileDTOResp object containing the profile's data
+	 */
 	public ProfileDTOResp toProfileDtoResp (Profile profile){
 		ProfileDTOResp profileDTOResp = new ProfileDTOResp();
 
@@ -65,6 +108,14 @@ public class DTOConverter
 
 	}
 
+	/**
+	 * Converts a ProfileDTOReq object to a Profile entity.
+	 * This method maps the properties of a ProfileDTOReq data transfer object
+	 * to a Profile entity, which can then be saved in the database.
+	 *
+	 * @param profileDTOReq the ProfileDTOReq object containing the data to convert
+	 * @return a Profile entity populated with the data from the ProfileDTOReq
+	 */
 	public Profile toProfileEntity (ProfileDTOReq profileDTOReq){
 		Profile profile = new Profile();
 		User u=ch.userService.getOneById(profileDTOReq.getUserId());
@@ -81,6 +132,15 @@ public class DTOConverter
 		return profile;
 	}
 
+
+	/**
+	 * Converts a PostDTOReq object to a Post entity.
+	 * This method maps the properties of a PostDTOReq data transfer object
+	 * to a Post entity, which can then be saved in the database.
+	 *
+	 * @param postDTOReq the PostDTOReq object containing the data to convert
+	 * @return a Post entity populated with the data from the PostDTOReq
+	 */
 	public Post toPostEntity(PostDTOReq postDTOReq){
 		Post post = new Post();
 
@@ -94,6 +154,14 @@ public class DTOConverter
 		return post;
 	}
 
+	/**
+	 * Converts a Post entity to a PostDTOResp object.
+	 * This method maps the properties of a Post entity to a PostDTOResp
+	 * data transfer object, which can be used to send data to the client.
+	 *
+	 * @param post the Post entity to convert
+	 * @return a PostDTOResp object populated with data from the Post entity
+	 */
 	public PostDTOResp toPostDTOResp(Post post){
 		PostDTOResp postDTOResp = new PostDTOResp();
 
@@ -108,6 +176,8 @@ public class DTOConverter
 
 		return postDTOResp;
 	}
+
+	//DA QUI IN POI DOC DA FARE
 
 	public CommentDTOResp toCommentDTOResp(Comment comment){
 		CommentDTOResp commentDTOResp = new CommentDTOResp();

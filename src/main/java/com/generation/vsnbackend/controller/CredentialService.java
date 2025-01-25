@@ -26,6 +26,13 @@ public class CredentialService
 	@Autowired
 	UserRepository userRepo;
 
+	/**
+	 * Registers a new user based on the provided UserDTOReq data transfer object.
+	 *
+	 * @param userDTOReq the data transfer object containing user registration details
+	 * @return a Response indicating the registration status
+	 * @throws InvalidUsernameException if the username already exists
+	 */
 	public Response registration(UserDTOReq userDTOReq)
 	{
 		User user = new User();
@@ -48,6 +55,14 @@ public class CredentialService
         return new Response("Successfully");
 	}
 
+	/**
+	 * Authenticates a user and generates a token upon successful login.
+	 *
+	 * @param userDTOLoginReq the data transfer object containing login credentials
+	 * @return a Token object representing the authenticated user
+	 * @throws InvalidUsernameException if the username is invalid or not found
+	 * @throws InvalidPasswordException if the password does not match the stored password
+	 */
 	public Token login(UserDTOLoginReq userDTOLoginReq) {
 
 		if(userDTOLoginReq.getUsername().isBlank() || userDTOLoginReq.getPassword().isBlank())
@@ -67,6 +82,12 @@ public class CredentialService
 		return new Token(user.getId());
 	}
 
+	/**
+	 * Retrieves a user based on the provided token from the request header.
+	 *
+	 * @return the User associated with the token
+	 * @throws InvalidUsernameException if the token is invalid or the user is not found
+	 */
 	public User getUserByToken()
 	{
 		ServletRequestAttributes req = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

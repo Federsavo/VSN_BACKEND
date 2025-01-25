@@ -31,6 +31,12 @@ public class ControllerHelper
 		this.profileService=new GenericService<>(profileRepo);
 	}
 
+
+	/**
+	 *This method finds and returns a videogame by its app ID in db
+	 * @param appId the unique ID of the videogame to find (inherited from Steam)
+	 * @return the videogame with the specified app ID, or null if not found
+	 */
 	public Videogame findOneVideogameByAppId(Long appId)
 	{
 		List<Videogame> videogames=videogameService.getList();
@@ -40,5 +46,20 @@ public class ControllerHelper
 				return videogame;
 		}
 		return null;
+	}
+
+	/**
+	 * Clears all videogames associated with a specific user profile from the database.
+	 *
+	 * @param profile the user profile whose associated videogames will be removed
+	 */
+	public void clearVideogameDbByProfile(Profile profile)
+	{
+		List<Videogame> videogames=videogameService.getList();
+		for(Videogame videogame : videogames)
+		{
+			if(videogame.getProfile().equals(profile))
+				videogameService.deleteById(videogame.getId());
+		}
 	}
 }
