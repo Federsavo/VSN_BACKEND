@@ -55,12 +55,20 @@ public class ProfileController {
             profile.setLastPlayedVideogameAppId(lastVideogame.path("appid").asLong());
             profile.setLastPlayedGameImgUrl(steamAPIService.getUrlImageVideogame(profile.getLastPlayedVideogameAppId(), lastVideogame.path("img_icon_url").asText()));
             profile.setLastPlayedGameName(lastVideogame.path("name").asText());
+            ch.profileService.save(profile);
             return dtoConverter.toProfileDtoResp(profile);
         }
         catch(Exception e)
         {
             return dtoConverter.toProfileDtoResp(profile);
         }
+    }
+
+    @GetMapping("/{id}")
+    ProfileDTOResp getProfileById(@PathVariable long id) throws Exception
+    {
+        Profile profileDTO = ch.profileService.getOneById(id);
+        return dtoConverter.toProfileDtoResp(profileDTO);
     }
 
     @GetMapping("/fileSystem/{id}")
@@ -84,6 +92,7 @@ public class ProfileController {
         ch.profileService.save(profile);
         return new Response("Backdrop image saved successfully");
     }
+
     @PostMapping("/saveProfileImage")
     Response saveProfileImage(
             @RequestParam("imgProfile") MultipartFile imgProfile
