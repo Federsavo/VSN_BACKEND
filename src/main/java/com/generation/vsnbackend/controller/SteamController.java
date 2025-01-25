@@ -56,7 +56,7 @@ public class SteamController {
 
 
     @GetMapping("/achievements/{appid}")
-    public List<AchievementDTO> getListOfAchievements(@PathVariable String appid) throws JsonProcessingException
+    public List<AchievementDTO> getListOfObtainedAchievements(@PathVariable String appid) throws JsonProcessingException
 	{
         try
         {
