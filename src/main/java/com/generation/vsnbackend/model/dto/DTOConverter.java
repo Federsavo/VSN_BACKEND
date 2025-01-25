@@ -1,18 +1,13 @@
 package com.generation.vsnbackend.model.dto;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
-import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
+import com.generation.vsnbackend.model.dtoSteam.VideogameDTOReq;
 import com.generation.vsnbackend.model.entities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 
 @Service
 public class DTOConverter
@@ -64,6 +59,7 @@ public class DTOConverter
 		profileDTOResp.setXboxName(profile.getXboxName());
 		profileDTOResp.setProfileImgId(profile.getProfileImgId());
 		profileDTOResp.setLastPlayedGameImgUrl(profile.getLastPlayedGameImgUrl());
+		profileDTOResp.setLastPlayedGameName(profile.getLastPlayedGameName());
 		return profileDTOResp;
 
 	}
@@ -90,7 +86,7 @@ public class DTOConverter
 //		Profile p=ch.profileService.getOneById(postDTOReq.getProfileId());
 
 		post.setWhatIs(postDTOReq.getWhatIs());
-		post.setPubblicationDate(LocalDateTime.now());
+		post.setPublicationDate(LocalDateTime.now());
 		post.setContent(postDTOReq.getContent());
 		post.setnLike(postDTOReq.getnLike());
 
@@ -102,7 +98,7 @@ public class DTOConverter
 
 		postDTOResp.setId(post.getId());
 		postDTOResp.setWhatIs(post.getWhatIs());
-		postDTOResp.setPubblicationDate(String.valueOf(post.getPubblicationDate()));
+		postDTOResp.setPublicationDate(String.valueOf(post.getPublicationDate()));
 		postDTOResp.setContent(post.getContent());
 		postDTOResp.setnLike(post.getnLike());
 		postDTOResp.setImage(post.getImage());
@@ -137,32 +133,7 @@ public class DTOConverter
 
 	}
 
-	public VideogameDTOResp toVideogameDTOResp(Videogame videogame){
-		VideogameDTOResp videogameDTOResp = new VideogameDTOResp();
 
-		videogameDTOResp.setId(videogame.getId());
-		videogameDTOResp.setNameVideogame(videogame.getNameVideogame());
-		videogameDTOResp.setDescription(videogame.getDescription());
-		videogameDTOResp.setSoftwareHouse(videogame.getSoftwareHouse());
-		videogameDTOResp.isPreferred(videogame.isPreferred());
-		videogameDTOResp.setReleaseDate(String.valueOf(videogame.getReleaseDate()));
-		videogameDTOResp.setStarReviews(videogame.getStarReviews());
-
-		return videogameDTOResp;
-
-	}
-
-	public Videogame toVideogameEntity(VideogameDTOReq videogameDTOReq){
-		Videogame videogame = new Videogame();
-
-		videogame.setNameVideogame(videogameDTOReq.getNameVideogame());
-		videogame.setDescription(videogameDTOReq.getDescription());
-		videogame.setSoftwareHouse(videogameDTOReq.getSoftwareHouse());
-		videogame.setPreferred(videogameDTOReq.isPreferred());
-		videogame.setReleaseDate(LocalDate.parse(videogameDTOReq.getReleaseDate()));
-
-		return videogame;
-	}
 
 	public ReviewDTOResp toReviewDTOResp(Review review){
 		ReviewDTOResp reviewDTOResp = new ReviewDTOResp();

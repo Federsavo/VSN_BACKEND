@@ -1,6 +1,7 @@
 package com.generation.vsnbackend.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.generation.vsnbackend.controller.exception.NoAchievementException;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.controller.helper.FileDataService;
 import com.generation.vsnbackend.model.dto.DTOConverter;
@@ -10,6 +11,7 @@ import com.generation.vsnbackend.model.dtoSteam.NewsDTO;
 import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
 import com.generation.vsnbackend.model.dtoSteam.SingleGameAchievementsDTO;
 import com.generation.vsnbackend.model.entities.Profile;
+import com.generation.vsnbackend.model.entities.Videogame;
 import com.generation.vsnbackend.model.entities.images.FileData;
 import com.generation.vsnbackend.model.entities.signin.Response;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,29 +48,28 @@ public class SteamController {
         return dtoSteamConverter.toPlayerDTO(steamAPIService.getPlayerSummary(profile.getUser().getSteamId()));
     }
 
-    @GetMapping("/news/{videogameId}")
-    public List<NewsDTO> getNewsVideogame(@PathVariable Long videogameId) throws JsonProcessingException {
-        String json= steamAPIService.getVideogameNews(videogameId);
-
+    @GetMapping("/news/{appId}")
+    public List<NewsDTO> getNewsVideogame(@PathVariable Long appId) throws JsonProcessingException {
+        String json= steamAPIService.getVideogameNews(appId);
         return dtoSteamConverter.toNewsDTOs(json);
     }
 
-    @GetMapping("/games")
-    public List<SingleOwnedGameDTO> getListOwnedGamesDto() throws JsonProcessingException
-    {
-        Profile profile=credentialService.getUserByToken().getProfile();
-        return dtoSteamConverter.toListOfOwnedGames(steamAPIService.getPlayerGames(profile.getUser().getSteamId()));
-    }
 
     @GetMapping("/achievements/{appid}")
-    public List<AchievementDTO> getListOfAchievements(@PathVariable String appid) throws JsonProcessingException
-    {
-        Profile profile=credentialService.getUserByToken().getProfile();
-        String steamId=profile.getUser().getSteamId();
-        Set<String> setAchievements=new HashSet<>();
-        setAchievements= dtoSteamConverter.toSetOfObtainedAchievements(steamAPIService.getPlayerAchievements(steamId,appid));
-        return dtoSteamConverter.toListOfObtainedAchievements(steamAPIService.getAchievementsInfo(appid),setAchievements);
-
+    public List<AchievementDTO> getListOfObtainedAchievements(@PathVariable String appid) throws JsonProcessingException
+	{
+        try
+        {
+            Profile profile = credentialService.getUserByToken().getProfile();
+            String steamId = profile.getUser().getSteamId();
+            Set<String> setAchievements = dtoSteamConverter.toSetOfObtainedAchievements(steamAPIService.getPlayerAchievements(steamId, appid));
+            System.out.println(setAchievements);
+            return dtoSteamConverter.toListOfObtainedAchievements(steamAPIService.getAchievementsInfo(appid), setAchievements);
+        }
+        catch (NoAchievementException e)
+        {
+            return null;
+        }
     }
 
 }

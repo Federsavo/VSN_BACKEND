@@ -23,7 +23,6 @@ public class CredentialService
 {
 	@Autowired
 	ControllerHelper ch;
-
 	@Autowired
 	UserRepository userRepo;
 

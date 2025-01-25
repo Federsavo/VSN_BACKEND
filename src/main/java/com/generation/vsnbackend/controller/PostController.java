@@ -7,6 +7,7 @@ import com.generation.vsnbackend.model.dto.PostDTOReq;
 import com.generation.vsnbackend.model.dto.PostDTOResp;
 import com.generation.vsnbackend.model.entities.Post;
 import com.generation.vsnbackend.model.entities.Profile;
+import com.generation.vsnbackend.model.entities.signin.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,13 +28,28 @@ public class PostController {
     private CredentialService credentialService;
 
     @GetMapping()
-    List<PostDTOResp> getAllPosts(){
+    List<PostDTOResp> getUserPosts(){
         List<PostDTOResp> posts = new ArrayList<>();
         Profile profile=credentialService.getUserByToken().getProfile();
-        for (Post post:profile.getPosts()){
-            posts.add(dtoConverter.toPostDTOResp(post));
+        for (int i=profile.getPosts().size()-1;i>=0;i--){
+            posts.add(dtoConverter.toPostDTOResp(profile.getPosts().get(i)));
         }
         return posts;
+    }
+
+    @GetMapping("/activity")
+    List<PostDTOResp> getActivityPosts()
+    {
+        List<Post> posts = ch.postService.getList();
+        List<PostDTOResp> postDTOResps = new ArrayList<>();
+        Profile profile=credentialService.getUserByToken().getProfile();
+        for(int i=posts.size()-1;i>=0;i--)
+        {
+            Post post=posts.get(i);
+            if(!(post.getProfile().equals(profile)))
+                postDTOResps.add(dtoConverter.toPostDTOResp(post));
+        }
+        return postDTOResps;
     }
 
 //    @GetMapping("/{profileId}/{id}")
@@ -49,7 +65,6 @@ public class PostController {
 
     @PostMapping
     PostDTOResp insertPost(@RequestBody PostDTOReq postDTOReq){
-
         if(postDTOReq.getContent().isBlank()||postDTOReq.getContent().length()>MAX_POSTS_CONTENT_SIZE)
             throw new PostContentException("Post content is too big or empty");
         Profile profile = credentialService.getUserByToken().getProfile();
@@ -58,7 +73,16 @@ public class PostController {
         profile.getPosts().add(post);
         post.setProfile(profile);
         ch.postService.save(post);
-
         return dtoConverter.toPostDTOResp(post);
+    }
+
+    @DeleteMapping("/{postId}")
+    Response deletePost(@PathVariable Long postId)
+    {
+        Profile profile = credentialService.getUserByToken().getProfile();
+        for(Post post:profile.getPosts())
+            if(post.getId().equals(postId))
+                ch.postService.deleteById(postId);
+        return new Response("Deleted post");
     }
 }

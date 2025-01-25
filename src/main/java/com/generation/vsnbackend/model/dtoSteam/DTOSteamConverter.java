@@ -4,16 +4,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.generation.vsnbackend.controller.SteamAPIService;
+import com.generation.vsnbackend.model.entities.Videogame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Service
 public class DTOSteamConverter {
@@ -65,10 +64,10 @@ public class DTOSteamConverter {
         return rootNode.path("response").path("game_count").asInt();
     }
 
-    public List<SingleOwnedGameDTO> toListOfOwnedGames(String json) throws JsonProcessingException
+    public List<SingleOwnedGameDTO> toListOfOwnedGames(String json, List<Videogame> gamesDb) throws JsonProcessingException
     {
         int numberOfGames = getNumberOfGames(json);
-        List<SingleOwnedGameDTO> ownedGames = new ArrayList<>();
+        List<SingleOwnedGameDTO> ownedGames = new LinkedList<>();
 
         for(int i = 0; i < numberOfGames; i++)
         {
@@ -76,14 +75,30 @@ public class DTOSteamConverter {
             ObjectMapper objectMapper = new ObjectMapper();
             JsonNode rootNode = objectMapper.readTree(json);
             JsonNode playerNode = rootNode.path("response").path("games").get(i);
-            singleOwnedGameDTO.setAppId(playerNode.path("appid").asText());
+            singleOwnedGameDTO.setAppId(Long.valueOf(playerNode.path("appid").asText()));
             singleOwnedGameDTO.setVideogameName(playerNode.path("name").asText());
             String imgUrl = playerNode.path("img_icon_url").asText();
-            singleOwnedGameDTO.setIconImgUrl(steamAPIService.getUrlImageVideogame(playerNode.path("appid").asLong(),imgUrl));
-
+            Long appId = playerNode.path("appid").asLong();
+            singleOwnedGameDTO.setIconImgUrl(steamAPIService.getUrlImageVideogame(appId,imgUrl));
+            if(gamesDb!=null)
+            {
+                singleOwnedGameDTO.setNumberOfStars(gamesDb.get(i).getNumberOfStars());
+                singleOwnedGameDTO.setPreferred(gamesDb.get(i).isPreferred());
+            }
             ownedGames.add(singleOwnedGameDTO);
         }
         return ownedGames;
+    }
+
+    public SingleOwnedGameDTO toOwnedGame(Videogame videogame)
+    {
+        SingleOwnedGameDTO singleOwnedGameDTO = new SingleOwnedGameDTO();
+        singleOwnedGameDTO.setAppId(videogame.getAppId());
+        singleOwnedGameDTO.setPreferred(videogame.isPreferred());
+        singleOwnedGameDTO.setIconImgUrl(videogame.getIconImgUrl());
+        singleOwnedGameDTO.setNumberOfStars(videogame.getNumberOfStars());
+        singleOwnedGameDTO.setVideogameName(videogame.getNameVideogame());
+        return singleOwnedGameDTO;
     }
 
     public Set<String> toSetOfObtainedAchievements(String json) throws JsonProcessingException
@@ -152,6 +167,93 @@ public class DTOSteamConverter {
         }
 
         return newsDTOs;
+
+    }
+
+    public Videogame toVideogameFromSteam (String json, Videogame videogame) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(json);
+        JsonNode videogameSteam = rootNode.path(videogame.getAppId().toString()); // Assicurati che questo sia corretto
+
+
+        videogame.setDevelopers(videogameSteam.path("data").path("developers").get(0).asText());
+        videogame.setPublishers(videogameSteam.path("data").path("publishers").get(0).asText());
+
+
+        DateTimeFormatter formatter;
+        if(Character.isDigit(videogameSteam.path("data").path("release_date").path("date").asText().charAt(1)))
+             formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy",  Locale.ENGLISH);
+        else {
+            formatter = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale.ENGLISH);
+        }
+        videogame.setReleaseDate(LocalDate.parse(videogameSteam.path("data").path("release_date").path("date").asText(), formatter));
+
+
+
+        String generi="";
+        int numberOfGenres = videogameSteam.path("data").path("genres").size();
+        for(int i=0;i<numberOfGenres;i++) {
+            if (videogameSteam.path("data").path("genres").get(i) != null)
+                generi += videogameSteam.path("data").path("genres").get(i).path("description").asText() + ", ";
+            else {
+                // Se non ci sono più elementi nell'array "genres", usciamo dal ciclo
+                break;
+            }
+        }
+        //levo la virgola
+        if (!generi.isEmpty()) {
+            generi = generi.substring(0, generi.length() - 2);
+        }
+
+        videogame.setGenre(generi);
+
+        return videogame;
+
+    }
+
+    public VideogameDetailDTO toVideogameDetailFromSteam (Videogame videogame, String json) throws JsonProcessingException {
+        VideogameDetailDTO videogameDetailDTO = new VideogameDetailDTO();
+
+        videogameDetailDTO.setId(videogame.getId());
+        videogameDetailDTO.setNameVideogame(videogame.getNameVideogame());
+        videogameDetailDTO.setDevelopers(videogame.getDevelopers());
+        videogameDetailDTO.setPublishers(videogame.getPublishers());
+        videogameDetailDTO.setPreferred(videogame.isPreferred());
+        videogameDetailDTO.setReleaseDate(String.valueOf(videogame.getReleaseDate()));
+        videogameDetailDTO.setGenre(videogame.getGenre());
+        videogameDetailDTO.setStarReviews(videogame.getStarReviews());
+        videogameDetailDTO.setAppId(videogame.getAppId());
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(json);
+
+        JsonNode videogameSteam = rootNode.path(videogame.getAppId().toString());
+
+        videogameDetailDTO.setRequiredAge(Integer.parseInt( videogameSteam.path("data").path("required_age").asText()));
+        videogameDetailDTO.setDetailedDescription(videogameSteam.path("data").path("detailed_description").asText());
+        videogameDetailDTO.setShortDescription(videogameSteam.path("data").path("short_description").asText());
+        videogameDetailDTO.setSupportedLanguages(videogameSteam.path("data").path("supported_languages").asText());
+        videogameDetailDTO.setHeaderImageUrl(videogameSteam.path("data").path("header_image").asText());
+        videogameDetailDTO.setWebsite(videogameSteam.path("data").path("website").asText());
+        videogameDetailDTO.setPrice(videogameSteam.path("data").path("price_overview").path("final_formatted").asText());
+
+        String platform="";
+        if(videogameSteam.path("data").path("platforms").path("windows").asBoolean(false))
+            platform +="windows-";
+        if(videogameSteam.path("data").path("platforms").path("mac").asBoolean(false))
+            platform +="mac-";
+        if(videogameSteam.path("data").path("platforms").path("linux").asBoolean(false))
+            platform +="linux";
+        //togli - se finisce con -
+        if (platform.endsWith("-")) {
+            platform = platform.substring(0, platform.length() - 1);
+        }
+        videogameDetailDTO.setPlatforms(platform);
+
+        //videogameDetailDTO.setTotalAchievements(Integer.parseInt(videogameSteam.path("data").path("achievements").path("total").asText()));
+
+
+        return videogameDetailDTO;
 
     }
 
