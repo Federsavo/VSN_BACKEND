@@ -55,6 +55,11 @@ public class ProfileController {
             profile.setLastPlayedVideogameAppId(lastVideogame.path("appid").asLong());
             profile.setLastPlayedGameImgUrl(steamAPIService.getUrlImageVideogame(profile.getLastPlayedVideogameAppId(), lastVideogame.path("img_icon_url").asText()));
             profile.setLastPlayedGameName(lastVideogame.path("name").asText());
+
+            JsonNode steamName = objectMapper.readTree(steamAPIService.getPlayerSummary(profile.getUser().getSteamId()));
+            profile.setSteamName(steamName.path("response").path("players").get(0).path("personaname").asText());
+            profile.setProfileName(profile.getUser().getUsername());
+
             ch.profileService.save(profile);
             return dtoConverter.toProfileDtoResp(profile);
         }
@@ -92,7 +97,6 @@ public class ProfileController {
         ch.profileService.save(profile);
         return new Response("Backdrop image saved successfully");
     }
-
     @PostMapping("/saveProfileImage")
     Response saveProfileImage(
             @RequestParam("imgProfile") MultipartFile imgProfile
