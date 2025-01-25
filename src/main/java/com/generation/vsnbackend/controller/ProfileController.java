@@ -47,14 +47,20 @@ public class ProfileController {
     ProfileDTOResp getProfile() throws IOException
 	{
         Profile profile=credentialService.getUserByToken().getProfile();
-
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode rootNode = objectMapper.readTree(steamAPIService.getLastPlayedGame(profile.getUser().getSteamId()));
-        JsonNode lastVideogame = rootNode.path("response").path("games").get(0);
-        profile.setLastPlayedVideogameAppId(lastVideogame.path("appid").asLong());
-        profile.setLastPlayedGameImgUrl(steamAPIService.getUrlImageVideogame(profile.getLastPlayedVideogameAppId(),lastVideogame.path("img_icon_url").asText()));
-        profile.setLastPlayedGameName(lastVideogame.path("name").asText());
-        return dtoConverter.toProfileDtoResp(profile);
+        try
+        {
+            ObjectMapper objectMapper = new ObjectMapper();
+            JsonNode rootNode = objectMapper.readTree(steamAPIService.getLastPlayedGame(profile.getUser().getSteamId()));
+            JsonNode lastVideogame = rootNode.path("response").path("games").get(0);
+            profile.setLastPlayedVideogameAppId(lastVideogame.path("appid").asLong());
+            profile.setLastPlayedGameImgUrl(steamAPIService.getUrlImageVideogame(profile.getLastPlayedVideogameAppId(), lastVideogame.path("img_icon_url").asText()));
+            profile.setLastPlayedGameName(lastVideogame.path("name").asText());
+            return dtoConverter.toProfileDtoResp(profile);
+        }
+        catch(Exception e)
+        {
+            return dtoConverter.toProfileDtoResp(profile);
+        }
     }
 
     @GetMapping("/fileSystem/{id}")
