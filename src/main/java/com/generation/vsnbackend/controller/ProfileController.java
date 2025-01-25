@@ -55,6 +55,12 @@ public class ProfileController {
             profile.setLastPlayedVideogameAppId(lastVideogame.path("appid").asLong());
             profile.setLastPlayedGameImgUrl(steamAPIService.getUrlImageVideogame(profile.getLastPlayedVideogameAppId(), lastVideogame.path("img_icon_url").asText()));
             profile.setLastPlayedGameName(lastVideogame.path("name").asText());
+
+            JsonNode steamName = objectMapper.readTree(steamAPIService.getPlayerSummary(profile.getUser().getSteamId()));
+            profile.setSteamName(steamName.path("response").path("players").get(0).path("personaname").asText());
+            profile.setProfileName(profile.getUser().getUsername());
+
+            ch.profileService.save(profile);
             return dtoConverter.toProfileDtoResp(profile);
         }
         catch(Exception e)
