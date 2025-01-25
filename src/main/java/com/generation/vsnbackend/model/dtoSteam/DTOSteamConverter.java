@@ -64,10 +64,10 @@ public class DTOSteamConverter {
         return rootNode.path("response").path("game_count").asInt();
     }
 
-    public List<SingleOwnedGameDTO> toListOfOwnedGames(String json) throws JsonProcessingException
+    public List<SingleOwnedGameDTO> toListOfOwnedGames(String json, List<Videogame> gamesDb) throws JsonProcessingException
     {
         int numberOfGames = getNumberOfGames(json);
-        List<SingleOwnedGameDTO> ownedGames = new ArrayList<>();
+        List<SingleOwnedGameDTO> ownedGames = new LinkedList<>();
 
         for(int i = 0; i < numberOfGames; i++)
         {
@@ -80,9 +80,25 @@ public class DTOSteamConverter {
             String imgUrl = playerNode.path("img_icon_url").asText();
             Long appId = playerNode.path("appid").asLong();
             singleOwnedGameDTO.setIconImgUrl(steamAPIService.getUrlImageVideogame(appId,imgUrl));
+            if(gamesDb!=null)
+            {
+                singleOwnedGameDTO.setNumberOfStars(gamesDb.get(i).getNumberOfStars());
+                singleOwnedGameDTO.setPreferred(gamesDb.get(i).isPreferred());
+            }
             ownedGames.add(singleOwnedGameDTO);
         }
         return ownedGames;
+    }
+
+    public SingleOwnedGameDTO toOwnedGame(Videogame videogame)
+    {
+        SingleOwnedGameDTO singleOwnedGameDTO = new SingleOwnedGameDTO();
+        singleOwnedGameDTO.setAppId(videogame.getAppId());
+        singleOwnedGameDTO.setPreferred(videogame.isPreferred());
+        singleOwnedGameDTO.setIconImgUrl(videogame.getIconImgUrl());
+        singleOwnedGameDTO.setNumberOfStars(videogame.getNumberOfStars());
+        singleOwnedGameDTO.setVideogameName(videogame.getNameVideogame());
+        return singleOwnedGameDTO;
     }
 
     public Set<String> toSetOfObtainedAchievements(String json) throws JsonProcessingException
@@ -235,7 +251,7 @@ public class DTOSteamConverter {
         }
         videogameDetailDTO.setPlatforms(platform);
 
-        videogameDetailDTO.setTotalAchievements(Integer.parseInt(videogameSteam.path("data").path("achievements").path("total").asText()));
+        //videogameDetailDTO.setTotalAchievements(Integer.parseInt(videogameSteam.path("data").path("achievements").path("total").asText()));
 
 
         return videogameDetailDTO;

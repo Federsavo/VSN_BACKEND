@@ -19,6 +19,7 @@ public class Videogame extends BaseEntity {
     private String genre;
 
     private int numberOfStars;
+    private String iconImgUrl;
 
     @ManyToOne
     @JoinColumn(name = "profile_id")
@@ -127,5 +128,33 @@ public class Videogame extends BaseEntity {
     public void setNumberOfStars(int numberOfStars)
     {
         this.numberOfStars = numberOfStars;
+    }
+
+    public String getIconImgUrl()
+    {
+        return iconImgUrl;
+    }
+
+    public void setIconImgUrl(String iconImgUrl)
+    {
+        this.iconImgUrl = iconImgUrl;
+    }
+
+    @Override
+    public String toString()
+    {
+        return
+                "nameVideogame:" + nameVideogame + "\n" +
+                        "publishers:" + publishers + "\n" +
+                        "developers:" + developers + "\n" +
+                        "preferred:" + preferred + "\n" +
+                        "releaseDate:" + releaseDate + "\n" +
+                        "appId:" + appId + "\n" +
+                        "genre:" + genre + "\n" +
+                        "numberOfStars:" + numberOfStars + "\n" +
+                        "iconImgUrl:" + iconImgUrl + "\n" +
+                        "profile:" + profile + "\n" +
+                        "reviews:" + reviews + "\n" +
+                        "";
     }
 }
