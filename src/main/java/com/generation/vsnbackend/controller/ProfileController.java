@@ -35,13 +35,6 @@ public class ProfileController {
     @Autowired
     SteamAPIService steamAPIService;
 
-    /**
-     * Retrieves a list of all user profiles in the system. This method does not require
-     * any authentication since it returns public profile data. Each profile is converted
-     * to a ProfileDTOResp object before being returned.
-     *
-     * @return a List of ProfileDTOResp objects representing all user profiles
-     */
     @GetMapping("/all")
     List<ProfileDTOResp> getAllProfiles() {
         List<ProfileDTOResp> allProfiles = new ArrayList<>();
@@ -50,14 +43,6 @@ public class ProfileController {
         return allProfiles;
     }
 
-    /**
-     * Retrieves the profile of the authenticated user. The user's profile is obtained
-     * using the token from the request, and it includes information about the last played
-     * video game retrieved from an external API.
-     *
-     * @return a ProfileDTOResp object representing the user's profile
-     * @throws IOException if there is an error while reading data from the external API
-     */
     @GetMapping
     ProfileDTOResp getProfile() throws IOException
 	{
@@ -72,14 +57,6 @@ public class ProfileController {
         return dtoConverter.toProfileDtoResp(profile);
     }
 
-    /**
-     * Downloads an image from the file system by its ID.
-     * The image is returned as a byte array in the response body with a content type of "image/png".
-     *
-     * @param id the ID of the image to be downloaded
-     * @return a ResponseEntity containing the image data
-     * @throws IOException if there is an error during the image retrieval from the file system
-     */
     @GetMapping("/fileSystem/{id}")
     public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable Long id) throws IOException {
         byte[] imageData=fileDataService.downloadImageFromFileSystem(id);
@@ -88,17 +65,10 @@ public class ProfileController {
                 .body(imageData);
     }
 
-    /**
-     * Saves a backdrop image for the authenticated user's profile. The user's profile is retrieved
-     * using the token from the request. The image is uploaded to the file system, and the profile
-     * is updated with the new backdrop image ID.
-     *
-     * @param imgBackdrop the backdrop image file to be saved
-     * @return a Response indicating the result of the save operation
-     * @throws IOException if there is an error during the image upload
-     */
     @PostMapping("/saveBackdropImage")
-    public Response saveBackdropImage(@RequestParam("imgBackdrop") MultipartFile imgBackdrop) throws IOException
+    Response saveBackdropImage(
+            @RequestParam("imgBackdrop") MultipartFile imgBackdrop
+    ) throws IOException
 	{
         Profile profile=credentialService.getUserByToken().getProfile();
         Long id=profile.getId();
@@ -108,24 +78,16 @@ public class ProfileController {
         ch.profileService.save(profile);
         return new Response("Backdrop image saved successfully");
     }
-
-    /**
-     * Saves a profile image for the authenticated user's profile. The user's profile is retrieved
-     * using the token from the request. The image is uploaded to the file system, and the profile
-     * is updated with the new profile image ID.
-     *
-     * @param imgProfile the profile image file to be saved
-     * @return a Response indicating the result of the save operation
-     * @throws IOException if there is an error during the image upload
-     */
     @PostMapping("/saveProfileImage")
-    public Response saveProfileImage( @RequestParam("imgProfile") MultipartFile imgProfile) throws IOException
+    Response saveProfileImage(
+            @RequestParam("imgProfile") MultipartFile imgProfile
+    ) throws IOException
 	{
         Profile profile=credentialService.getUserByToken().getProfile();
         Long id=profile.getId();
         FileData img=fileDataService.uploadImageToFileSystem(imgProfile,id);
         if(img!=null)
-            profile.setProfileBackdropImgId(img.getId());
+            profile.setProfileImgId(img.getId());
         ch.profileService.save(profile);
         return new Response("Profile image saved successfully");
     }
