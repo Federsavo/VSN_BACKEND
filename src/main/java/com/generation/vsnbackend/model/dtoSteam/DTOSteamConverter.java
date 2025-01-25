@@ -64,10 +64,10 @@ public class DTOSteamConverter {
         return rootNode.path("response").path("game_count").asInt();
     }
 
-    public List<SingleOwnedGameDTO> toListOfOwnedGames(String json) throws JsonProcessingException
+    public List<SingleOwnedGameDTO> toListOfOwnedGames(String json, List<Videogame> gamesDb) throws JsonProcessingException
     {
         int numberOfGames = getNumberOfGames(json);
-        List<SingleOwnedGameDTO> ownedGames = new ArrayList<>();
+        List<SingleOwnedGameDTO> ownedGames = new LinkedList<>();
 
         for(int i = 0; i < numberOfGames; i++)
         {
@@ -80,6 +80,11 @@ public class DTOSteamConverter {
             String imgUrl = playerNode.path("img_icon_url").asText();
             Long appId = playerNode.path("appid").asLong();
             singleOwnedGameDTO.setIconImgUrl(steamAPIService.getUrlImageVideogame(appId,imgUrl));
+            if(gamesDb!=null)
+            {
+                singleOwnedGameDTO.setNumberOfStars(gamesDb.get(i).getNumberOfStars());
+                singleOwnedGameDTO.setPreferred(gamesDb.get(i).isPreferred());
+            }
             ownedGames.add(singleOwnedGameDTO);
         }
         return ownedGames;

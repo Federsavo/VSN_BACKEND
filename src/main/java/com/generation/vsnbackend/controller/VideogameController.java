@@ -11,6 +11,7 @@ import com.generation.vsnbackend.model.entities.signin.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -30,8 +31,9 @@ public class VideogameController {
     public List<SingleOwnedGameDTO> getListOwnedGamesDto() throws JsonProcessingException
     {
         Profile profile=credentialService.getUserByToken().getProfile();
-        List<SingleOwnedGameDTO> games=dtoSteamConverter.toListOfOwnedGames(steamAPIService.getPlayerGames(profile.getUser().getSteamId()));
         List<Videogame> gamesDb=profile.getVideogames();
+        List<SingleOwnedGameDTO> games=dtoSteamConverter.toListOfOwnedGames(steamAPIService.getPlayerGames(profile.getUser().getSteamId()),
+                                                                            gamesDb);
         if(gamesDb!=null&&(gamesDb.isEmpty() || gamesDb.size() != games.size()))
         {
             ch.clearVideogameDbByProfile(profile);
@@ -48,6 +50,10 @@ public class VideogameController {
                 ch.videogameService.save(v);
             }
         }
+		if (games != null)
+		{
+            games=games.stream().sorted(Comparator.comparing(SingleOwnedGameDTO::isPreferred).reversed()).toList();
+        }
         return games;
     }
 
@@ -63,9 +69,15 @@ public class VideogameController {
 
 
     @PutMapping
-    public Response updateVideogame(@RequestBody Videogame videogame)
+    public Response updateVideogame(@RequestBody SingleOwnedGameDTO req)
     {
-        ch.videogameService.save(videogame);
+        Videogame videogame=ch.findOneVideogameByAppId(req.getAppId());
+        if(videogame!=null)
+        {
+            videogame.setNumberOfStars(req.getNumberOfStars());
+            videogame.setPreferred(req.isPreferred());
+            ch.videogameService.save(videogame);
+        }
         return new Response("Successfully updated videogame");
     }
 }

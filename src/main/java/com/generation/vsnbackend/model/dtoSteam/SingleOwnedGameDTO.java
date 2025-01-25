@@ -57,4 +57,5 @@ public class SingleOwnedGameDTO
 	{
 		this.preferred = preferred;
 	}
+
 }

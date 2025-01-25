@@ -37,6 +37,21 @@ public class PostController {
         return posts;
     }
 
+    @GetMapping("/activity")
+    List<PostDTOResp> getActivityPosts()
+    {
+        List<Post> posts = ch.postService.getList();
+        List<PostDTOResp> postDTOResps = new ArrayList<>();
+        Profile profile=credentialService.getUserByToken().getProfile();
+        for(int i=posts.size()-1;i>=0;i--)
+        {
+            Post post=posts.get(i);
+            if(!(post.getProfile().equals(profile)))
+                postDTOResps.add(dtoConverter.toPostDTOResp(post));
+        }
+        return postDTOResps;
+    }
+
 //    @GetMapping("/{profileId}/{id}")
 //    PostDTOResp getOnePost(@PathVariable Long profileId, @PathVariable Long id){
 //        PostDTOResp post=new PostDTOResp();
