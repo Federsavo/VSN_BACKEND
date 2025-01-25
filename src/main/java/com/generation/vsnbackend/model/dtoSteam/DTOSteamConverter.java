@@ -202,7 +202,7 @@ public class DTOSteamConverter {
         }
         //levo la virgola
         if (!generi.isEmpty()) {
-            generi = generi.substring(0, generi.length() - 2);
+            generi = generi.substring(0, generi.length() - 1);
         }
 
         videogame.setGenre(generi);
