@@ -32,8 +32,9 @@ public class VideogameController {
         Profile profile=credentialService.getUserByToken().getProfile();
         List<SingleOwnedGameDTO> games=dtoSteamConverter.toListOfOwnedGames(steamAPIService.getPlayerGames(profile.getUser().getSteamId()));
         List<Videogame> gamesDb=profile.getVideogames();
-        if(gamesDb!=null&&gamesDb.isEmpty())
+        if(gamesDb!=null&&(gamesDb.isEmpty() || gamesDb.size() != games.size()))
         {
+            ch.clearVideogameDbByProfile(profile);
             for (SingleOwnedGameDTO game : games)
             {
                 Videogame v = new Videogame();
@@ -42,10 +43,9 @@ public class VideogameController {
                 v.setIconImgUrl(game.getIconImgUrl());
                 v.setAppId(game.getAppId());
                 v.setNameVideogame(game.getVideogameName());
-                profile.getVideogames().add(v);
                 v.setProfile(profile);
+                profile.getVideogames().add(v);
                 ch.videogameService.save(v);
-                ch.profileService.save(profile);
             }
         }
         return games;

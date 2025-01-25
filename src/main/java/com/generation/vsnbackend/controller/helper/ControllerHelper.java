@@ -41,4 +41,13 @@ public class ControllerHelper
 		}
 		return null;
 	}
+	public void clearVideogameDbByProfile(Profile profile)
+	{
+		List<Videogame> videogames=videogameService.getList();
+		for(Videogame videogame : videogames)
+		{
+			if(videogame.getProfile().equals(profile))
+				videogameService.deleteById(videogame.getId());
+		}
+	}
 }
