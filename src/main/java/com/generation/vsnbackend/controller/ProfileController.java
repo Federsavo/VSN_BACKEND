@@ -51,12 +51,15 @@ public class ProfileController {
     }
 
     /**
-     * Retrieves the profile of the authenticated user. The user's profile is obtained
-     * using the token from the request, and it includes information about the last played
-     * video game retrieved from an external API.
+     * Retrieves the profile of the currently authenticated user along with details about their last played game.
      *
-     * @return a ProfileDTOResp object representing the user's profile
-     * @throws IOException if there is an error while reading data from the external API
+     * This method fetches the user's profile based on their token, and attempts to retrieve information
+     * about their last played game from the Steam API. If the last played game details are successfully
+     * fetched, they are set in the user's profile. If an exception occurs during this process, the profile
+     * is returned without last played game details.
+     *
+     * @return A {@link ProfileDTOResp} object containing the user's profile information.
+     * @throws IOException If an I/O error occurs during data retrieval or processing.
      */
     @GetMapping
     ProfileDTOResp getProfile() throws IOException
