@@ -1,5 +1,6 @@
 package com.generation.vsnbackend.controller;
 
+import com.generation.vsnbackend.controller.exception.PostContentException;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.model.dto.DTOConverter;
 import com.generation.vsnbackend.model.dto.PostDTOReq;
@@ -15,6 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/posts")
 public class PostController {
+
+    private final static int MAX_POSTS_CONTENT_SIZE = 255;
 
     @Autowired
     ControllerHelper ch;
@@ -47,6 +50,8 @@ public class PostController {
     @PostMapping
     PostDTOResp insertPost(@RequestBody PostDTOReq postDTOReq){
 
+        if(postDTOReq.getContent().isBlank()||postDTOReq.getContent().length()>MAX_POSTS_CONTENT_SIZE)
+            throw new PostContentException("Post content is too big or empty");
         Profile profile = credentialService.getUserByToken().getProfile();
         Post post = dtoConverter.toPostEntity(postDTOReq);
         ch.profileService.save(profile);

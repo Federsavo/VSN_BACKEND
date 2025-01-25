@@ -4,8 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.controller.helper.FileDataService;
 import com.generation.vsnbackend.model.dto.DTOConverter;
+import com.generation.vsnbackend.model.dtoSteam.*;
 import com.generation.vsnbackend.model.dtoSteam.DTOSteamConverter;
+import com.generation.vsnbackend.model.dtoSteam.NewsDTO;
 import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
+import com.generation.vsnbackend.model.dtoSteam.SingleGameAchievementsDTO;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.images.FileData;
 import com.generation.vsnbackend.model.entities.signin.Response;
@@ -14,9 +17,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @RestController
-@RequestMapping("/api/steams")
+@RequestMapping("/api/steam")
 public class SteamController {
     @Autowired
     SteamAPIService steamAPIService;
@@ -29,6 +36,7 @@ public class SteamController {
 
     @Autowired
     private FileDataService fileDataService;
+
     @Autowired
     ControllerHelper ch;
 
@@ -36,6 +44,31 @@ public class SteamController {
     public PlayerDTO getPlayerDto() throws JsonProcessingException {
         Profile profile=credentialService.getUserByToken().getProfile();
         return dtoSteamConverter.toPlayerDTO(steamAPIService.getPlayerSummary(profile.getUser().getSteamId()));
+    }
+
+    @GetMapping("/news/{videogameId}")
+    public List<NewsDTO> getNewsVideogame(@PathVariable Long videogameId) throws JsonProcessingException {
+        String json= steamAPIService.getVideogameNews(videogameId);
+
+        return dtoSteamConverter.toNewsDTOs(json);
+    }
+
+    @GetMapping("/games")
+    public List<SingleOwnedGameDTO> getListOwnedGamesDto() throws JsonProcessingException
+    {
+        Profile profile=credentialService.getUserByToken().getProfile();
+        return dtoSteamConverter.toListOfOwnedGames(steamAPIService.getPlayerGames(profile.getUser().getSteamId()));
+    }
+
+    @GetMapping("/achievements/{appid}")
+    public List<AchievementDTO> getListOfAchievements(@PathVariable String appid) throws JsonProcessingException
+    {
+        Profile profile=credentialService.getUserByToken().getProfile();
+        String steamId=profile.getUser().getSteamId();
+        Set<String> setAchievements=new HashSet<>();
+        setAchievements= dtoSteamConverter.toSetOfObtainedAchievements(steamAPIService.getPlayerAchievements(steamId,appid));
+        return dtoSteamConverter.toListOfObtainedAchievements(steamAPIService.getAchievementsInfo(appid),setAchievements);
+
     }
 
 }

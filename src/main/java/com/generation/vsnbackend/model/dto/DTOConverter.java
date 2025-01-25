@@ -63,13 +63,7 @@ public class DTOConverter
 		profileDTOResp.setPlaystationName(profile.getPlaystationName());
 		profileDTOResp.setXboxName(profile.getXboxName());
 		profileDTOResp.setProfileImgId(profile.getProfileImgId());
-		profileDTOResp.setProfileBackdropImgId(profile.getProfileBackdropImgId());
-
-
 		profileDTOResp.setLastPlayedGameImgUrl(profile.getLastPlayedGameImgUrl());
-
-
-
 		return profileDTOResp;
 
 	}
@@ -108,7 +102,7 @@ public class DTOConverter
 
 		postDTOResp.setId(post.getId());
 		postDTOResp.setWhatIs(post.getWhatIs());
-		postDTOResp.setPublicationDate(String.valueOf(post.getPubblicationDate()));
+		postDTOResp.setPubblicationDate(String.valueOf(post.getPubblicationDate()));
 		postDTOResp.setContent(post.getContent());
 		postDTOResp.setnLike(post.getnLike());
 		postDTOResp.setImage(post.getImage());
