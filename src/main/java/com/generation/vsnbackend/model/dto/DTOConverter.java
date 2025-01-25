@@ -101,6 +101,7 @@ public class DTOConverter
 		profileDTOResp.setPlaystationName(profile.getPlaystationName());
 		profileDTOResp.setXboxName(profile.getXboxName());
 		profileDTOResp.setProfileImgId(profile.getProfileImgId());
+		profileDTOResp.setProfileBackdropImgId(profile.getProfileBackdropImgId());
 		profileDTOResp.setLastPlayedGameImgUrl(profile.getLastPlayedGameImgUrl());
 		profileDTOResp.setLastPlayedGameName(profile.getLastPlayedGameName());
 		return profileDTOResp;
