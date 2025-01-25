@@ -6,6 +6,11 @@ import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Data Transfer Object (DTO) for user registration requests.
+ * This class encapsulates the information required for a user to register,
+ * including username, password, Steam ID, email, and date of birth.
+ */
 public class UserDTOReq
 {
 	private String username;

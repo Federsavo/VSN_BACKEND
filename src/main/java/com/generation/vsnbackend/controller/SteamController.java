@@ -42,21 +42,47 @@ public class SteamController {
     @Autowired
     ControllerHelper ch;
 
+    /**
+     * Retrieves the Player Data Transfer Object (DTO) for the current user based on their Steam ID.
+     * This method uses the user's profile, obtained from the authentication token, to fetch
+     * the player's summary from the Steam API and convert it into a PlayerDTO.
+     *
+     * @return a PlayerDTO object containing the player's information retrieved from the Steam API
+     * @throws JsonProcessingException if there is an error processing the JSON response from the Steam API
+     */
     @GetMapping("/player")
     public PlayerDTO getPlayerDto() throws JsonProcessingException {
         Profile profile=credentialService.getUserByToken().getProfile();
         return dtoSteamConverter.toPlayerDTO(steamAPIService.getPlayerSummary(profile.getUser().getSteamId()));
     }
 
+    /**
+     * Retrieves the latest news articles for a specific videogame based on its app ID.
+     * This method calls the Steam API to fetch the news in JSON format and converts
+     * it into a list of NewsDTO objects for further processing.
+     *
+     * @param appId the app ID of the video game for which news articles are to be retrieved
+     * @return a List of NewsDTO objects containing the latest news articles for the specified video game
+     * @throws JsonProcessingException if there is an error processing the JSON response from the Steam API
+     */
     @GetMapping("/news/{appId}")
     public List<NewsDTO> getNewsVideogame(@PathVariable Long appId) throws JsonProcessingException {
         String json= steamAPIService.getVideogameNews(appId);
         return dtoSteamConverter.toNewsDTOs(json);
     }
 
-
+    /**
+     * Retrieves a list of achievements obtained by the user for a specific videogame based on its app ID.
+     * This method first retrieves the user's profile using the authentication token, then fetches
+     * the player's achievements from the Steam API, and finally converts the data into a list of AchievementDTO objects.
+     *
+     * @param appid the app ID of the videogame for which achievements are to be retrieved
+     * @return a List of AchievementDTO objects representing the achievements obtained by the user for the specified game,
+     *         or null if there are no achievements found for the user
+     * @throws JsonProcessingException if there is an error processing the JSON response from the Steam API
+     */
     @GetMapping("/achievements/{appid}")
-    public List<AchievementDTO> getListOfObtainedAchievements(@PathVariable String appid) throws JsonProcessingException
+    public List<AchievementDTO> getListOfObtainedAchievements(@PathVariable Long appid) throws JsonProcessingException
 	{
         try
         {

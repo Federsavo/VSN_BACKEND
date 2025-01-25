@@ -1,5 +1,10 @@
 package com.generation.vsnbackend.model.entities.errors;
 
+/**
+ * Represents an error response that can be sent to the client in case of an error.
+ * This class encapsulates the HTTP status code, an error message, and a timestamp
+ * indicating when the error occurred.
+ */
 public class ErrorResponse {
     private int status;
     private String message;

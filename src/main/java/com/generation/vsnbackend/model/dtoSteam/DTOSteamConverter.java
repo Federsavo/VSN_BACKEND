@@ -20,6 +20,13 @@ public class DTOSteamConverter {
     @Autowired
     SteamAPIService steamAPIService;
 
+    /**
+     * Converts a JSON string representing player data into a PlayerDTO object.
+     *
+     * @param json The JSON string containing player data from the Steam API response.
+     * @return A PlayerDTO object populated with player information.
+     * @throws JsonProcessingException if there is an error processing the JSON string.
+     */
     public PlayerDTO toPlayerDTO(String json) throws JsonProcessingException
     {
         PlayerDTO playerDTO = new PlayerDTO();
@@ -57,6 +64,13 @@ public class DTOSteamConverter {
         return playerDTO;
     }
 
+    /**
+     * Retrieves the number of videogames from a JSON string representing player data from the Steam API response.
+     *
+     * @param json The JSON string containing player data, including the game count.
+     * @return The number of games owned by the player, as an integer.
+     * @throws JsonProcessingException if there is an error processing the JSON string.
+     */
     public int getNumberOfGames(String json) throws JsonProcessingException
     {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -64,6 +78,14 @@ public class DTOSteamConverter {
         return rootNode.path("response").path("game_count").asInt();
     }
 
+    /**
+     * Converts a JSON string representing a player's owned games into a list of SingleOwnedGameDTO objects.
+     *
+     * @param json   The JSON string containing player-owned games data from the Steam API response.
+     * @param gamesDb A list of Videogame objects representing the videogames in the database, used to retrieve additional details.
+     * @return A list of SingleOwnedGameDTO objects representing the player's owned videogames.
+     * @throws JsonProcessingException if there is an error processing the JSON string.
+     */
     public List<SingleOwnedGameDTO> toListOfOwnedGames(String json, List<Videogame> gamesDb) throws JsonProcessingException
     {
         int numberOfGames = getNumberOfGames(json);
@@ -90,6 +112,12 @@ public class DTOSteamConverter {
         return ownedGames;
     }
 
+    /**
+     * Converts a Videogame entity into a SingleOwnedGameDTO object.
+     *
+     * @param videogame The Videogame entity to be converted.
+     * @return A SingleOwnedGameDTO object containing the details of the videogame.
+     */
     public SingleOwnedGameDTO toOwnedGame(Videogame videogame)
     {
         SingleOwnedGameDTO singleOwnedGameDTO = new SingleOwnedGameDTO();
@@ -101,6 +129,14 @@ public class DTOSteamConverter {
         return singleOwnedGameDTO;
     }
 
+    /**
+     * Converts a JSON string representing player achievements into a set of achievement names
+     * that the player has obtained.
+     *
+     * @param json The JSON string containing player statistics, including achievements.
+     * @return A Set containing the names of achievements that have been obtained by the player.
+     * @throws JsonProcessingException If there is an error processing the JSON input.
+     */
     public Set<String> toSetOfObtainedAchievements(String json) throws JsonProcessingException
 	{
         Set<String> achievements = new HashSet<>();
@@ -118,6 +154,15 @@ public class DTOSteamConverter {
         return achievements;
     }
 
+    /**
+     * Converts a JSON string representing available game achievements into a list of
+     * AchievementDTO objects for the achievements that have been obtained by the player.
+     *
+     * @param json The JSON string containing game statistics, including available achievements.
+     * @param achievementsNames A Set of achievement names that have been obtained by the player.
+     * @return A List of AchievementDTO objects representing the details of the obtained achievements.
+     * @throws JsonProcessingException If there is an error processing the JSON input.
+     */
     public List<AchievementDTO> toListOfObtainedAchievements(String json,Set<String> achievementsNames) throws JsonProcessingException
     {
         List<AchievementDTO> achievements = new ArrayList<>();
@@ -139,7 +184,14 @@ public class DTOSteamConverter {
         return achievements;
     }
 
-
+    /**
+     * Converts a JSON string containing news data into a list of NewsDTO objects.
+     * The method extracts information for the first five news items from the JSON structure.
+     *
+     * @param json The JSON string containing news information, structured according to the Steam API.
+     * @return A List of NewsDTO objects representing the extracted news items.
+     * @throws JsonProcessingException If there is an error processing the JSON input.
+     */
     public List<NewsDTO> toNewsDTOs(String json) throws JsonProcessingException {
         List<NewsDTO> newsDTOs = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -171,6 +223,16 @@ public class DTOSteamConverter {
 
     }
 
+
+    /**
+     * Populates a Videogame object with data retrieved from a JSON string
+     * representing a videogame's details from the Steam API.
+     *
+     * @param json The JSON string containing videogame information structured according to the Steam API.
+     * @param videogame The Videogame object to be populated with the retrieved data.
+     * @return The populated Videogame object.
+     * @throws JsonProcessingException If there is an error processing the JSON input.
+     */
     public Videogame toVideogameFromSteam (String json, Videogame videogame) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(json);
@@ -180,7 +242,7 @@ public class DTOSteamConverter {
         videogame.setDevelopers(videogameSteam.path("data").path("developers").get(0).asText());
         videogame.setPublishers(videogameSteam.path("data").path("publishers").get(0).asText());
 
-
+        // Determine the correct date format based on the release date string
         DateTimeFormatter formatter;
         if(Character.isDigit(videogameSteam.path("data").path("release_date").path("date").asText().charAt(1)))
              formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy",  Locale.ENGLISH);
@@ -190,7 +252,7 @@ public class DTOSteamConverter {
         videogame.setReleaseDate(LocalDate.parse(videogameSteam.path("data").path("release_date").path("date").asText(), formatter));
 
 
-
+        // Extract genres from the JSON and concatenate them into a single string
         String generi="";
         int numberOfGenres = videogameSteam.path("data").path("genres").size();
         for(int i=0;i<numberOfGenres;i++) {
@@ -201,7 +263,7 @@ public class DTOSteamConverter {
                 break;
             }
         }
-        //levo la virgola
+        // Remove the trailing comma and space from the genres string
         if (!generi.isEmpty()) {
             generi = generi.substring(0, generi.length() - 2);
         }
@@ -212,6 +274,15 @@ public class DTOSteamConverter {
 
     }
 
+    /**
+     * Converts a Videogame object and its associated JSON data from the Steam API
+     * into a VideogameDetailDTO object, encapsulating detailed information about the videogame.
+     *
+     * @param videogame The Videogame object containing basic information about the videogame.
+     * @param json The JSON string containing detailed videogame information structured according to the Steam API.
+     * @return A VideogameDetailDTO object populated with details from the Videogame and the provided JSON.
+     * @throws JsonProcessingException If there is an error processing the JSON input.
+     */
     public VideogameDetailDTO toVideogameDetailFromSteam (Videogame videogame, String json) throws JsonProcessingException {
         VideogameDetailDTO videogameDetailDTO = new VideogameDetailDTO();
 
@@ -238,6 +309,7 @@ public class DTOSteamConverter {
         videogameDetailDTO.setWebsite(videogameSteam.path("data").path("website").asText());
         videogameDetailDTO.setPrice(videogameSteam.path("data").path("price_overview").path("final_formatted").asText());
 
+        // Collect supported platforms
         String platform="";
         if(videogameSteam.path("data").path("platforms").path("windows").asBoolean(false))
             platform +="windows-";
@@ -245,7 +317,8 @@ public class DTOSteamConverter {
             platform +="mac-";
         if(videogameSteam.path("data").path("platforms").path("linux").asBoolean(false))
             platform +="linux";
-        //togli - se finisce con -
+
+        // Remove trailing hyphen if it exists
         if (platform.endsWith("-")) {
             platform = platform.substring(0, platform.length() - 1);
         }

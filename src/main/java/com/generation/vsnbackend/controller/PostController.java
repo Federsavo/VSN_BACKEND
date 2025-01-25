@@ -27,6 +27,11 @@ public class PostController {
     @Autowired
     private CredentialService credentialService;
 
+    /**
+     * Retrieves the list of posts for the authenticated user.
+     *
+     * @return a list of PostDTOResp objects representing the user's posts
+     */
     @GetMapping()
     List<PostDTOResp> getUserPosts(){
         List<PostDTOResp> posts = new ArrayList<>();
@@ -37,6 +42,11 @@ public class PostController {
         return posts;
     }
 
+    /**
+     * Retrieves a list of activity posts that do not belong to the authenticated user's profile.
+     *
+     * @return a list of PostDTOResp objects representing the user's activity posts
+     */
     @GetMapping("/activity")
     List<PostDTOResp> getActivityPosts()
     {
@@ -63,6 +73,14 @@ public class PostController {
 //        return post;
 //    }
 
+    /**
+     * Inserts a new post for the authenticated user.The user is identified
+     * by the token provided in the request, which is used to retrieve the user's profile.
+     *
+     * @param postDTOReq the data transfer object containing post details
+     * @return a PostDTOResp object representing the inserted post
+     * @throws PostContentException if the post content is empty or exceeds the maximum allowed size
+     */
     @PostMapping
     PostDTOResp insertPost(@RequestBody PostDTOReq postDTOReq){
         if(postDTOReq.getContent().isBlank()||postDTOReq.getContent().length()>MAX_POSTS_CONTENT_SIZE)
@@ -76,6 +94,13 @@ public class PostController {
         return dtoConverter.toPostDTOResp(post);
     }
 
+    /**
+     * Deletes a post associated with the authenticated user. The user's profile is retrieved
+     * using the token from the request, which is used to identify the post to be deleted.
+     *
+     * @param postId the ID of the post to be deleted
+     * @return a Response indicating the result of the deletion operation
+     */
     @DeleteMapping("/{postId}")
     Response deletePost(@PathVariable Long postId)
     {
