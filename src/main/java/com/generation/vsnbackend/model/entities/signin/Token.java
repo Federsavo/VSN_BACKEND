@@ -1,5 +1,12 @@
 package com.generation.vsnbackend.model.entities.signin;
 
+/**
+ * Represents a token that consists of a randomly generated prefix,
+ * a specified identifier, and a randomly generated suffix.
+ * The Token class is used to create unique tokens that can be
+ * utilized for purposes such as authentication, session management,
+ * or any scenario requiring a unique identifier.
+ */
 public class Token {
 
     private String token;
