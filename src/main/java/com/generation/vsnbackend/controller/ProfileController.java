@@ -80,14 +80,14 @@ public class ProfileController {
     }
     @PostMapping("/saveProfileImage")
     Response saveProfileImage(
-            @RequestParam("imgProfile") MultipartFile imgBackdrop
+            @RequestParam("imgProfile") MultipartFile imgProfile
     ) throws IOException
 	{
         Profile profile=credentialService.getUserByToken().getProfile();
         Long id=profile.getId();
-        FileData img=fileDataService.uploadImageToFileSystem(imgBackdrop,id);
+        FileData img=fileDataService.uploadImageToFileSystem(imgProfile,id);
         if(img!=null)
-            profile.setProfileBackdropImgId(img.getId());
+            profile.setProfileImgId(img.getId());
         ch.profileService.save(profile);
         return new Response("Profile image saved successfully");
     }
