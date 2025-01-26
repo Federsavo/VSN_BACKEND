@@ -69,7 +69,6 @@ public class SteamAPIService {
         return restTemplate.getForObject(url, String.class);
     }
 
-    public String getPublishedFiles(String steamId, Long appId, int fileType)
     /**
      * Retrieves the published files for a specific Steam user and game based on their Steam ID, app ID, and file type.
      * This method makes a call to the Steam API and returns the response as a JSON string,
