@@ -176,6 +176,24 @@ public class DTOConverter
 
 	//DA QUI IN POI DOC DA FARE
 
+	public FriendSummaryDTO toFriendSummaryDTO (Friend friend){
+		FriendSummaryDTO friendSummaryDTO = new FriendSummaryDTO();
+
+		friendSummaryDTO.setId(friend.getId());
+		friendSummaryDTO.setSteamId(friend.getUser().getSteamId());
+		friendSummaryDTO.setFollowersCount(friend.getUser().getProfile().getFollowersCount());
+		friendSummaryDTO.setFollowingCount(friend.getUser().getProfile().getFollowingCount());
+		friendSummaryDTO.setFavoriteVideogameAppId(friend.getUser().getProfile().getLastPlayedVideogameAppId());
+		friendSummaryDTO.setProfileName(friend.getUser().getUsername());
+		friendSummaryDTO.setProfileImgId(friend.getUser().getProfile().getProfileImgId());
+		friendSummaryDTO.setProfileBackdropImgId(friend.getUser().getProfile().getProfileBackdropImgId());
+		friendSummaryDTO.setLastPlayedGameImgUrl(friend.getUser().getProfile().getLastPlayedGameImgUrl());
+		friendSummaryDTO.setLastPlayedGameName(friend.getUser().getProfile().getLastPlayedGameName());
+
+		return friendSummaryDTO;
+
+	}
+
 	public CommentDTOResp toCommentDTOResp(Comment comment){
 		CommentDTOResp commentDTOResp = new CommentDTOResp();
 
