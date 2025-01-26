@@ -37,19 +37,19 @@ public class FriendController {
     @GetMapping("/following")
     public List<FriendSummaryDTO> getAllFriends(){
         User user=credentialService.getUserByToken();
-        List<FriendSummaryDTO> friends=new ArrayList<>();
+        List<FriendSummaryDTO> followings=new ArrayList<>();
         for(Friend f:user.getProfile().getFriends())
-            friends.add(dtoConverter.toFriendSummaryDTO(f));
-        return friends;
+            followings.add(dtoConverter.toFriendSummaryDTO(f));
+        return followings;
     }
 
-    @GetMapping("/followers")
+    @GetMapping("/follower")
     public List<FriendSummaryDTO> getAllFollowers(){
         User user=credentialService.getUserByToken();
-        List<FriendSummaryDTO> friends=new ArrayList<>();
+        List<FriendSummaryDTO> followers=new ArrayList<>();
         for(Friend f:user.getProfile().getFollowers())
-            friends.add(dtoConverter.toFriendSummaryDTO(f));
-        return friends;
+            followers.add(dtoConverter.toFriendSummaryDTO(f));
+        return followers;
     }
 
     @GetMapping("/following/{friendId}")
