@@ -13,6 +13,10 @@ public class Friend extends BaseEntity
     @JoinColumn(name = "profile_id")
     private Profile profile;
 
+    @ManyToOne
+    @JoinColumn(name = "profile_follower_id")
+    private Profile profile_follower;
+
     public User getUser() {
         return user;
     }
@@ -28,5 +32,13 @@ public class Friend extends BaseEntity
 
     public void setProfile(Profile profile) {
         this.profile = profile;
+    }
+
+    public Profile getProfile_follower() {
+        return profile_follower;
+    }
+
+    public void setProfile_follower(Profile profile_follower) {
+        this.profile_follower = profile_follower;
     }
 }

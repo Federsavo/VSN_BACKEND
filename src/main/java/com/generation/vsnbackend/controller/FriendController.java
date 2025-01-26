@@ -43,6 +43,15 @@ public class FriendController {
         return friends;
     }
 
+    @GetMapping("/followers")
+    public List<FriendSummaryDTO> getAllFollowers(){
+        User user=credentialService.getUserByToken();
+        List<FriendSummaryDTO> friends=new ArrayList<>();
+        for(Friend f:user.getProfile().getFollowers())
+            friends.add(dtoConverter.toFriendSummaryDTO(f));
+        return friends;
+    }
+
     @GetMapping("/following/{friendId}")
     public ProfileDTOResp getDetailFriend(@PathVariable Long friendId){
 
@@ -83,14 +92,20 @@ public class FriendController {
         Profile friendOfUser = ch.profileService.getOneById(friendProfileId);
 
         Friend friend = new Friend();
+
+        //per i following
         friend.setUser(friendOfUser.getUser());
         friendOfUser.getUser().setFriend(friend);
-        //friend.getUser().setId(friendOfUser.getId());
         friend.setProfile(user.getProfile());
         user.getProfile().getFriends().add(friend);
 
-        user.getProfile().setFollowingCount(user.getProfile().getFollowingCount() + 1);
-        friendOfUser.setFollowersCount(friendOfUser.getFollowersCount() + 1);
+        //per i follower
+        friendOfUser.addFollower(user.getFriend());
+        friend.setProfile_follower(friendOfUser);
+
+
+//        user.getProfile().setFollowingCount(user.getProfile().getFollowingCount() + 1);
+//        friendOfUser.setFollowersCount(friendOfUser.getFollowersCount() + 1);
 
         ch.friendService.save(friend);
         ch.profileService.save(friendOfUser);
