@@ -88,6 +88,13 @@ public class ProfileController {
         }
     }
 
+    @GetMapping("/{id}")
+    ProfileDTOResp getProfileById(@PathVariable long id) throws Exception
+    {
+        Profile profileDTO = ch.profileService.getOneById(id);
+        return dtoConverter.toProfileDtoResp(profileDTO);
+    }
+
     /**
      * Downloads an image from the file system by its ID.
      * The image is returned as a byte array in the response body with a content type of "image/png".
