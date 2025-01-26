@@ -7,7 +7,6 @@ public class ProfileDTOReq
 	private int followersCount;
 	private int followingCount;
 
-	private Long favoriteVideogameAppId;
 	private Long lastPlayedVideogameAppId;
 
 	private String profileName;
@@ -45,16 +44,6 @@ public class ProfileDTOReq
 	public void setFollowingCount(int followingCount)
 	{
 		this.followingCount = followingCount;
-	}
-
-	public Long getFavoriteVideogameAppId()
-	{
-		return favoriteVideogameAppId;
-	}
-
-	public void setFavoriteVideogameAppId(Long favoriteVideogameAppId)
-	{
-		this.favoriteVideogameAppId = favoriteVideogameAppId;
 	}
 
 	public Long getLastPlayedVideogameAppId()

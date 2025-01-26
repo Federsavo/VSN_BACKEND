@@ -94,7 +94,6 @@ public class DTOConverter
 		profileDTOResp.setSteamId(profile.getUser().getSteamId());
 		profileDTOResp.setFollowersCount(profile.getFollowersCount());
 		profileDTOResp.setFollowingCount(profile.getFollowingCount());
-		profileDTOResp.setFavoriteVideogameAppId(profile.getFavoriteVideogameAppId());
 		profileDTOResp.setLastPlayedVideogameAppId(profile.getLastPlayedVideogameAppId());
 		profileDTOResp.setProfileName(profile.getUser().getUsername());
 		profileDTOResp.setSteamName(profile.getSteamName());
@@ -122,7 +121,6 @@ public class DTOConverter
 		profile.setUser(u);
 		profile.setFollowersCount(profileDTOReq.getFollowersCount());
 		profile.setFollowingCount(profileDTOReq.getFollowingCount());
-		profile.setFavoriteVideogameAppId(profileDTOReq.getFavoriteVideogameAppId());
 		profile.setLastPlayedVideogameAppId(profileDTOReq.getLastPlayedVideogameAppId());
 
 		profile.setProfileName(profileDTOReq.getProfileName());
