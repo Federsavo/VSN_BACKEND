@@ -11,10 +11,12 @@ import com.generation.vsnbackend.model.dtoSteam.DTOSteamConverter;
 import com.generation.vsnbackend.model.entities.Friend;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.User;
+import com.generation.vsnbackend.model.entities.signin.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 
@@ -104,9 +106,6 @@ public class FriendController {
         friend.setProfile_follower(friendOfUser);
 
 
-//        user.getProfile().setFollowingCount(user.getProfile().getFollowingCount() + 1);
-//        friendOfUser.setFollowersCount(friendOfUser.getFollowersCount() + 1);
-
         ch.friendService.save(friend);
         ch.profileService.save(friendOfUser);
         ch.userService.save(user);
@@ -116,5 +115,35 @@ public class FriendController {
         return dtoConverter.toFriendSummaryDTO(friend);
     }
 
+    //da sistemare
+    @DeleteMapping("/following/{followingProfileId}")
+    public Response deleteOneFollowing(@PathVariable Long followingProfileId){
 
+        User user=credentialService.getUserByToken();
+        Profile friendOfUser = ch.profileService.getOneById(followingProfileId);
+
+
+        // Rimuovere il following dalla lista degli amici del profilo dell'utente
+        Iterator<Friend> followingIterator = user.getProfile().getFriends().iterator();
+        while (followingIterator.hasNext()) {
+            Friend following = followingIterator.next();
+            if (followingProfileId.equals(following.getUser().getProfile().getId())) {
+                followingIterator.remove();
+            }
+        }
+
+
+        // Rimuovere il follower dalla lista dei follower di "friendOfUser"
+        Iterator<Friend> followerIterator = friendOfUser.getFollowers().iterator();
+        while (followerIterator.hasNext()) {
+            Friend follower = followerIterator.next();
+            if (user.getProfile().getId().equals(follower.getProfile().getId())) {
+                followerIterator.remove();
+            }
+        }
+
+
+        return new Response("Removed following");
+
+    }
 }
