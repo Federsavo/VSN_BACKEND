@@ -257,4 +257,46 @@ public class DTOSteamConverter {
 
     }
 
+    public VideogameDetailDTO toVideogameDetailFromSteamForNews(Long appId, String json) throws JsonProcessingException
+	{
+        VideogameDetailDTO videogameDetailDTO = new VideogameDetailDTO();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(json);
+
+        JsonNode videogameSteam = rootNode.path(appId.toString());
+        videogameDetailDTO.setAppId(appId);
+        videogameDetailDTO.setNameVideogame(videogameSteam.path("data").path("name").asText());
+        videogameDetailDTO.setHeaderImageUrl(videogameSteam.path("data").path("capsule_image").asText());
+        videogameDetailDTO.setDevelopers(videogameSteam.path("data").path("developers").get(0).asText());
+        videogameDetailDTO.setPublishers(videogameSteam.path("data").path("publishers").get(0).asText());
+        return videogameDetailDTO;
+    }
+
+    public RecommendationDTO toRecommendationDTOFromDetail(VideogameDetailDTO videogameDetailDTO)
+    {
+        RecommendationDTO recommendationDTO = new RecommendationDTO();
+        recommendationDTO.setAppId(videogameDetailDTO.getAppId());
+        recommendationDTO.setVideogameName(videogameDetailDTO.getNameVideogame());
+        recommendationDTO.setIconImgUrl(videogameDetailDTO.getHeaderImageUrl());
+        recommendationDTO.setDevelopers(videogameDetailDTO.getDevelopers());
+        recommendationDTO.setPublishers(videogameDetailDTO.getPublishers());
+        return recommendationDTO;
+    }
+
+    public List<Long> toListOfAppIdsRecommendedFromSteam(String json) throws JsonProcessingException
+    {
+        List<Long> appIds = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(json);
+
+        JsonNode clusters = rootNode.path("response").path("clusters");
+        for(JsonNode cluster : clusters) {
+            for(JsonNode app : cluster.path("similar_items_appids")) {
+                appIds.add(Long.parseLong(app.asText()));
+            }
+        }
+
+        return appIds;
+    }
+
 }

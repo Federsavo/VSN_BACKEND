@@ -4,29 +4,24 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.generation.vsnbackend.controller.exception.NoAchievementException;
 import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.controller.helper.FileDataService;
-import com.generation.vsnbackend.model.dto.DTOConverter;
 import com.generation.vsnbackend.model.dtoSteam.*;
 import com.generation.vsnbackend.model.dtoSteam.DTOSteamConverter;
 import com.generation.vsnbackend.model.dtoSteam.NewsDTO;
 import com.generation.vsnbackend.model.dtoSteam.PlayerDTO;
-import com.generation.vsnbackend.model.dtoSteam.SingleGameAchievementsDTO;
 import com.generation.vsnbackend.model.entities.Profile;
-import com.generation.vsnbackend.model.entities.Videogame;
-import com.generation.vsnbackend.model.entities.images.FileData;
-import com.generation.vsnbackend.model.entities.signin.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 @RestController
 @RequestMapping("/api/steam")
 public class SteamController {
+
+    private final static int NUMBER_OF_RECOMMENDATIONS=3;
+
     @Autowired
     SteamAPIService steamAPIService;
 
@@ -70,6 +65,29 @@ public class SteamController {
         {
             return null;
         }
+    }
+
+    @GetMapping("/recommendations")
+    public List<RecommendationDTO> getRecommendations() throws JsonProcessingException
+	{
+        Profile profile = credentialService.getUserByToken().getProfile();
+
+        List<Long> appIds=dtoSteamConverter.toListOfAppIdsRecommendedFromSteam(steamAPIService.postClusterBasedOnPlaytime(profile.getUser().getSteamId()));
+        List<RecommendationDTO> recommendationDTOS=new ArrayList<>();
+
+        while(recommendationDTOS.size()<NUMBER_OF_RECOMMENDATIONS)
+        {
+            int randomIndex=(int) (Math.random()*appIds.size());
+            Long appId=appIds.get(randomIndex);
+            RecommendationDTO recommendationDTO=new RecommendationDTO();
+            recommendationDTO.setAppId(appId);
+            VideogameDetailDTO videogameDetailDTO= dtoSteamConverter.toVideogameDetailFromSteamForNews(appId,steamAPIService.getOneVideogameDetail(appId));
+            if(videogameDetailDTO.getNameVideogame()!=null)
+            {
+                recommendationDTOS.add(dtoSteamConverter.toRecommendationDTOFromDetail(videogameDetailDTO));
+            }
+        }
+        return recommendationDTOS;
     }
 
 }
