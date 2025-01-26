@@ -41,7 +41,7 @@ public class SteamAPIService {
         return restTemplate.getForObject(url, String.class);
     }
 
-    public String getPublishedFiles(String steamId, String appId, int fileType)
+    public String getPublishedFiles(String steamId, Long appId, int fileType)
     {
         String url="https://api.steampowered.com/IPublishedFileService/GetUserFiles/v1/?key="+key+"&appid="+appId+"&steamid="+steamId+"&filetype="+fileType+"&format=json";
         return restTemplate.getForObject(url, String.class);
