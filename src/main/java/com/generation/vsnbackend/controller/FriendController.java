@@ -123,12 +123,23 @@ public class FriendController {
         Profile friendOfUser = ch.profileService.getOneById(followingProfileId);
 
 
+
+//        for (Friend follower: friendOfUser.getFollowers())
+//            if(user.getProfile().getId().equals(follower.getProfile().getId()))
+//                friendOfUser.getFollowers().remove(follower);
+//
+//        for(Friend following:user.getProfile().getFriends())
+//            if(followingProfileId.equals(following.getUser().getProfile().getId()))
+//                user.getProfile().getFriends().remove(following);
+
+
         // Rimuovere il following dalla lista degli amici del profilo dell'utente
         Iterator<Friend> followingIterator = user.getProfile().getFriends().iterator();
         while (followingIterator.hasNext()) {
             Friend following = followingIterator.next();
             if (followingProfileId.equals(following.getUser().getProfile().getId())) {
                 followingIterator.remove();
+                ch.friendService.deleteById(friendOfUser.getUser().getFriend().getId());
             }
         }
 
@@ -139,8 +150,10 @@ public class FriendController {
             Friend follower = followerIterator.next();
             if (user.getProfile().getId().equals(follower.getProfile().getId())) {
                 followerIterator.remove();
+                ch.friendService.deleteById(user.getFriend().getId());
             }
         }
+
 
 
         return new Response("Removed following");
