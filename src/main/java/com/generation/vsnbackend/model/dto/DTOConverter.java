@@ -92,7 +92,11 @@ public class DTOConverter
 
 		profileDTOResp.setId(profile.getId());
 		profileDTOResp.setSteamId(profile.getUser().getSteamId());
+		if(profile.getFollowers()==null||profile.getFollowers().isEmpty())
+			profileDTOResp.setFollowersCount(0);
 		profileDTOResp.setFollowersCount(profile.getFollowers().size());
+		if(profile.getFriends()==null||profile.getFriends().isEmpty())
+			profileDTOResp.setFollowingCount(0);
 		profileDTOResp.setFollowingCount(profile.getFriends().size());
 		profileDTOResp.setLastPlayedVideogameAppId(profile.getLastPlayedVideogameAppId());
 		profileDTOResp.setProfileName(profile.getUser().getUsername());
@@ -180,7 +184,11 @@ public class DTOConverter
 
 		friendSummaryDTO.setId(friend.getId());
 		friendSummaryDTO.setSteamId(friend.getUser().getSteamId());
+		if(friend.getUser().getProfile().getFollowers()==null||friend.getUser().getProfile().getFollowers().isEmpty())
+			friendSummaryDTO.setFollowersCount(0);
 		friendSummaryDTO.setFollowersCount(friend.getUser().getProfile().getFollowers().size());
+		if(friend.getUser().getProfile().getFriends()==null || friend.getUser().getProfile().getFriends().isEmpty())
+			friendSummaryDTO.setFollowingCount(0);
 		friendSummaryDTO.setFollowingCount(friend.getUser().getProfile().getFriends().size());
 		friendSummaryDTO.setProfileName(friend.getUser().getUsername());
 		friendSummaryDTO.setProfileImgId(friend.getUser().getProfile().getProfileImgId());
