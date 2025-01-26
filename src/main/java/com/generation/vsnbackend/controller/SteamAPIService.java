@@ -76,9 +76,9 @@ public class SteamAPIService {
         return restTemplate.getForObject(url, String.class);
     }
 
-    public String postClusterBasedOnPlaytime(Long appId)
+    public String postClusterBasedOnPlaytime(Long steamId)
     {
-        String url="https://api.steampowered.com/IStoreAppSimilarityService/IdentifyClustersFromPlaytime/v1/?key="+key+"&steamid="+appId+"&format=json";
+        String url="https://api.steampowered.com/IStoreAppSimilarityService/IdentifyClustersFromPlaytime/v1/?key="+key+"&steamid="+steamId+"&format=json";
         return restTemplate.postForObject(url,null, String.class);
     }
 }
