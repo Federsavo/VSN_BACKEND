@@ -52,6 +52,16 @@ public class FriendController {
         return followers;
     }
 
+    @GetMapping("/followers")
+    public List<FriendSummaryDTO> getAllFriends(@PathVariable Long id){
+        Profile profile = ch.profileService.getOneById(id);
+
+        List<FriendSummaryDTO> friends=new ArrayList<>();
+        for(Friend f :profile.getFriends())
+            friends.add(dtoConverter.toFriendSummaryDTO(f));
+        return friends;
+    }
+
     @GetMapping("/following/{friendId}")
     public ProfileDTOResp getDetailFriend(@PathVariable Long friendId){
 
@@ -111,7 +121,6 @@ public class FriendController {
         ch.profileService.save(friendOfUser);
         ch.userService.save(user);
         ch.userService.save(friendOfUser.getUser());
-
 
         return dtoConverter.toFriendSummaryDTO(friend);
     }

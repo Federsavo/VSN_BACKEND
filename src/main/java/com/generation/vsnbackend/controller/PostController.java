@@ -27,19 +27,34 @@ public class PostController {
     @Autowired
     private CredentialService credentialService;
 
+
     /**
      * Retrieves the list of posts for the authenticated user.
      *
      * @return a list of PostDTOResp objects representing the user's posts
      */
     @GetMapping()
-    List<PostDTOResp> getUserPosts(){
+    List<PostDTOResp> getUserPosts()
+    {
         List<PostDTOResp> posts = new ArrayList<>();
-        Profile profile=credentialService.getUserByToken().getProfile();
+        Profile profile = credentialService.getUserByToken().getProfile();
+
+        for (int i = profile.getPosts().size() - 1; i >= 0; i--)
+        {
+            posts.add(dtoConverter.toPostDTOResp(profile.getPosts().get(i)));
+        }
+        return posts;
+    }
+
+    @GetMapping("/external/{id}")
+    List<PostDTOResp> getUserPosts(@PathVariable long id){
+        List<PostDTOResp> posts = new ArrayList<>();
+        Profile profile=ch.profileService.getOneById(id);
 
         for (int i=profile.getPosts().size()-1;i>=0;i--){
             posts.add(dtoConverter.toPostDTOResp(profile.getPosts().get(i)));
         }
+
         return posts;
     }
 
