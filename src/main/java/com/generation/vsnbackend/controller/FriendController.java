@@ -94,7 +94,6 @@ public class FriendController {
         ch.userService.save(user);
         ch.userService.save(friendOfUser.getUser());
 
-
         return dtoConverter.toFriendSummaryDTO(friend);
     }
 
