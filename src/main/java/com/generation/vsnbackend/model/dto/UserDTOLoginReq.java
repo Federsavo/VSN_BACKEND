@@ -1,5 +1,10 @@
 package com.generation.vsnbackend.model.dto;
 
+/**
+ * Data Transfer Object (DTO) for user login requests.
+ * This class is used to encapsulate the login credentials
+ * (username and password) provided by the user during the login process.
+ */
 public class UserDTOLoginReq
 {
 	private String username;

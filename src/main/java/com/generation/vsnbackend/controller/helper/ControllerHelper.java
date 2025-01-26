@@ -18,10 +18,11 @@ public class ControllerHelper
 	public final GenericService<Review, Long> reviewService;
 	public final GenericService<Videogame, Long> videogameService;
 	public final GenericService<Profile, Long> profileService;
+	public final GenericService<Friend, Long> friendService;
 
 
 	@Autowired
-	public ControllerHelper(UserRepository userRepo, CommentRepository commentRepo, PostRepository postRepo, ReviewRepository reviewRepo, VideogameRepository videogameRepo, ProfileRepository profileRepo)
+	public ControllerHelper(UserRepository userRepo, CommentRepository commentRepo, PostRepository postRepo, ReviewRepository reviewRepo, VideogameRepository videogameRepo, ProfileRepository profileRepo, FriendRepository friendRepo)
 	{
 		this.userService = new GenericService<>(userRepo);
 		this.commentService=new GenericService<>(commentRepo);
@@ -29,8 +30,15 @@ public class ControllerHelper
 		this.reviewService=new GenericService<>(reviewRepo);
 		this.videogameService=new GenericService<>(videogameRepo);
 		this.profileService=new GenericService<>(profileRepo);
+		this.friendService=new GenericService<>(friendRepo);
 	}
 
+
+	/**
+	 *This method finds and returns a videogame by its app ID in db
+	 * @param appId the unique ID of the videogame to find (inherited from Steam)
+	 * @return the videogame with the specified app ID, or null if not found
+	 */
 	public Videogame findOneVideogameByAppId(Long appId)
 	{
 		List<Videogame> videogames=videogameService.getList();
@@ -41,6 +49,12 @@ public class ControllerHelper
 		}
 		return null;
 	}
+
+	/**
+	 * Clears all videogames associated with a specific user profile from the database.
+	 *
+	 * @param profile the user profile whose associated videogames will be removed
+	 */
 	public void clearVideogameDbByProfile(Profile profile)
 	{
 		List<Videogame> videogames=videogameService.getList();
