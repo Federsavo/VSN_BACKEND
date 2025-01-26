@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 public class NewsDTO {
 
+
     private String url;
     private String title;
     private String author;

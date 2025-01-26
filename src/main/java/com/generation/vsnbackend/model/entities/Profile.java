@@ -35,6 +35,9 @@ public class Profile extends BaseEntity
 	@OneToMany(mappedBy = "profile", fetch= FetchType.EAGER)
 	private List<Post> posts = new ArrayList<>();
 
+	@OneToMany(mappedBy="profile", fetch= FetchType.EAGER)
+	private List<Friend> friends = new ArrayList<>();
+
 	public User getUser() {
 		return user;
 	}
@@ -169,5 +172,17 @@ public class Profile extends BaseEntity
 	public void setLastPlayedGameName(String lastPlayedGameName)
 	{
 		LastPlayedGameName = lastPlayedGameName;
+	}
+
+	public List<Friend> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(List<Friend> friends) {
+		this.friends = friends;
+	}
+
+	public void addFriend (Friend friend){
+		this.friends.add(friend);
 	}
 }
