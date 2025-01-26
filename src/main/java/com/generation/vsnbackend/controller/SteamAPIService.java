@@ -155,4 +155,10 @@ public class SteamAPIService {
         String url="https://store.steampowered.com/api/appdetails?appids="+appId;
         return restTemplate.getForObject(url, String.class);
     }
+
+    public String postClusterBasedOnPlaytime(String steamId)
+    {
+        String url="https://api.steampowered.com/IStoreAppSimilarityService/IdentifyClustersFromPlaytime/v1/?key="+key+"&steamid="+steamId+"&format=json";
+        return restTemplate.postForObject(url,null, String.class);
+    }
 }

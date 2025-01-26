@@ -35,6 +35,13 @@ public class ProfileController {
     @Autowired
     SteamAPIService steamAPIService;
 
+    /**
+     * Retrieves a list of all user profiles in the system. This method does not require
+     * any authentication since it returns public profile data. Each profile is converted
+     * to a ProfileDTOResp object before being returned.
+     *
+     * @return a List of ProfileDTOResp objects representing all user profiles
+     */
     @GetMapping("/all")
     List<ProfileDTOResp> getAllProfiles() {
         List<ProfileDTOResp> allProfiles = new ArrayList<>();
@@ -43,6 +50,17 @@ public class ProfileController {
         return allProfiles;
     }
 
+    /**
+     * Retrieves the profile of the currently authenticated user along with details about their last played game.
+     *
+     * This method fetches the user's profile based on their token, and attempts to retrieve information
+     * about their last played game from the Steam API. If the last played game details are successfully
+     * fetched, they are set in the user's profile. If an exception occurs during this process, the profile
+     * is returned without last played game details.
+     *
+     * @return A {@link ProfileDTOResp} object containing the user's profile information.
+     * @throws IOException If an I/O error occurs during data retrieval or processing.
+     */
     @GetMapping
     ProfileDTOResp getProfile() throws IOException
 	{
@@ -55,6 +73,7 @@ public class ProfileController {
             profile.setLastPlayedVideogameAppId(lastVideogame.path("appid").asLong());
             profile.setLastPlayedGameImgUrl(steamAPIService.getUrlImageVideogame(profile.getLastPlayedVideogameAppId(), lastVideogame.path("img_icon_url").asText()));
             profile.setLastPlayedGameName(lastVideogame.path("name").asText());
+            ch.profileService.save(profile);
 
             JsonNode steamName = objectMapper.readTree(steamAPIService.getPlayerSummary(profile.getUser().getSteamId()));
             profile.setSteamName(steamName.path("response").path("players").get(0).path("personaname").asText());
@@ -69,13 +88,14 @@ public class ProfileController {
         }
     }
 
-    @GetMapping("/{id}")
-    ProfileDTOResp getProfileById(@PathVariable long id) throws Exception
-    {
-        Profile profileDTO = ch.profileService.getOneById(id);
-        return dtoConverter.toProfileDtoResp(profileDTO);
-    }
-
+    /**
+     * Downloads an image from the file system by its ID.
+     * The image is returned as a byte array in the response body with a content type of "image/png".
+     *
+     * @param id the ID of the image to be downloaded
+     * @return a ResponseEntity containing the image data
+     * @throws IOException if there is an error during the image retrieval from the file system
+     */
     @GetMapping("/fileSystem/{id}")
     public ResponseEntity<?> downloadImageFromFileSystem(@PathVariable Long id) throws IOException {
         byte[] imageData=fileDataService.downloadImageFromFileSystem(id);
@@ -84,6 +104,15 @@ public class ProfileController {
                 .body(imageData);
     }
 
+    /**
+     * Saves a backdrop image for the authenticated user's profile. The user's profile is retrieved
+     * using the token from the request. The image is uploaded to the file system, and the profile
+     * is updated with the new backdrop image ID.
+     *
+     * @param imgBackdrop the backdrop image file to be saved
+     * @return a Response indicating the result of the save operation
+     * @throws IOException if there is an error during the image upload
+     */
     @PostMapping("/saveBackdropImage")
     Response saveBackdropImage(
             @RequestParam("imgBackdrop") MultipartFile imgBackdrop
@@ -97,6 +126,19 @@ public class ProfileController {
         ch.profileService.save(profile);
         return new Response("Backdrop image saved successfully");
     }
+
+    /**
+     * Saves the profile image for the currently authenticated user.
+     *
+     * This method allows users to upload a profile image, which is stored in the file system.
+     * The uploaded image is associated with the user's profile by saving the image's ID.
+     *
+     *
+     * @param imgProfile The {@link MultipartFile} representing the uploaded profile image.
+     *                   This parameter must be provided in the HTTP request as "imgProfile".
+     * @return A {@link Response} object containing a success message indicating that the profile image was saved successfully.
+     * @throws IOException If an error occurs during file upload or storage.
+     */
     @PostMapping("/saveProfileImage")
     Response saveProfileImage(
             @RequestParam("imgProfile") MultipartFile imgProfile

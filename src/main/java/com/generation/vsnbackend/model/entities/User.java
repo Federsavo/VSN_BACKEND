@@ -19,6 +19,18 @@ public class User extends BaseEntity
 	@JoinColumn(name = "profile_id")
 	private Profile profile;
 
+	@OneToOne
+	@JoinColumn(name = "friend_id")
+	private Friend friend;
+
+	public Friend getFriend() {
+		return friend;
+	}
+
+	public void setFriend(Friend friend) {
+		this.friend = friend;
+	}
+
 	public Profile getProfile() {
 		return profile;
 	}
