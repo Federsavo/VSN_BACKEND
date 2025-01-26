@@ -47,8 +47,14 @@ public class FriendController {
         friend.getUser().setId(friendOfUser.getId());
         ch.friendService.save(friend);
 
+        friend.setProfile(user.getProfile());
+        ch.profileService.save(friendOfUser);
+
         user.getProfile().getFriends().add(friend);
         ch.userService.save(user);
+
+
+
 
 
 
