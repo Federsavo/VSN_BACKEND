@@ -92,8 +92,8 @@ public class DTOConverter
 
 		profileDTOResp.setId(profile.getId());
 		profileDTOResp.setSteamId(profile.getUser().getSteamId());
-		profileDTOResp.setFollowersCount(profile.getFollowersCount());
-		profileDTOResp.setFollowingCount(profile.getFollowingCount());
+		profileDTOResp.setFollowersCount(profile.getFollowers().size());
+		profileDTOResp.setFollowingCount(profile.getFriends().size());
 		profileDTOResp.setLastPlayedVideogameAppId(profile.getLastPlayedVideogameAppId());
 		profileDTOResp.setProfileName(profile.getUser().getUsername());
 		profileDTOResp.setSteamName(profile.getSteamName());
@@ -119,8 +119,6 @@ public class DTOConverter
 		Profile profile = new Profile();
 		User u=ch.userService.getOneById(profileDTOReq.getUserId());
 		profile.setUser(u);
-		profile.setFollowersCount(profileDTOReq.getFollowersCount());
-		profile.setFollowingCount(profileDTOReq.getFollowingCount());
 		profile.setLastPlayedVideogameAppId(profileDTOReq.getLastPlayedVideogameAppId());
 
 		profile.setProfileName(profileDTOReq.getProfileName());
@@ -182,8 +180,8 @@ public class DTOConverter
 
 		friendSummaryDTO.setId(friend.getId());
 		friendSummaryDTO.setSteamId(friend.getUser().getSteamId());
-		friendSummaryDTO.setFollowersCount(friend.getUser().getProfile().getFollowersCount());
-		friendSummaryDTO.setFollowingCount(friend.getUser().getProfile().getFollowingCount());
+		friendSummaryDTO.setFollowersCount(friend.getUser().getProfile().getFollowers().size());
+		friendSummaryDTO.setFollowingCount(friend.getUser().getProfile().getFriends().size());
 		friendSummaryDTO.setProfileName(friend.getUser().getUsername());
 		friendSummaryDTO.setProfileImgId(friend.getUser().getProfile().getProfileImgId());
 		friendSummaryDTO.setProfileBackdropImgId(friend.getUser().getProfile().getProfileBackdropImgId());
