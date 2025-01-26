@@ -105,7 +105,7 @@ public class SteamController {
         {
             int randomIndex=(int) (Math.random()*appIds.size());
             Long appId=appIds.get(randomIndex);
-            VideogameDetailDTO videogameDetailDTO= dtoSteamConverter.toVideogameDetailFromSteamForNews(appId,steamAPIService.getOneVideogameDetail(appId));
+            VideogameDetailDTO videogameDetailDTO= dtoSteamConverter.toVideogameDetailFromSteamForRecommedation(appId,steamAPIService.getOneVideogameDetail(appId));
             if(videogameDetailDTO.getNameVideogame()!=null)
             {
                 recommendationDTOS.add(dtoSteamConverter.toRecommendationDTOFromDetail(videogameDetailDTO));
