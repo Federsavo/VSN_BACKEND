@@ -89,6 +89,9 @@ public class FriendController {
         friend.setProfile(user.getProfile());
         user.getProfile().getFriends().add(friend);
 
+        user.getProfile().setFollowingCount(user.getProfile().getFollowingCount() + 1);
+        friendOfUser.setFollowersCount(friendOfUser.getFollowersCount() + 1);
+
         ch.friendService.save(friend);
         ch.profileService.save(friendOfUser);
         ch.userService.save(user);

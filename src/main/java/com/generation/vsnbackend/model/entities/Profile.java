@@ -185,4 +185,5 @@ public class Profile extends BaseEntity
 	public void addFriend (Friend friend){
 		this.friends.add(friend);
 	}
+
 }

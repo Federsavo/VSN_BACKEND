@@ -184,7 +184,6 @@ public class DTOConverter
 		friendSummaryDTO.setSteamId(friend.getUser().getSteamId());
 		friendSummaryDTO.setFollowersCount(friend.getUser().getProfile().getFollowersCount());
 		friendSummaryDTO.setFollowingCount(friend.getUser().getProfile().getFollowingCount());
-		friendSummaryDTO.setFavoriteVideogameAppId(friend.getUser().getProfile().getLastPlayedVideogameAppId());
 		friendSummaryDTO.setProfileName(friend.getUser().getUsername());
 		friendSummaryDTO.setProfileImgId(friend.getUser().getProfile().getProfileImgId());
 		friendSummaryDTO.setProfileBackdropImgId(friend.getUser().getProfile().getProfileBackdropImgId());
