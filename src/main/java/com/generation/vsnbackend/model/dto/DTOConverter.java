@@ -193,6 +193,27 @@ public class DTOConverter
 		friendSummaryDTO.setProfileBackdropImgId(friend.getProfile_following().getProfileBackdropImgId());
 		friendSummaryDTO.setLastPlayedGameImgUrl(friend.getProfile_following().getLastPlayedGameImgUrl());
 		friendSummaryDTO.setLastPlayedGameName(friend.getProfile_following().getLastPlayedGameName());
+		//	videogame favorito manca tutto da mandare
+		// friendSummaryDTO.setFavoriteVideogameAppId(friend.getProfile_following().get);
+
+
+		return friendSummaryDTO;
+	}
+
+	public FriendSummaryDTO toFriendSummaryDTOxFollower (Friend friend){
+		FriendSummaryDTO friendSummaryDTO = new FriendSummaryDTO();
+
+		friendSummaryDTO.setId(friend.getId());
+		friendSummaryDTO.setSteamId(friend.getProfile_follower().getUser().getSteamId());
+		friendSummaryDTO.setFollowersCount(friend.getProfile_follower().getFollowers().size());
+		friendSummaryDTO.setFollowingCount(friend.getProfile_follower().getFollowings().size());
+		friendSummaryDTO.setLastPlayedVideogameAppId(friend.getProfile_follower().getLastPlayedVideogameAppId());
+		friendSummaryDTO.setProfileName(friend.getProfile_follower().getProfileName());
+		friendSummaryDTO.setProfileID(friend.getProfile_follower().getId());
+		friendSummaryDTO.setProfileImgId(friend.getProfile_follower().getProfileImgId());
+		friendSummaryDTO.setProfileBackdropImgId(friend.getProfile_follower().getProfileBackdropImgId());
+		friendSummaryDTO.setLastPlayedGameImgUrl(friend.getProfile_follower().getLastPlayedGameImgUrl());
+		friendSummaryDTO.setLastPlayedGameName(friend.getProfile_follower().getLastPlayedGameName());
 
 
 		return friendSummaryDTO;

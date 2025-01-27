@@ -38,6 +38,7 @@ public class FriendController {
 
     @GetMapping("/following")
     public List<FriendSummaryDTO> getAllFriends(){
+        //quelli che seguo
         User user=credentialService.getUserByToken();
         List<FriendSummaryDTO> followings=new ArrayList<>();
         for(Friend f:user.getProfile().getFollowers())
@@ -47,25 +48,41 @@ public class FriendController {
 
     @GetMapping("/follower")
     public List<FriendSummaryDTO> getAllFollowers(){
+        //quelli che mi seguono
         User user=credentialService.getUserByToken();
         List<FriendSummaryDTO> followers=new ArrayList<>();
         for(Friend f:user.getProfile().getFollowings())
-            followers.add(dtoConverter.toFriendSummaryDTO(f));
+            followers.add(dtoConverter.toFriendSummaryDTOxFollower(f));
         return followers;
     }
 
-//    @GetMapping("/followers/{id}")
-//    public List<FriendSummaryDTO> getAllFriends(@PathVariable Long id){
-//        Profile profile = ch.profileService.getOneById(id);
-//
-//        List<FriendSummaryDTO> friends=new ArrayList<>();
-//        for(Friend f : profile.getFollowers())
-//        {
-//            System.out.println(f.getUser().getProfile().getSteamName());
-//            friends.add(dtoConverter.toFriendSummaryDTO(f));
-//        }
-//        return friends;
-//    }
+    @GetMapping("/followers/{id}")
+    public List<FriendSummaryDTO> getAllFriends(@PathVariable Long id){
+
+        //per avere i followers di chi sta nell'id (diverso da me)
+        Profile profile = ch.profileService.getOneById(id);
+
+        List<FriendSummaryDTO> friends=new ArrayList<>();
+        for(Friend f : profile.getFollowers())
+        {
+            friends.add(dtoConverter.toFriendSummaryDTO(f));
+        }
+        return friends;
+    }
+
+    @GetMapping("/followings/{id}")
+    public List<FriendSummaryDTO> getAllFriendsBis(@PathVariable Long id){
+
+        //per avere i following di chi sta nell'id (diverso da me)
+        Profile profile = ch.profileService.getOneById(id);
+
+        List<FriendSummaryDTO> friends=new ArrayList<>();
+        for(Friend f : profile.getFollowings())
+        {
+            friends.add(dtoConverter.toFriendSummaryDTOxFollower(f));
+        }
+        return friends;
+    }
 
     @GetMapping("/following/{friendId}")
     public ProfileDTOResp getDetailFriend(@PathVariable Long friendId){
@@ -122,51 +139,24 @@ public class FriendController {
 
 
         return dtoConverter.toFriendSummaryDTO(friend);
-       // return new Response("ok following");
     }
 
-    //da sistemare
-//    @DeleteMapping("/following/{followingProfileId}")
-//    public Response deleteOneFollowing(@PathVariable Long followingProfileId){
-//
-//        User user=credentialService.getUserByToken();
-//        Profile friendOfUser = ch.profileService.getOneById(followingProfileId);
-//
-//
-//
-////        for (Friend follower: friendOfUser.getFollowers())
-////            if(user.getProfile().getId().equals(follower.getProfile().getId()))
-////                friendOfUser.getFollowers().remove(follower);
-////
-////        for(Friend following:user.getProfile().getFriends())
-////            if(followingProfileId.equals(following.getUser().getProfile().getId()))
-////                user.getProfile().getFriends().remove(following);
-//
-//
-//        // Rimuovere il following dalla lista degli amici del profilo dell'utente
-//        Iterator<Friend> followingIterator = user.getProfile().getFriends().iterator();
-//        while (followingIterator.hasNext()) {
-//            Friend following = followingIterator.next();
-//            if (followingProfileId.equals(following.getUser().getProfile().getId())) {
-//                followingIterator.remove();
-//                ch.friendService.deleteById(friendOfUser.getUser().getFriend().getId());
-//            }
-//        }
-//
-//
-//        // Rimuovere il follower dalla lista dei follower di "friendOfUser"
-//        Iterator<Friend> followerIterator = friendOfUser.getFollowers().iterator();
-//        while (followerIterator.hasNext()) {
-//            Friend follower = followerIterator.next();
-//            if (user.getProfile().getId().equals(follower.getProfile().getId())) {
-//                followerIterator.remove();
-//                ch.friendService.deleteById(user.getFriend().getId());
-//            }
-//        }
-//
-//
-//
-//        return new Response("Removed following");
-//
-//    }
+    @DeleteMapping("/followings/{idProfileToUnfollow}/{friendId}")
+    public Response unfollow(@PathVariable Long idProfileToUnfollow, @PathVariable Long friendId){
+        User userRequesting=credentialService.getUserByToken();
+        Profile profileReceiving =ch.profileService.getOneById(idProfileToUnfollow);
+        Friend friend = ch.friendService.getOneById(friendId);
+
+        userRequesting.getProfile().getFollowers().remove(friend);
+        profileReceiving.getFollowings().remove(friend);
+
+        ch.profileService.save(profileReceiving);
+        ch.profileService.save(userRequesting.getProfile());
+        ch.userService.save(userRequesting);
+        ch.userService.save(profileReceiving.getUser());
+
+
+        ch.friendService.deleteById(friendId);
+        return new Response("Removed following");
+    }
 }
