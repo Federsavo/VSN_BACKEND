@@ -278,29 +278,21 @@ public class DTOSteamConverter {
      * Converts a Videogame object and its associated JSON data from the Steam API
      * into a VideogameDetailDTO object, encapsulating detailed information about the videogame.
      *
+     * @param appId appId of the videogame I want the detail.
      * @param videogame The Videogame object containing basic information about the videogame.
      * @param json The JSON string containing detailed videogame information structured according to the Steam API.
      * @return A VideogameDetailDTO object populated with details from the Videogame and the provided JSON.
      * @throws JsonProcessingException If there is an error processing the JSON input.
      */
-    public VideogameDetailDTO toVideogameDetailFromSteam (Videogame videogame, String json) throws JsonProcessingException {
+    public VideogameDetailDTO toVideogameDetailFromSteam (Long appId,Videogame videogame, String json) throws JsonProcessingException {
         VideogameDetailDTO videogameDetailDTO = new VideogameDetailDTO();
-
-        videogameDetailDTO.setId(videogame.getId());
-        videogameDetailDTO.setNameVideogame(videogame.getNameVideogame());
-        videogameDetailDTO.setDevelopers(videogame.getDevelopers());
-        videogameDetailDTO.setPublishers(videogame.getPublishers());
-        videogameDetailDTO.setPreferred(videogame.isPreferred());
-        videogameDetailDTO.setReleaseDate(String.valueOf(videogame.getReleaseDate()));
-        videogameDetailDTO.setGenre(videogame.getGenre());
-        videogameDetailDTO.setStarReviews(videogame.getStarReviews());
-        videogameDetailDTO.setAppId(videogame.getAppId());
 
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(json);
 
-        JsonNode videogameSteam = rootNode.path(videogame.getAppId().toString());
+        JsonNode videogameSteam = rootNode.path(appId.toString());
 
+        videogameDetailDTO.setAppId(appId);
         videogameDetailDTO.setRequiredAge(Integer.parseInt( videogameSteam.path("data").path("required_age").asText()));
         videogameDetailDTO.setDetailedDescription(videogameSteam.path("data").path("detailed_description").asText());
         videogameDetailDTO.setShortDescription(videogameSteam.path("data").path("short_description").asText());
@@ -312,23 +304,81 @@ public class DTOSteamConverter {
         // Collect supported platforms
         String platform="";
         if(videogameSteam.path("data").path("platforms").path("windows").asBoolean(false))
+        {
             platform +="windows-";
+        }
         if(videogameSteam.path("data").path("platforms").path("mac").asBoolean(false))
+        {
             platform +="mac-";
+        }
         if(videogameSteam.path("data").path("platforms").path("linux").asBoolean(false))
+        {
             platform +="linux";
-
+        }
         // Remove trailing hyphen if it exists
         if (platform.endsWith("-")) {
             platform = platform.substring(0, platform.length() - 1);
         }
         videogameDetailDTO.setPlatforms(platform);
 
+        if(videogame!=null)
+        {
+            videogameDetailDTO.setId(videogame.getId());
+            videogameDetailDTO.setNameVideogame(videogame.getNameVideogame());
+            videogameDetailDTO.setDevelopers(videogame.getDevelopers());
+            videogameDetailDTO.setPublishers(videogame.getPublishers());
+            videogameDetailDTO.setPreferred(videogame.isPreferred());
+            videogameDetailDTO.setReleaseDate(String.valueOf(videogame.getReleaseDate()));
+            videogameDetailDTO.setGenre(videogame.getGenre());
+            videogameDetailDTO.setStarReviews(videogame.getStarReviews());
+        }
         //videogameDetailDTO.setTotalAchievements(Integer.parseInt(videogameSteam.path("data").path("achievements").path("total").asText()));
 
 
         return videogameDetailDTO;
 
+    }
+
+    public VideogameDetailDTO toVideogameDetailFromSteamForRecommedation(Long appId, String json) throws JsonProcessingException
+	{
+        VideogameDetailDTO videogameDetailDTO = new VideogameDetailDTO();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(json);
+
+        JsonNode videogameSteam = rootNode.path(appId.toString());
+        videogameDetailDTO.setAppId(appId);
+        videogameDetailDTO.setNameVideogame(videogameSteam.path("data").path("name").asText());
+        videogameDetailDTO.setHeaderImageUrl(videogameSteam.path("data").path("capsule_image").asText());
+        videogameDetailDTO.setDevelopers(videogameSteam.path("data").path("developers").get(0).asText());
+        videogameDetailDTO.setPublishers(videogameSteam.path("data").path("publishers").get(0).asText());
+        return videogameDetailDTO;
+    }
+
+    public RecommendationDTO toRecommendationDTOFromDetail(VideogameDetailDTO videogameDetailDTO)
+    {
+        RecommendationDTO recommendationDTO = new RecommendationDTO();
+        recommendationDTO.setAppId(videogameDetailDTO.getAppId());
+        recommendationDTO.setVideogameName(videogameDetailDTO.getNameVideogame());
+        recommendationDTO.setIconImgUrl(videogameDetailDTO.getHeaderImageUrl());
+        recommendationDTO.setDevelopers(videogameDetailDTO.getDevelopers());
+        recommendationDTO.setPublishers(videogameDetailDTO.getPublishers());
+        return recommendationDTO;
+    }
+
+    public List<Long> toListOfAppIdsRecommendedFromSteam(String json) throws JsonProcessingException
+    {
+        List<Long> appIds = new ArrayList<>();
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode rootNode = objectMapper.readTree(json);
+
+        JsonNode clusters = rootNode.path("response").path("clusters");
+        for(JsonNode cluster : clusters) {
+            for(JsonNode app : cluster.path("similar_items_appids")) {
+                appIds.add(Long.parseLong(app.asText()));
+            }
+        }
+
+        return appIds;
     }
 
 }

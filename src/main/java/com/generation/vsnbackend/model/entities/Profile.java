@@ -12,8 +12,6 @@ import java.util.Objects;
 @Entity
 public class Profile extends BaseEntity
 {
-	private int followersCount;
-	private int followingCount;
 
 	private Long lastPlayedVideogameAppId;
 
@@ -35,8 +33,13 @@ public class Profile extends BaseEntity
 	@OneToMany(mappedBy = "profile", fetch= FetchType.EAGER)
 	private List<Post> posts = new ArrayList<>();
 
+	//sono i following
 	@OneToMany(mappedBy="profile", fetch= FetchType.EAGER)
 	private List<Friend> friends = new ArrayList<>();
+
+	//followers
+	@OneToMany(mappedBy = "profile_follower", fetch= FetchType.EAGER)
+	private List<Friend> followers = new ArrayList<>();
 
 	public User getUser() {
 		return user;
@@ -46,25 +49,6 @@ public class Profile extends BaseEntity
 		this.user = user;
 	}
 
-	public int getFollowersCount()
-	{
-		return followersCount;
-	}
-
-	public void setFollowersCount(int followersCount)
-	{
-		this.followersCount = followersCount;
-	}
-
-	public int getFollowingCount()
-	{
-		return followingCount;
-	}
-
-	public void setFollowingCount(int followingCount)
-	{
-		this.followingCount = followingCount;
-	}
 
 	public String getProfileName()
 	{
@@ -184,5 +168,17 @@ public class Profile extends BaseEntity
 
 	public void addFriend (Friend friend){
 		this.friends.add(friend);
+	}
+
+	public List<Friend> getFollowers() {
+		return followers;
+	}
+
+	public void setFollowers(List<Friend> followers) {
+		this.followers = followers;
+	}
+
+	public void addFollower(Friend follower) {
+		this.followers.add(follower);
 	}
 }

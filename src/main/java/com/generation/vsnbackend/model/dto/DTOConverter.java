@@ -92,8 +92,12 @@ public class DTOConverter
 
 		profileDTOResp.setId(profile.getId());
 		profileDTOResp.setSteamId(profile.getUser().getSteamId());
-		profileDTOResp.setFollowersCount(profile.getFollowersCount());
-		profileDTOResp.setFollowingCount(profile.getFollowingCount());
+		if(profile.getFollowers()==null||profile.getFollowers().isEmpty())
+			profileDTOResp.setFollowersCount(0);
+		profileDTOResp.setFollowersCount(profile.getFollowers().size());
+		if(profile.getFriends()==null||profile.getFriends().isEmpty())
+			profileDTOResp.setFollowingCount(0);
+		profileDTOResp.setFollowingCount(profile.getFriends().size());
 		profileDTOResp.setLastPlayedVideogameAppId(profile.getLastPlayedVideogameAppId());
 		profileDTOResp.setProfileName(profile.getUser().getUsername());
 		profileDTOResp.setSteamName(profile.getSteamName());
@@ -119,8 +123,6 @@ public class DTOConverter
 		Profile profile = new Profile();
 		User u=ch.userService.getOneById(profileDTOReq.getUserId());
 		profile.setUser(u);
-		profile.setFollowersCount(profileDTOReq.getFollowersCount());
-		profile.setFollowingCount(profileDTOReq.getFollowingCount());
 		profile.setLastPlayedVideogameAppId(profileDTOReq.getLastPlayedVideogameAppId());
 
 		profile.setProfileName(profileDTOReq.getProfileName());
@@ -182,9 +184,12 @@ public class DTOConverter
 
 		friendSummaryDTO.setId(friend.getId());
 		friendSummaryDTO.setSteamId(friend.getUser().getSteamId());
-		friendSummaryDTO.setFollowersCount(friend.getUser().getProfile().getFollowersCount());
-		friendSummaryDTO.setFollowingCount(friend.getUser().getProfile().getFollowingCount());
-		friendSummaryDTO.setFavoriteVideogameAppId(friend.getUser().getProfile().getLastPlayedVideogameAppId());
+		if(friend.getUser().getProfile().getFollowers()==null||friend.getUser().getProfile().getFollowers().isEmpty())
+			friendSummaryDTO.setFollowersCount(0);
+		friendSummaryDTO.setFollowersCount(friend.getUser().getProfile().getFollowers().size());
+		if(friend.getUser().getProfile().getFriends()==null || friend.getUser().getProfile().getFriends().isEmpty())
+			friendSummaryDTO.setFollowingCount(0);
+		friendSummaryDTO.setFollowingCount(friend.getUser().getProfile().getFriends().size());
 		friendSummaryDTO.setProfileName(friend.getUser().getUsername());
 		friendSummaryDTO.setProfileImgId(friend.getUser().getProfile().getProfileImgId());
 		friendSummaryDTO.setProfileBackdropImgId(friend.getUser().getProfile().getProfileBackdropImgId());
