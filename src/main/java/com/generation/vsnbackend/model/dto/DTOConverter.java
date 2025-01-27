@@ -183,12 +183,14 @@ public class DTOConverter
 		FriendSummaryDTO friendSummaryDTO = new FriendSummaryDTO();
 
 		friendSummaryDTO.setId(friend.getId());
-		friendSummaryDTO.setSteamId(friend.getUser().getSteamId());
+		if(!friend.getUser().getSteamId().isEmpty())
+			friendSummaryDTO.setSteamId(friend.getUser().getSteamId());
 		if(friend.getUser().getProfile().getFollowers()==null||friend.getUser().getProfile().getFollowers().isEmpty())
 			friendSummaryDTO.setFollowersCount(0);
 		friendSummaryDTO.setFollowersCount(friend.getUser().getProfile().getFollowers().size());
 		if(friend.getUser().getProfile().getFriends()==null || friend.getUser().getProfile().getFriends().isEmpty())
 			friendSummaryDTO.setFollowingCount(0);
+		friendSummaryDTO.setProfileID(friend.getUser().getProfile().getId());
 		friendSummaryDTO.setFollowingCount(friend.getUser().getProfile().getFriends().size());
 		friendSummaryDTO.setProfileName(friend.getUser().getUsername());
 		friendSummaryDTO.setProfileImgId(friend.getUser().getProfile().getProfileImgId());
@@ -197,7 +199,6 @@ public class DTOConverter
 		friendSummaryDTO.setLastPlayedGameName(friend.getUser().getProfile().getLastPlayedGameName());
 
 		return friendSummaryDTO;
-
 	}
 
 	public CommentDTOResp toCommentDTOResp(Comment comment){

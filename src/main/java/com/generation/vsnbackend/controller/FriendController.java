@@ -54,13 +54,16 @@ public class FriendController {
         return followers;
     }
 
-    @GetMapping("/followers")
+    @GetMapping("/followers/{id}")
     public List<FriendSummaryDTO> getAllFriends(@PathVariable Long id){
         Profile profile = ch.profileService.getOneById(id);
 
         List<FriendSummaryDTO> friends=new ArrayList<>();
-        for(Friend f :profile.getFriends())
+        for(Friend f : profile.getFollowers())
+        {
+            System.out.println(f.getUser().getProfile().getSteamName());
             friends.add(dtoConverter.toFriendSummaryDTO(f));
+        }
         return friends;
     }
 
@@ -104,20 +107,31 @@ public class FriendController {
         Profile friendOfUser = ch.profileService.getOneById(friendProfileId);
 
         Friend friend = new Friend();
+        Friend mySelf = new Friend();
 
-        //per i following
+        // Configura il primo oggetto Friend
         friend.setUser(friendOfUser.getUser());
-        friendOfUser.getUser().setFriend(friend);
         friend.setProfile(user.getProfile());
-        user.getProfile().getFriends().add(friend);
-
-        //per i follower
-        friendOfUser.addFollower(user.getFriend());
         friend.setProfile_follower(friendOfUser);
 
-
+        // Salva il primo oggetto Friend
         ch.friendService.save(friend);
+
+        // Configura il secondo oggetto Friend
+        mySelf.setUser(user);
+        mySelf.setProfile(friendOfUser);
+        mySelf.setProfile_follower(user.getProfile());
+
+        // Salva il secondo oggetto Friend
+        ch.friendService.save(mySelf);
+
+        // Aggiorna le relazioni nei profili e utenti
+        user.getProfile().getFriends().add(friend); // Segue l'amico
+        friendOfUser.addFollower(mySelf);          // È seguito da me
+
+        // Salva i profili e utenti aggiornati
         ch.profileService.save(friendOfUser);
+        ch.profileService.save(user.getProfile());
         ch.userService.save(user);
         ch.userService.save(friendOfUser.getUser());
 

@@ -15,11 +15,22 @@ public class FriendSummaryDTO {
 //    private String playstationName;
 //    private String xboxName;
 
+    private Long profileID;
     private Long profileImgId;
     private Long profileBackdropImgId;
 
     private String lastPlayedGameImgUrl;
     private String lastPlayedGameName;
+
+    public Long getProfileID()
+    {
+        return profileID;
+    }
+
+    public void setProfileID(Long profileID)
+    {
+        this.profileID = profileID;
+    }
 
     public Long getId() {
         return id;
