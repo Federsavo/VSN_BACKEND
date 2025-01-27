@@ -1,0 +1,64 @@
+   @PostMapping("/add/{friendProfileId}")
+    public FriendSummaryDTO addOneFriend(@PathVariable Long friendProfileId){
+        User user=credentialService.getUserByToken();
+
+        if(Objects.equals(friendProfileId, user.getProfile().getId())) {
+            throw new FriendException("Non puoi diventare amico di te stesso, coglione");
+        }
+        Profile friendOfUser = ch.profileService.getOneById(friendProfileId);
+
+        Friend friend = new Friend();
+        Friend mySelf = new Friend();
+
+        // Configura il primo oggetto Friend
+        friend.setUser(friendOfUser.getUser());
+        friend.setProfile(user.getProfile());
+        friend.setProfile_follower(friendOfUser);
+
+        // Salva il primo oggetto Friend
+        ch.friendService.save(friend);
+
+        // Configura il secondo oggetto Friend
+        mySelf.setUser(user);
+        user.setFriend(mySelf);
+        mySelf.setProfile(friendOfUser);
+        mySelf.setProfile_follower(user.getProfile());
+
+        // Salva il secondo oggetto Friend
+        ch.friendService.save(mySelf);
+
+        // Aggiorna le relazioni nei profili e utenti
+        user.getProfile().getFriends().add(friend); // Segue l'amico
+        friendOfUser.addFollower(mySelf);          // È seguito da me
+
+        // Salva i profili e utenti aggiornati
+        ch.profileService.save(friendOfUser);
+        ch.profileService.save(user.getProfile());
+        ch.userService.save(user);
+        ch.userService.save(friendOfUser.getUser());
+
+        return dtoConverter.toFriendSummaryDTO(friend);
+    }
+
+
+    public FriendSummaryDTO toFriendSummaryDTO (Friend friend){
+    		FriendSummaryDTO friendSummaryDTO = new FriendSummaryDTO();
+
+    		friendSummaryDTO.setId(friend.getId());
+    		if(!friend.getUser().getSteamId().isEmpty())
+    			friendSummaryDTO.setSteamId(friend.getUser().getSteamId());
+    		if(friend.getUser().getProfile().getFollowers()==null||friend.getUser().getProfile().getFollowers().isEmpty())
+    			friendSummaryDTO.setFollowersCount(0);
+    		friendSummaryDTO.setFollowersCount(friend.getUser().getProfile().getFollowers().size());
+    		if(friend.getUser().getProfile().getFriends()==null || friend.getUser().getProfile().getFriends().isEmpty())
+    			friendSummaryDTO.setFollowingCount(0);
+    		friendSummaryDTO.setProfileID(friend.getUser().getProfile().getId());
+    		friendSummaryDTO.setFollowingCount(friend.getUser().getProfile().getFriends().size());
+    		friendSummaryDTO.setProfileName(friend.getUser().getUsername());
+    		friendSummaryDTO.setProfileImgId(friend.getUser().getProfile().getProfileImgId());
+    		friendSummaryDTO.setProfileBackdropImgId(friend.getUser().getProfile().getProfileBackdropImgId());
+    		friendSummaryDTO.setLastPlayedGameImgUrl(friend.getUser().getProfile().getLastPlayedGameImgUrl());
+    		friendSummaryDTO.setLastPlayedGameName(friend.getUser().getProfile().getLastPlayedGameName());
+
+    		return friendSummaryDTO;
+    	}

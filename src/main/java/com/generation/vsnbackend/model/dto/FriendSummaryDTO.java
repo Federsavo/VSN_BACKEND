@@ -5,6 +5,7 @@ public class FriendSummaryDTO {
     private Long id;
     private String steamId;
 
+
     private int followersCount;
     private int followingCount;
 
