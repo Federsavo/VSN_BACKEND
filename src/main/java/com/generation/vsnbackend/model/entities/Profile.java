@@ -1,9 +1,6 @@
 package com.generation.vsnbackend.model.entities;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +31,11 @@ public class Profile extends BaseEntity
 	private List<Post> posts = new ArrayList<>();
 
 	//sono i following
-	@OneToMany(mappedBy="profile", fetch= FetchType.EAGER)
-	private List<Friend> friends = new ArrayList<>();
+	@OneToMany(mappedBy="profile_following", cascade= CascadeType.ALL,  fetch= FetchType.EAGER)
+	private List<Friend> followings = new ArrayList<>();
 
 	//followers
-	@OneToMany(mappedBy = "profile_follower", fetch= FetchType.EAGER)
+	@OneToMany(mappedBy = "profile_follower", cascade= CascadeType.ALL, fetch= FetchType.EAGER)
 	private List<Friend> followers = new ArrayList<>();
 
 	public User getUser() {
@@ -158,16 +155,16 @@ public class Profile extends BaseEntity
 		LastPlayedGameName = lastPlayedGameName;
 	}
 
-	public List<Friend> getFriends() {
-		return friends;
+	public List<Friend> getFollowings() {
+		return followings;
 	}
 
-	public void setFriends(List<Friend> friends) {
-		this.friends = friends;
+	public void setFollowings(List<Friend> followings) {
+		this.followings = followings;
 	}
 
-	public void addFriend (Friend friend){
-		this.friends.add(friend);
+	public void addFollowing (Friend friend){
+		this.followings.add(friend);
 	}
 
 	public List<Friend> getFollowers() {

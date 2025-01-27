@@ -95,9 +95,9 @@ public class DTOConverter
 		if(profile.getFollowers()==null||profile.getFollowers().isEmpty())
 			profileDTOResp.setFollowersCount(0);
 		profileDTOResp.setFollowersCount(profile.getFollowers().size());
-		if(profile.getFriends()==null||profile.getFriends().isEmpty())
+		if(profile.getFollowings()==null||profile.getFollowings().isEmpty())
 			profileDTOResp.setFollowingCount(0);
-		profileDTOResp.setFollowingCount(profile.getFriends().size());
+		profileDTOResp.setFollowingCount(profile.getFollowings().size());
 		profileDTOResp.setLastPlayedVideogameAppId(profile.getLastPlayedVideogameAppId());
 		profileDTOResp.setProfileName(profile.getUser().getUsername());
 		profileDTOResp.setSteamName(profile.getSteamName());
@@ -183,21 +183,40 @@ public class DTOConverter
 		FriendSummaryDTO friendSummaryDTO = new FriendSummaryDTO();
 
 		friendSummaryDTO.setId(friend.getId());
-		friendSummaryDTO.setSteamId(friend.getUser().getSteamId());
-		if(friend.getUser().getProfile().getFollowers()==null||friend.getUser().getProfile().getFollowers().isEmpty())
-			friendSummaryDTO.setFollowersCount(0);
-		friendSummaryDTO.setFollowersCount(friend.getUser().getProfile().getFollowers().size());
-		if(friend.getUser().getProfile().getFriends()==null || friend.getUser().getProfile().getFriends().isEmpty())
-			friendSummaryDTO.setFollowingCount(0);
-		friendSummaryDTO.setFollowingCount(friend.getUser().getProfile().getFriends().size());
-		friendSummaryDTO.setProfileName(friend.getUser().getUsername());
-		friendSummaryDTO.setProfileImgId(friend.getUser().getProfile().getProfileImgId());
-		friendSummaryDTO.setProfileBackdropImgId(friend.getUser().getProfile().getProfileBackdropImgId());
-		friendSummaryDTO.setLastPlayedGameImgUrl(friend.getUser().getProfile().getLastPlayedGameImgUrl());
-		friendSummaryDTO.setLastPlayedGameName(friend.getUser().getProfile().getLastPlayedGameName());
+		friendSummaryDTO.setSteamId(friend.getProfile_following().getUser().getSteamId());
+		friendSummaryDTO.setFollowersCount(friend.getProfile_following().getFollowers().size());
+		friendSummaryDTO.setFollowingCount(friend.getProfile_following().getFollowings().size());
+		friendSummaryDTO.setLastPlayedVideogameAppId(friend.getProfile_following().getLastPlayedVideogameAppId());
+		friendSummaryDTO.setProfileName(friend.getProfile_following().getProfileName());
+		friendSummaryDTO.setProfileID(friend.getProfile_following().getId());
+		friendSummaryDTO.setProfileImgId(friend.getProfile_following().getProfileImgId());
+		friendSummaryDTO.setProfileBackdropImgId(friend.getProfile_following().getProfileBackdropImgId());
+		friendSummaryDTO.setLastPlayedGameImgUrl(friend.getProfile_following().getLastPlayedGameImgUrl());
+		friendSummaryDTO.setLastPlayedGameName(friend.getProfile_following().getLastPlayedGameName());
+		//	videogame favorito manca tutto da mandare
+		// friendSummaryDTO.setFavoriteVideogameAppId(friend.getProfile_following().get);
+
 
 		return friendSummaryDTO;
+	}
 
+	public FriendSummaryDTO toFriendSummaryDTOxFollower (Friend friend){
+		FriendSummaryDTO friendSummaryDTO = new FriendSummaryDTO();
+
+		friendSummaryDTO.setId(friend.getId());
+		friendSummaryDTO.setSteamId(friend.getProfile_follower().getUser().getSteamId());
+		friendSummaryDTO.setFollowersCount(friend.getProfile_follower().getFollowers().size());
+		friendSummaryDTO.setFollowingCount(friend.getProfile_follower().getFollowings().size());
+		friendSummaryDTO.setLastPlayedVideogameAppId(friend.getProfile_follower().getLastPlayedVideogameAppId());
+		friendSummaryDTO.setProfileName(friend.getProfile_follower().getProfileName());
+		friendSummaryDTO.setProfileID(friend.getProfile_follower().getId());
+		friendSummaryDTO.setProfileImgId(friend.getProfile_follower().getProfileImgId());
+		friendSummaryDTO.setProfileBackdropImgId(friend.getProfile_follower().getProfileBackdropImgId());
+		friendSummaryDTO.setLastPlayedGameImgUrl(friend.getProfile_follower().getLastPlayedGameImgUrl());
+		friendSummaryDTO.setLastPlayedGameName(friend.getProfile_follower().getLastPlayedGameName());
+
+
+		return friendSummaryDTO;
 	}
 
 	public CommentDTOResp toCommentDTOResp(Comment comment){
