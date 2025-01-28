@@ -349,6 +349,19 @@ public class DTOSteamConverter {
 
     }
 
+    /**
+     * Converts a JSON string representation of a Steam videogame's details into a {@link VideogameDetailDTO}
+     * for recommendations based on the specified application ID.
+     *
+     * This method parses the provided JSON data to extract relevant information about a videogame,
+     * including its name, header image URL, developer, and publisher. It uses the Jackson library
+     * to parse the JSON structure and maps the necessary fields to the VideogameDetailDTO.
+     *
+     * @param appId the unique identifier of the videogame on Steam.
+     * @param json the JSON string containing the details of the videogame from Steam.
+     * @return a {@link VideogameDetailDTO} populated with the videogame's details.
+     * @throws JsonProcessingException if there is an error while processing the JSON string.
+     */
     public VideogameDetailDTO toVideogameDetailFromSteamForRecommedation(Long appId, String json) throws JsonProcessingException
 	{
         VideogameDetailDTO videogameDetailDTO = new VideogameDetailDTO();
@@ -364,6 +377,16 @@ public class DTOSteamConverter {
         return videogameDetailDTO;
     }
 
+    /**
+     * Converts a {@link VideogameDetailDTO} object into a {@link RecommendationDTO} object.
+     *
+     * This method extracts relevant information from the provided VideogameDetailDTO,
+     * such as the application's ID, name, header image URL, developers, and publishers,
+     * and populates a new RecommendationDTO with these details.
+     *
+     * @param videogameDetailDTO the {@link VideogameDetailDTO} containing the details of the videogame.
+     * @return a {@link RecommendationDTO} populated with the videogame's details for recommendation purposes.
+     */
     public RecommendationDTO toRecommendationDTOFromDetail(VideogameDetailDTO videogameDetailDTO)
     {
         RecommendationDTO recommendationDTO = new RecommendationDTO();
@@ -375,6 +398,16 @@ public class DTOSteamConverter {
         return recommendationDTO;
     }
 
+    /**
+     * Converts a JSON string representing recommended app IDs from Steam into a list of Long values.
+     *
+     * This method parses the input JSON to extract app IDs from the "similar_items_appids"
+     * fields within the clusters array, and collects them into a list.
+     *
+     * @param json the JSON string containing the recommendations data from Steam.
+     * @return a list of Long values representing the recommended app IDs.
+     * @throws JsonProcessingException if there is an error processing the JSON string.
+     */
     public List<Long> toListOfAppIdsRecommendedFromSteam(String json) throws JsonProcessingException
     {
         List<Long> appIds = new ArrayList<>();

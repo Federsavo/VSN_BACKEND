@@ -93,6 +93,18 @@ public class SteamController {
         }
     }
 
+    /**
+     * Retrieves a list of recommended games based on the user's playtime data from Steam.
+     *
+     * This method fetches the user's profile using the current authentication token,
+     * then requests recommended game app IDs from the Steam API based on the user's
+     * playtime clusters. It randomly selects game IDs and retrieves their details until
+     * the specified number of recommendations is reached.
+     *
+     * @return a list of {@link RecommendationDTO} containing the recommended games.
+     * @throws JsonProcessingException if there is an error processing the JSON response
+     *                                  from the Steam API.
+     */
     @GetMapping("/recommendations")
     public List<RecommendationDTO> getRecommendations() throws JsonProcessingException
 	{

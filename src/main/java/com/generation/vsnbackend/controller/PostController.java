@@ -8,6 +8,7 @@ import com.generation.vsnbackend.model.dto.PostDTOResp;
 import com.generation.vsnbackend.model.entities.Post;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.signin.Response;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -46,6 +47,19 @@ public class PostController {
         return posts;
     }
 
+    /**
+     * Retrieves a list of posts for a user specified by the given profile ID.
+     *
+     * This method fetches the Profile entity associated with the provided ID and
+     * constructs a list of PostDTOResp objects representing the user's posts.
+     * The posts are added to the response list in reverse order (from newest to oldest)
+     * to present the most recent posts first.
+     *
+     * @param id The ID of the user's profile whose posts are to be retrieved.
+     * @return A list of PostDTOResp objects representing the user's posts,
+     *         ordered from the most recent to the oldest.
+     * @throws EntityNotFoundException If no profile with the specified ID exists.
+     */
     @GetMapping("/external/{id}")
     List<PostDTOResp> getUserPosts(@PathVariable long id){
         List<PostDTOResp> posts = new ArrayList<>();

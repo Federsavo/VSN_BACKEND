@@ -177,8 +177,18 @@ public class DTOConverter
 		return postDTOResp;
 	}
 
-	//DA QUI IN POI DOC DA FARE
 
+	/**
+	 * Converts a {@link Friend} entity into a {@link FriendSummaryDTO} for data transfer.
+	 *
+	 * This method extracts relevant information from the given Friend entity, including
+	 * details about the friend's profile, such as Steam ID, follower and following counts,
+	 * last played game details, and profile images. It returns a Data Transfer Object
+	 * that can be used in API responses or other layers of the application.
+	 *
+	 * @param friend the Friend entity to be converted.
+	 * @return a {@link FriendSummaryDTO} containing the summary information of the friend.
+	 */
 	public FriendSummaryDTO toFriendSummaryDTO (Friend friend){
 		FriendSummaryDTO friendSummaryDTO = new FriendSummaryDTO();
 
@@ -200,6 +210,17 @@ public class DTOConverter
 		return friendSummaryDTO;
 	}
 
+	/**
+	 * Converts a {@link Friend} entity into a {@link FriendSummaryDTO} for a follower's perspective.
+	 *
+	 * This method extracts relevant information from the given Friend entity, focusing on the
+	 * profile of the follower. It includes details such as Steam ID, follower and following counts,
+	 * last played game information, and profile images. The resulting Data Transfer Object can
+	 * be utilized in API responses or other layers of the application.
+	 *
+	 * @param friend the Friend entity to be converted.
+	 * @return a {@link FriendSummaryDTO} containing the summary information of the follower's profile.
+	 */
 	public FriendSummaryDTO toFriendSummaryDTOxFollower (Friend friend){
 		FriendSummaryDTO friendSummaryDTO = new FriendSummaryDTO();
 
@@ -219,56 +240,56 @@ public class DTOConverter
 		return friendSummaryDTO;
 	}
 
-	public CommentDTOResp toCommentDTOResp(Comment comment){
-		CommentDTOResp commentDTOResp = new CommentDTOResp();
-
-		commentDTOResp.setId(comment.getId());
-		commentDTOResp.setAuthor(comment.getAuthor());
-		commentDTOResp.setTheComment(comment.getTheComment());
-		commentDTOResp.setnLike(comment.getnLike());
-		commentDTOResp.setPubblicationDate(String.valueOf(comment.getPubblicationDate()));
-		commentDTOResp.setPostId(comment.getPost().getId());
-
-		return commentDTOResp;
-
-	}
-
-	public Comment toCommentEntity(CommentDTOReq commentDTOReq){
-		Comment comment = new Comment();
-
-		comment.setTheComment(commentDTOReq.getTheComment());
-		comment.setnLike(commentDTOReq.getnLike());
-		comment.setAuthor(commentDTOReq.getAuthor());
-		comment.setPubblicationDate(LocalDateTime.now());
-
-		return comment;
-
-	}
-
-
-
-	public ReviewDTOResp toReviewDTOResp(Review review){
-		ReviewDTOResp reviewDTOResp = new ReviewDTOResp();
-
-		reviewDTOResp.setId(review.getId());
-		reviewDTOResp.setAuthor(review.getAuthor());
-		reviewDTOResp.setContent(review.getContent());
-		reviewDTOResp.setTitle(review.getTitle());
-		reviewDTOResp.setNumberOfStar(review.getNumberOfStar());
-
-		return reviewDTOResp;
-	}
-
-	public Review toReviewEntity(ReviewDTOReq reviewDTOReq){
-		Review review = new Review();
-
-		review.setAuthor(reviewDTOReq.getAuthor());
-		review.setTitle(reviewDTOReq.getTitle());
-		review.setNumberOfStar(reviewDTOReq.getNumberOfStar());
-		review.setContent(reviewDTOReq.getContent());
-
-		return review;
-	}
+//	public CommentDTOResp toCommentDTOResp(Comment comment){
+//		CommentDTOResp commentDTOResp = new CommentDTOResp();
+//
+//		commentDTOResp.setId(comment.getId());
+//		commentDTOResp.setAuthor(comment.getAuthor());
+//		commentDTOResp.setTheComment(comment.getTheComment());
+//		commentDTOResp.setnLike(comment.getnLike());
+//		commentDTOResp.setPubblicationDate(String.valueOf(comment.getPubblicationDate()));
+//		commentDTOResp.setPostId(comment.getPost().getId());
+//
+//		return commentDTOResp;
+//
+//	}
+//
+//	public Comment toCommentEntity(CommentDTOReq commentDTOReq){
+//		Comment comment = new Comment();
+//
+//		comment.setTheComment(commentDTOReq.getTheComment());
+//		comment.setnLike(commentDTOReq.getnLike());
+//		comment.setAuthor(commentDTOReq.getAuthor());
+//		comment.setPubblicationDate(LocalDateTime.now());
+//
+//		return comment;
+//
+//	}
+//
+//
+//
+//	public ReviewDTOResp toReviewDTOResp(Review review){
+//		ReviewDTOResp reviewDTOResp = new ReviewDTOResp();
+//
+//		reviewDTOResp.setId(review.getId());
+//		reviewDTOResp.setAuthor(review.getAuthor());
+//		reviewDTOResp.setContent(review.getContent());
+//		reviewDTOResp.setTitle(review.getTitle());
+//		reviewDTOResp.setNumberOfStar(review.getNumberOfStar());
+//
+//		return reviewDTOResp;
+//	}
+//
+//	public Review toReviewEntity(ReviewDTOReq reviewDTOReq){
+//		Review review = new Review();
+//
+//		review.setAuthor(reviewDTOReq.getAuthor());
+//		review.setTitle(reviewDTOReq.getTitle());
+//		review.setNumberOfStar(reviewDTOReq.getNumberOfStar());
+//		review.setContent(reviewDTOReq.getContent());
+//
+//		return review;
+//	}
 
 
 }

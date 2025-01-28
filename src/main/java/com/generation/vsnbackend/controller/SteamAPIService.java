@@ -156,6 +156,17 @@ public class SteamAPIService {
         return restTemplate.getForObject(url, String.class);
     }
 
+    /**
+     * Posts a request to identify clusters based on playtime for a given Steam user.
+     *
+     * This method constructs a URL to the Steam API endpoint for identifying game
+     * clusters (recommended games based on those played on Steam) based on the playtime of the user with the specified Steam ID.
+     * It sends a POST request to the API and returns the response as a String.
+     *
+     * @param steamId The Steam ID of the user for whom clusters will be identified.
+     * @return A JSON string representing the clusters identified by the API for the given Steam ID.
+     * @throws RestClientException If an error occurs while making the API request.
+     */
     public String postClusterBasedOnPlaytime(String steamId)
     {
         String url="https://api.steampowered.com/IStoreAppSimilarityService/IdentifyClustersFromPlaytime/v1/?key="+key+"&steamid="+steamId+"&format=json";
