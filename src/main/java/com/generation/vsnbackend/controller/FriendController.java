@@ -258,15 +258,13 @@ public class FriendController {
      * @throws EntityNotFoundException If the profile with the given `idProfileToUnfollow` does not exist.
      */
     @DeleteMapping("/followings/{idProfileToUnfollow}")
-    public Response unfollow(@PathVariable Long idProfileToUnfollow){
+    public FriendSummaryDTO unfollow(@PathVariable Long idProfileToUnfollow){
         User userRequesting=credentialService.getUserByToken();
         Long idProfileRequesting=userRequesting.getProfile().getId();
         Friend friendToUnfollow=ch.getOneFriendByFollowingIdAndFollowerId(idProfileToUnfollow,idProfileRequesting);
 
         if(friendToUnfollow==null)
-        {
-            return new Response("Couldn't find friend");
-        }
+            throw new FriendException("Amico non presente, coglione!");
 
         Long friendId=friendToUnfollow.getId();
 
@@ -282,6 +280,6 @@ public class FriendController {
         ch.userService.save(profileReceiving.getUser());
 
         ch.friendService.deleteById(friendId);
-        return new Response("Removed following");
+        return dtoConverter.toFriendSummaryDTO(friend);
     }
 }
