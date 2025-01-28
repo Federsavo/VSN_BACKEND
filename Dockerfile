@@ -10,7 +10,7 @@ ENV DB_PASSWORD=${DB_PASSWORD}
 ENV PORT=${PORT}
 
 # Copy WAR file and run it
-COPY target/your-app.war /app.war
+COPY target/VSNBACKEND-0.0.1-SNAPSHOT.war /VSNBACKEND-0.0.1-SNAPSHOT.war
 
 # Expose Render's port and run the app
 EXPOSE ${PORT}
