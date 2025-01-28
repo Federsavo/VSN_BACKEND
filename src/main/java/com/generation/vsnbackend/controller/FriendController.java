@@ -12,6 +12,7 @@ import com.generation.vsnbackend.model.entities.Friend;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.User;
 import com.generation.vsnbackend.model.entities.signin.Response;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,8 +37,21 @@ public class FriendController {
     @Autowired
     ControllerHelper ch;
 
+    /**
+     * Retrieves a list of friends (followings) associated with the currently logged-in user.
+     *
+     * This method identifies the logged-in user by extracting their credentials using the
+     * {@link CredentialService#getUserByToken()} method. It then fetches the list of followers
+     * (users they are following) from the user's profile and converts each friend entity into
+     * a {@link FriendSummaryDTO} object using the {@link com.generation.vsnbackend.model.dto.DTOConverter#toFriendSummaryDTO(Friend)} method.
+     *
+     * @return a {@link List} of {@link FriendSummaryDTO} objects representing the friends the user is following.
+     *         Returns an empty list if the user has no followings.
+     * @throws IllegalStateException if the user or their profile is null.
+     */
     @GetMapping("/following")
     public List<FriendSummaryDTO> getAllFriends(){
+        //quelli che seguo
         User user=credentialService.getUserByToken();
         List<FriendSummaryDTO> followings=new ArrayList<>();
         for(Friend f:user.getProfile().getFollowers())
@@ -45,28 +59,113 @@ public class FriendController {
         return followings;
     }
 
+    /**
+     * Retrieves a list of followers associated with the currently logged-in user.
+     *
+     * This method retrieves the currently authenticated user using the
+     * {@link CredentialService#getUserByToken()} method. It accesses the user's profile
+     * and fetches the list of followers (users who follow the authenticated user) from
+     * the `followings` field. Each follower entity is then converted into a
+     * {@link FriendSummaryDTO} object using the {@link  com.generation.vsnbackend.model.dto.DTOConverter#toFriendSummaryDTO(Friend)} method.
+     *
+     * @return a {@link List} of {@link FriendSummaryDTO} objects representing the followers of the user.
+     *         Returns an empty list if the user has no followers.
+     * @throws IllegalStateException if the user or their profile is null.
+     */
     @GetMapping("/follower")
     public List<FriendSummaryDTO> getAllFollowers(){
+        //quelli che mi seguono
         User user=credentialService.getUserByToken();
         List<FriendSummaryDTO> followers=new ArrayList<>();
         for(Friend f:user.getProfile().getFollowings())
-            followers.add(dtoConverter.toFriendSummaryDTO(f));
+            followers.add(dtoConverter.toFriendSummaryDTOxFollower(f));
         return followers;
     }
 
-//    @GetMapping("/followers/{id}")
-//    public List<FriendSummaryDTO> getAllFriends(@PathVariable Long id){
-//        Profile profile = ch.profileService.getOneById(id);
-//
-//        List<FriendSummaryDTO> friends=new ArrayList<>();
-//        for(Friend f : profile.getFollowers())
-//        {
-//            System.out.println(f.getUser().getProfile().getSteamName());
-//            friends.add(dtoConverter.toFriendSummaryDTO(f));
-//        }
-//        return friends;
-//    }
 
+    /**
+     * Retrieves a list of followers for the user associated with the specified profile ID.
+     *
+     * This method allows fetching the followers of a user based on their profile ID. It uses
+     * the { ProfileService#getOneById(Long)} method to retrieve the profile corresponding
+     * to the given ID. Once the profile is obtained, the followers (users who follow the profile's owner)
+     * are accessed from the `followers` field of the profile. Each follower is then converted into a
+     * {@link FriendSummaryDTO} object using the {@link  com.generation.vsnbackend.model.dto.DTOConverter#toFriendSummaryDTO(Friend)} method.
+     *
+     * @param id the unique identifier of the profile whose followers are to be retrieved.
+     * @return a {@link List} of {@link FriendSummaryDTO} objects representing the followers of the user
+     *         associated with the specified profile ID.
+     *         Returns an empty list if the profile has no followers.
+     * @throws EntityNotFoundException if no profile is found for the specified ID.
+     * @throws IllegalStateException if the profile or its followers are null.
+     */
+    @GetMapping("/followers/{id}")
+    public List<FriendSummaryDTO> getAllFriends(@PathVariable Long id){
+
+        //per avere i followers di chi sta nell'id (diverso da me)
+        Profile profile = ch.profileService.getOneById(id);
+
+        List<FriendSummaryDTO> friends=new ArrayList<>();
+        for(Friend f : profile.getFollowers())
+        {
+            friends.add(dtoConverter.toFriendSummaryDTO(f));
+        }
+        return friends;
+    }
+
+    /**
+     * Retrieves a list of users that the profile associated with the specified ID is following.
+     *
+     * This method fetches the users (followings) that the owner of the profile, identified by the given ID,
+     * is currently following. It uses the {ProfileService#getOneById(Long)} method to retrieve the
+     * profile associated with the provided ID. Once the profile is retrieved, the list of followings
+     * is accessed via the `followings` field of the profile. Each following is then converted into a
+     * {@link FriendSummaryDTO} object using the {@link  com.generation.vsnbackend.model.dto.DTOConverter#toFriendSummaryDTO(Friend)} method.
+     *
+     * @param id the unique identifier of the profile whose followings are to be retrieved.
+     * @return a {@link List} of {@link FriendSummaryDTO} objects representing the users that the profile's owner
+     *         is following. Returns an empty list if the profile has no followings.
+     * @throws EntityNotFoundException if no profile is found for the specified ID.
+     * @throws IllegalStateException if the profile or its followings are null.
+     */
+    @GetMapping("/followings/{id}")
+    public List<FriendSummaryDTO> getAllFriendsBis(@PathVariable Long id){
+
+        //per avere i following di chi sta nell'id (diverso da me)
+        Profile profile = ch.profileService.getOneById(id);
+
+        List<FriendSummaryDTO> friends=new ArrayList<>();
+        for(Friend f : profile.getFollowings())
+        {
+            friends.add(dtoConverter.toFriendSummaryDTOxFollower(f));
+        }
+        return friends;
+    }
+
+    /**
+     * Retrieves detailed information about a friend's profile using their profile ID.
+     *
+     * This method fetches the profile associated with the provided friendId. It integrates
+     * data from the Steam API to update the friend's profile with information about their
+     * last played game and their Steam name. If an error occurs during the API interaction,
+     * the profile is returned without the Steam-related updates.
+     *
+     * The method performs the following steps:
+     * - Fetches the profile using the provided ID.
+     * - Calls the Steam API to retrieve the friend's last played game details and Steam name.
+     * - Updates the profile with the retrieved information, including the last played game's ID,
+     *   image URL, and name.
+     * - Saves the updated profile to the database.
+     * - Converts the profile into a ProfileDTOResp object and returns it.
+     *
+     * If an exception occurs during the Steam API interaction, the profile is returned as is,
+     * without the Steam-related updates.
+     *
+     * @param friendId The unique identifier of the friend's profile.
+     * @return A ProfileDTOResp containing the friend's profile information.
+     * @throws EntityNotFoundException If no profile is found for the provided friendId.
+     * @throws IllegalStateException If the profile or its associated user is null.
+     */
     @GetMapping("/following/{friendId}")
     public ProfileDTOResp getDetailFriend(@PathVariable Long friendId){
 
@@ -96,7 +195,24 @@ public class FriendController {
         }
     }
 
-
+    /**
+     * Adds a new friend connection between the currently authenticated user and another user.
+     *
+     * This method allows the authenticated user to follow another user's profile by creating
+     * a new friendship link. The following steps are performed:
+     * - Verifies that the user is not attempting to follow their own profile.
+     * - Fetches the profile of the user to be followed using the provided `friendProfileId`.
+     * - Creates a new `Friend` entity to represent the relationship.
+     * - Updates the follower and following lists for both profiles.
+     * - Saves all updated entities to the database.
+     *
+     * If the user attempts to follow their own profile, a `FriendException` is thrown.
+     *
+     * @param friendProfileId The ID of the profile to be followed.
+     * @return A `FriendSummaryDTO` containing details about the new friendship link.
+     * @throws FriendException If the user attempts to follow their own profile.
+     * @throws EntityNotFoundException If the profile with the given `friendProfileId` does not exist.
+     */
     @PostMapping("/add/{friendProfileId}")
     public FriendSummaryDTO addOneFriend(@PathVariable Long friendProfileId){
         User userRequesting=credentialService.getUserByToken();
@@ -122,51 +238,50 @@ public class FriendController {
 
 
         return dtoConverter.toFriendSummaryDTO(friend);
-       // return new Response("ok following");
     }
 
-    //da sistemare
-//    @DeleteMapping("/following/{followingProfileId}")
-//    public Response deleteOneFollowing(@PathVariable Long followingProfileId){
-//
-//        User user=credentialService.getUserByToken();
-//        Profile friendOfUser = ch.profileService.getOneById(followingProfileId);
-//
-//
-//
-////        for (Friend follower: friendOfUser.getFollowers())
-////            if(user.getProfile().getId().equals(follower.getProfile().getId()))
-////                friendOfUser.getFollowers().remove(follower);
-////
-////        for(Friend following:user.getProfile().getFriends())
-////            if(followingProfileId.equals(following.getUser().getProfile().getId()))
-////                user.getProfile().getFriends().remove(following);
-//
-//
-//        // Rimuovere il following dalla lista degli amici del profilo dell'utente
-//        Iterator<Friend> followingIterator = user.getProfile().getFriends().iterator();
-//        while (followingIterator.hasNext()) {
-//            Friend following = followingIterator.next();
-//            if (followingProfileId.equals(following.getUser().getProfile().getId())) {
-//                followingIterator.remove();
-//                ch.friendService.deleteById(friendOfUser.getUser().getFriend().getId());
-//            }
-//        }
-//
-//
-//        // Rimuovere il follower dalla lista dei follower di "friendOfUser"
-//        Iterator<Friend> followerIterator = friendOfUser.getFollowers().iterator();
-//        while (followerIterator.hasNext()) {
-//            Friend follower = followerIterator.next();
-//            if (user.getProfile().getId().equals(follower.getProfile().getId())) {
-//                followerIterator.remove();
-//                ch.friendService.deleteById(user.getFriend().getId());
-//            }
-//        }
-//
-//
-//
-//        return new Response("Removed following");
-//
-//    }
+    /**
+     * Removes a friendship link between the currently authenticated user and another user.
+     *
+     * This method allows the authenticated user to unfollow another user's profile by
+     * deleting the existing friendship relationship. The following steps are performed:
+     * - Retrieves the currently authenticated user.
+     * - Checks if the user is currently following the profile specified by `idProfileToUnfollow`.
+     * - If the friendship does not exist, a response indicating the failure is returned.
+     * - If the friendship exists, it removes the friendship from both the follower and following lists.
+     * - Updates the corresponding profiles and saves the changes to the database.
+     * - Deletes the `Friend` entity representing the friendship.
+     *
+     * @param idProfileToUnfollow The ID of the profile to unfollow.
+     * @return A `Response` object indicating the result of the unfollow operation.
+     *         Returns a message confirming the removal or an error message if the friendship was not found.
+     * @throws EntityNotFoundException If the profile with the given `idProfileToUnfollow` does not exist.
+     */
+    @DeleteMapping("/followings/{idProfileToUnfollow}")
+    public Response unfollow(@PathVariable Long idProfileToUnfollow){
+        User userRequesting=credentialService.getUserByToken();
+        Long idProfileRequesting=userRequesting.getProfile().getId();
+        Friend friendToUnfollow=ch.getOneFriendByFollowingIdAndFollowerId(idProfileToUnfollow,idProfileRequesting);
+
+        if(friendToUnfollow==null)
+        {
+            return new Response("Couldn't find friend");
+        }
+
+        Long friendId=friendToUnfollow.getId();
+
+        Profile profileReceiving =ch.profileService.getOneById(idProfileToUnfollow);
+        Friend friend = ch.friendService.getOneById(friendId);
+
+        userRequesting.getProfile().getFollowers().remove(friend);
+        profileReceiving.getFollowings().remove(friend);
+
+        ch.profileService.save(profileReceiving);
+        ch.profileService.save(userRequesting.getProfile());
+        ch.userService.save(userRequesting);
+        ch.userService.save(profileReceiving.getUser());
+
+        ch.friendService.deleteById(friendId);
+        return new Response("Removed following");
+    }
 }

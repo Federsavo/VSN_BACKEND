@@ -10,6 +10,8 @@ public class FriendSummaryDTO {
     private int followingCount;
 
     private Long lastPlayedVideogameAppId;
+    private Long favoriteVideogameAppId;
+
 
     private String profileName;
 //    private String steamName;
@@ -22,6 +24,15 @@ public class FriendSummaryDTO {
 
     private String lastPlayedGameImgUrl;
     private String lastPlayedGameName;
+    private String favoriteVideogameImgUrl;
+
+    public String getFavoriteVideogameImgUrl() {
+        return favoriteVideogameImgUrl;
+    }
+
+    public void setFavoriteVideogameImgUrl(String favoriteVideogameImgUrl) {
+        this.favoriteVideogameImgUrl = favoriteVideogameImgUrl;
+    }
 
     public Long getProfileID()
     {
@@ -112,5 +123,13 @@ public class FriendSummaryDTO {
 
     public void setLastPlayedGameName(String lastPlayedGameName) {
         this.lastPlayedGameName = lastPlayedGameName;
+    }
+
+    public Long getFavoriteVideogameAppId() {
+        return favoriteVideogameAppId;
+    }
+
+    public void setFavoriteVideogameAppId(Long favoriteVideogameAppId) {
+        this.favoriteVideogameAppId = favoriteVideogameAppId;
     }
 }

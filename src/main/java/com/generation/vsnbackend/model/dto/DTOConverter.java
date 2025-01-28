@@ -177,15 +177,25 @@ public class DTOConverter
 		return postDTOResp;
 	}
 
-	//DA QUI IN POI DOC DA FARE
 
+	/**
+	 * Converts a {@link Friend} entity into a {@link FriendSummaryDTO} for data transfer.
+	 *
+	 * This method extracts relevant information from the given Friend entity, including
+	 * details about the friend's profile, such as Steam ID, follower and following counts,
+	 * last played game details, and profile images. It returns a Data Transfer Object
+	 * that can be used in API responses or other layers of the application.
+	 *
+	 * @param friend the Friend entity to be converted.
+	 * @return a {@link FriendSummaryDTO} containing the summary information of the friend.
+	 */
 	public FriendSummaryDTO toFriendSummaryDTO (Friend friend){
 		FriendSummaryDTO friendSummaryDTO = new FriendSummaryDTO();
 
 		friendSummaryDTO.setId(friend.getId());
 		friendSummaryDTO.setSteamId(friend.getProfile_following().getUser().getSteamId());
-		friendSummaryDTO.setFollowersCount(friend.getProfile_following().getFollowers().size());
-		friendSummaryDTO.setFollowingCount(friend.getProfile_following().getFollowings().size());
+		friendSummaryDTO.setFollowersCount(friend.getProfile_following().getFollowings().size());
+		friendSummaryDTO.setFollowingCount(friend.getProfile_following().getFollowers().size());
 		friendSummaryDTO.setLastPlayedVideogameAppId(friend.getProfile_following().getLastPlayedVideogameAppId());
 		friendSummaryDTO.setProfileName(friend.getProfile_following().getProfileName());
 		friendSummaryDTO.setProfileID(friend.getProfile_following().getId());
@@ -193,61 +203,93 @@ public class DTOConverter
 		friendSummaryDTO.setProfileBackdropImgId(friend.getProfile_following().getProfileBackdropImgId());
 		friendSummaryDTO.setLastPlayedGameImgUrl(friend.getProfile_following().getLastPlayedGameImgUrl());
 		friendSummaryDTO.setLastPlayedGameName(friend.getProfile_following().getLastPlayedGameName());
+		//	videogame favorito manca tutto da mandare
+		// friendSummaryDTO.setFavoriteVideogameAppId(friend.getProfile_following().get);
 
 
 		return friendSummaryDTO;
 	}
 
-	public CommentDTOResp toCommentDTOResp(Comment comment){
-		CommentDTOResp commentDTOResp = new CommentDTOResp();
+	/**
+	 * Converts a {@link Friend} entity into a {@link FriendSummaryDTO} for a follower's perspective.
+	 *
+	 * This method extracts relevant information from the given Friend entity, focusing on the
+	 * profile of the follower. It includes details such as Steam ID, follower and following counts,
+	 * last played game information, and profile images. The resulting Data Transfer Object can
+	 * be utilized in API responses or other layers of the application.
+	 *
+	 * @param friend the Friend entity to be converted.
+	 * @return a {@link FriendSummaryDTO} containing the summary information of the follower's profile.
+	 */
+	public FriendSummaryDTO toFriendSummaryDTOxFollower (Friend friend){
+		FriendSummaryDTO friendSummaryDTO = new FriendSummaryDTO();
 
-		commentDTOResp.setId(comment.getId());
-		commentDTOResp.setAuthor(comment.getAuthor());
-		commentDTOResp.setTheComment(comment.getTheComment());
-		commentDTOResp.setnLike(comment.getnLike());
-		commentDTOResp.setPubblicationDate(String.valueOf(comment.getPubblicationDate()));
-		commentDTOResp.setPostId(comment.getPost().getId());
+		friendSummaryDTO.setId(friend.getId());
+		friendSummaryDTO.setSteamId(friend.getProfile_follower().getUser().getSteamId());
+		friendSummaryDTO.setFollowersCount(friend.getProfile_follower().getFollowings().size());
+		friendSummaryDTO.setFollowingCount(friend.getProfile_follower().getFollowers().size());
+		friendSummaryDTO.setLastPlayedVideogameAppId(friend.getProfile_follower().getLastPlayedVideogameAppId());
+		friendSummaryDTO.setProfileName(friend.getProfile_follower().getProfileName());
+		friendSummaryDTO.setProfileID(friend.getProfile_follower().getId());
+		friendSummaryDTO.setProfileImgId(friend.getProfile_follower().getProfileImgId());
+		friendSummaryDTO.setProfileBackdropImgId(friend.getProfile_follower().getProfileBackdropImgId());
+		friendSummaryDTO.setLastPlayedGameImgUrl(friend.getProfile_follower().getLastPlayedGameImgUrl());
+		friendSummaryDTO.setLastPlayedGameName(friend.getProfile_follower().getLastPlayedGameName());
 
-		return commentDTOResp;
 
+		return friendSummaryDTO;
 	}
 
-	public Comment toCommentEntity(CommentDTOReq commentDTOReq){
-		Comment comment = new Comment();
-
-		comment.setTheComment(commentDTOReq.getTheComment());
-		comment.setnLike(commentDTOReq.getnLike());
-		comment.setAuthor(commentDTOReq.getAuthor());
-		comment.setPubblicationDate(LocalDateTime.now());
-
-		return comment;
-
-	}
-
-
-
-	public ReviewDTOResp toReviewDTOResp(Review review){
-		ReviewDTOResp reviewDTOResp = new ReviewDTOResp();
-
-		reviewDTOResp.setId(review.getId());
-		reviewDTOResp.setAuthor(review.getAuthor());
-		reviewDTOResp.setContent(review.getContent());
-		reviewDTOResp.setTitle(review.getTitle());
-		reviewDTOResp.setNumberOfStar(review.getNumberOfStar());
-
-		return reviewDTOResp;
-	}
-
-	public Review toReviewEntity(ReviewDTOReq reviewDTOReq){
-		Review review = new Review();
-
-		review.setAuthor(reviewDTOReq.getAuthor());
-		review.setTitle(reviewDTOReq.getTitle());
-		review.setNumberOfStar(reviewDTOReq.getNumberOfStar());
-		review.setContent(reviewDTOReq.getContent());
-
-		return review;
-	}
+//	public CommentDTOResp toCommentDTOResp(Comment comment){
+//		CommentDTOResp commentDTOResp = new CommentDTOResp();
+//
+//		commentDTOResp.setId(comment.getId());
+//		commentDTOResp.setAuthor(comment.getAuthor());
+//		commentDTOResp.setTheComment(comment.getTheComment());
+//		commentDTOResp.setnLike(comment.getnLike());
+//		commentDTOResp.setPubblicationDate(String.valueOf(comment.getPubblicationDate()));
+//		commentDTOResp.setPostId(comment.getPost().getId());
+//
+//		return commentDTOResp;
+//
+//	}
+//
+//	public Comment toCommentEntity(CommentDTOReq commentDTOReq){
+//		Comment comment = new Comment();
+//
+//		comment.setTheComment(commentDTOReq.getTheComment());
+//		comment.setnLike(commentDTOReq.getnLike());
+//		comment.setAuthor(commentDTOReq.getAuthor());
+//		comment.setPubblicationDate(LocalDateTime.now());
+//
+//		return comment;
+//
+//	}
+//
+//
+//
+//	public ReviewDTOResp toReviewDTOResp(Review review){
+//		ReviewDTOResp reviewDTOResp = new ReviewDTOResp();
+//
+//		reviewDTOResp.setId(review.getId());
+//		reviewDTOResp.setAuthor(review.getAuthor());
+//		reviewDTOResp.setContent(review.getContent());
+//		reviewDTOResp.setTitle(review.getTitle());
+//		reviewDTOResp.setNumberOfStar(review.getNumberOfStar());
+//
+//		return reviewDTOResp;
+//	}
+//
+//	public Review toReviewEntity(ReviewDTOReq reviewDTOReq){
+//		Review review = new Review();
+//
+//		review.setAuthor(reviewDTOReq.getAuthor());
+//		review.setTitle(reviewDTOReq.getTitle());
+//		review.setNumberOfStar(reviewDTOReq.getNumberOfStar());
+//		review.setContent(reviewDTOReq.getContent());
+//
+//		return review;
+//	}
 
 
 }

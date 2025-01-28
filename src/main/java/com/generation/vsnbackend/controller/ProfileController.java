@@ -88,6 +88,18 @@ public class ProfileController {
         }
     }
 
+    /**
+     * Retrieves a profile by its ID.
+     *
+     * This method fetches a Profile entity corresponding to the given ID and
+     * converts it into a ProfileDTOResp object to be returned to the client.
+     * If the profile is not found, an exception will be thrown.
+     *
+     * @param id The ID of the profile to retrieve.
+     * @return A ProfileDTOResp object representing the retrieved profile.
+     * @throws Exception If the profile with the specified ID is not found
+     *                   or if an error occurs during the retrieval process.
+     */
     @GetMapping("/{id}")
     ProfileDTOResp getProfileById(@PathVariable long id) throws Exception
     {

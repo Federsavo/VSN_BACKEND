@@ -64,4 +64,29 @@ public class ControllerHelper
 				videogameService.deleteById(videogame.getId());
 		}
 	}
+
+	/**
+	 * Retrieves a Friend entity based on the specified following and follower IDs.
+	 *
+	 * This method searches for a friendship relationship where the specified user is following
+	 * another user. It iterates through the list of all Friend entities and checks if the
+	 * follower and following IDs match the given parameters. If a match is found, the corresponding
+	 * Friend object is returned; otherwise, null is returned.
+	 *
+	 * @param followingId The ID of the user being followed.
+	 * @param followerId The ID of the user who is following.
+	 * @return The Friend object representing the friendship relationship, or null if no such
+	 *         relationship exists.
+	 */
+	public Friend getOneFriendByFollowingIdAndFollowerId(Long followingId,Long followerId)
+	{
+		List<Friend> friends=friendService.getList();
+		for(Friend friend : friends)
+		{
+			if(friend.getProfile_following().getId().equals(followingId))
+				return friend;
+		}
+		return null;
+	}
+
 }
