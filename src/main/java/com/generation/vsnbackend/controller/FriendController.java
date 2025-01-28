@@ -43,7 +43,7 @@ public class FriendController {
      * This method identifies the logged-in user by extracting their credentials using the
      * {@link CredentialService#getUserByToken()} method. It then fetches the list of followers
      * (users they are following) from the user's profile and converts each friend entity into
-     * a {@link FriendSummaryDTO} object using the {@link DtoConverter#toFriendSummaryDTO(Friend)} method.
+     * a {@link FriendSummaryDTO} object using the {@link com.generation.vsnbackend.model.dto.DTOConverter#toFriendSummaryDTO(Friend)} method.
      *
      * @return a {@link List} of {@link FriendSummaryDTO} objects representing the friends the user is following.
      *         Returns an empty list if the user has no followings.
@@ -66,7 +66,7 @@ public class FriendController {
      * {@link CredentialService#getUserByToken()} method. It accesses the user's profile
      * and fetches the list of followers (users who follow the authenticated user) from
      * the `followings` field. Each follower entity is then converted into a
-     * {@link FriendSummaryDTO} object using the {@link DtoConverter#toFriendSummaryDTOxFollower(Friend)} method.
+     * {@link FriendSummaryDTO} object using the {@link  com.generation.vsnbackend.model.dto.DTOConverter#toFriendSummaryDTO(Friend)} method.
      *
      * @return a {@link List} of {@link FriendSummaryDTO} objects representing the followers of the user.
      *         Returns an empty list if the user has no followers.
@@ -87,10 +87,10 @@ public class FriendController {
      * Retrieves a list of followers for the user associated with the specified profile ID.
      *
      * This method allows fetching the followers of a user based on their profile ID. It uses
-     * the {@link ProfileService#getOneById(Long)} method to retrieve the profile corresponding
+     * the { ProfileService#getOneById(Long)} method to retrieve the profile corresponding
      * to the given ID. Once the profile is obtained, the followers (users who follow the profile's owner)
      * are accessed from the `followers` field of the profile. Each follower is then converted into a
-     * {@link FriendSummaryDTO} object using the {@link DtoConverter#toFriendSummaryDTO(Friend)} method.
+     * {@link FriendSummaryDTO} object using the {@link  com.generation.vsnbackend.model.dto.DTOConverter#toFriendSummaryDTO(Friend)} method.
      *
      * @param id the unique identifier of the profile whose followers are to be retrieved.
      * @return a {@link List} of {@link FriendSummaryDTO} objects representing the followers of the user
@@ -117,10 +117,10 @@ public class FriendController {
      * Retrieves a list of users that the profile associated with the specified ID is following.
      *
      * This method fetches the users (followings) that the owner of the profile, identified by the given ID,
-     * is currently following. It uses the {@link ProfileService#getOneById(Long)} method to retrieve the
+     * is currently following. It uses the {ProfileService#getOneById(Long)} method to retrieve the
      * profile associated with the provided ID. Once the profile is retrieved, the list of followings
      * is accessed via the `followings` field of the profile. Each following is then converted into a
-     * {@link FriendSummaryDTO} object using the {@link DtoConverter#toFriendSummaryDTOxFollower(Friend)} method.
+     * {@link FriendSummaryDTO} object using the {@link  com.generation.vsnbackend.model.dto.DTOConverter#toFriendSummaryDTO(Friend)} method.
      *
      * @param id the unique identifier of the profile whose followings are to be retrieved.
      * @return a {@link List} of {@link FriendSummaryDTO} objects representing the users that the profile's owner
