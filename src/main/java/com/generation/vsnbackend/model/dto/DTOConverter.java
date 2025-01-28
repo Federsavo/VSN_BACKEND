@@ -184,8 +184,8 @@ public class DTOConverter
 
 		friendSummaryDTO.setId(friend.getId());
 		friendSummaryDTO.setSteamId(friend.getProfile_following().getUser().getSteamId());
-		friendSummaryDTO.setFollowersCount(friend.getProfile_following().getFollowers().size());
-		friendSummaryDTO.setFollowingCount(friend.getProfile_following().getFollowings().size());
+		friendSummaryDTO.setFollowersCount(friend.getProfile_following().getFollowings().size());
+		friendSummaryDTO.setFollowingCount(friend.getProfile_following().getFollowers().size());
 		friendSummaryDTO.setLastPlayedVideogameAppId(friend.getProfile_following().getLastPlayedVideogameAppId());
 		friendSummaryDTO.setProfileName(friend.getProfile_following().getProfileName());
 		friendSummaryDTO.setProfileID(friend.getProfile_following().getId());
@@ -205,8 +205,8 @@ public class DTOConverter
 
 		friendSummaryDTO.setId(friend.getId());
 		friendSummaryDTO.setSteamId(friend.getProfile_follower().getUser().getSteamId());
-		friendSummaryDTO.setFollowersCount(friend.getProfile_follower().getFollowers().size());
-		friendSummaryDTO.setFollowingCount(friend.getProfile_follower().getFollowings().size());
+		friendSummaryDTO.setFollowersCount(friend.getProfile_follower().getFollowings().size());
+		friendSummaryDTO.setFollowingCount(friend.getProfile_follower().getFollowers().size());
 		friendSummaryDTO.setLastPlayedVideogameAppId(friend.getProfile_follower().getLastPlayedVideogameAppId());
 		friendSummaryDTO.setProfileName(friend.getProfile_follower().getProfileName());
 		friendSummaryDTO.setProfileID(friend.getProfile_follower().getId());

@@ -141,9 +141,19 @@ public class FriendController {
         return dtoConverter.toFriendSummaryDTO(friend);
     }
 
-    @DeleteMapping("/followings/{idProfileToUnfollow}/{friendId}")
-    public Response unfollow(@PathVariable Long idProfileToUnfollow, @PathVariable Long friendId){
+    @DeleteMapping("/followings/{idProfileToUnfollow}")
+    public Response unfollow(@PathVariable Long idProfileToUnfollow){
         User userRequesting=credentialService.getUserByToken();
+        Long idProfileRequesting=userRequesting.getProfile().getId();
+        Friend friendToUnfollow=ch.getOneFriendByFollowingIdAndFollowerId(idProfileToUnfollow,idProfileRequesting);
+
+        if(friendToUnfollow==null)
+        {
+            return new Response("Couldn't find friend");
+        }
+
+        Long friendId=friendToUnfollow.getId();
+
         Profile profileReceiving =ch.profileService.getOneById(idProfileToUnfollow);
         Friend friend = ch.friendService.getOneById(friendId);
 
@@ -154,7 +164,6 @@ public class FriendController {
         ch.profileService.save(userRequesting.getProfile());
         ch.userService.save(userRequesting);
         ch.userService.save(profileReceiving.getUser());
-
 
         ch.friendService.deleteById(friendId);
         return new Response("Removed following");

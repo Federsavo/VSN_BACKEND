@@ -64,4 +64,16 @@ public class ControllerHelper
 				videogameService.deleteById(videogame.getId());
 		}
 	}
+
+	public Friend getOneFriendByFollowingIdAndFollowerId(Long followingId,Long followerId)
+	{
+		List<Friend> friends=friendService.getList();
+		for(Friend friend : friends)
+		{
+			if(friend.getProfile_following().getId().equals(followingId))
+				return friend;
+		}
+		return null;
+	}
+
 }
