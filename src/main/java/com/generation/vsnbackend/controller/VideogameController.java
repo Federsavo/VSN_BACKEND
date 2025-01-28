@@ -96,6 +96,18 @@ public class VideogameController {
         }
         return res;
     }
+    @GetMapping("/preferred/{profileId}")
+    public List<SingleOwnedGameDTO> getListPreferredOwnedGamesDto(@PathVariable Long profileId) throws JsonProcessingException
+    {
+        Profile profile=ch.profileService.getOneById(profileId);
+        List<Videogame> gamesPreferred=profile.getVideogames().stream().filter(v -> v.isPreferred()).toList();
+        List<SingleOwnedGameDTO> res=new ArrayList<>();
+        for(Videogame v : gamesPreferred)
+        {
+            res.add(dtoSteamConverter.toOwnedGame(v));
+        }
+        return res;
+    }
 
 
     /**
