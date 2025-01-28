@@ -241,21 +241,11 @@ public class FriendController {
     }
 
     /**
-     * Removes a friendship link between the currently authenticated user and another user.
-     *
-     * This method allows the authenticated user to unfollow another user's profile by
-     * deleting the existing friendship relationship. The following steps are performed:
-     * - Retrieves the currently authenticated user.
-     * - Checks if the user is currently following the profile specified by `idProfileToUnfollow`.
-     * - If the friendship does not exist, a response indicating the failure is returned.
-     * - If the friendship exists, it removes the friendship from both the follower and following lists.
-     * - Updates the corresponding profiles and saves the changes to the database.
-     * - Deletes the `Friend` entity representing the friendship.
+     * Endpoint to unfollow a profile identified by the provided ID.
      *
      * @param idProfileToUnfollow The ID of the profile to unfollow.
-     * @return A `Response` object indicating the result of the unfollow operation.
-     *         Returns a message confirming the removal or an error message if the friendship was not found.
-     * @throws EntityNotFoundException If the profile with the given `idProfileToUnfollow` does not exist.
+     * @return FriendSummaryDTO representing the unfollowed friend.
+     * @throws FriendException if the friend to unfollow is not found.
      */
     @DeleteMapping("/followings/{idProfileToUnfollow}")
     public FriendSummaryDTO unfollow(@PathVariable Long idProfileToUnfollow){
