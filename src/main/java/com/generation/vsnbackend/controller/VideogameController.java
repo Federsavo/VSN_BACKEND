@@ -97,7 +97,7 @@ public class VideogameController {
         return res;
     }
     @GetMapping("/preferred/{profileId}")
-    public List<SingleOwnedGameDTO> getListPreferredOwnedGamesDto(@PathVariable Long profileId) throws JsonProcessingException
+    public List<SingleOwnedGameDTO> getListPreferredOwnedGamesDtoWithId(@PathVariable Long profileId) throws JsonProcessingException
     {
         Profile profile=ch.profileService.getOneById(profileId);
         List<Videogame> gamesPreferred=profile.getVideogames().stream().filter(v -> v.isPreferred()).toList();
