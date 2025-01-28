@@ -30,7 +30,7 @@ public class PostController {
 
 
     /**
-     * Retrieves the list of posts for the authenticated user.
+     * Retrieves the list of posts for the authenticated user..
      *
      * @return a list of PostDTOResp objects representing the user's posts
      */
