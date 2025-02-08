@@ -8,12 +8,14 @@ import com.generation.vsnbackend.model.dtoSteam.VideogameDetailDTO;
 import com.generation.vsnbackend.model.entities.Profile;
 import com.generation.vsnbackend.model.entities.Videogame;
 import com.generation.vsnbackend.model.entities.signin.Response;
+import com.generation.vsnbackend.model.repositories.VideogameRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
@@ -27,7 +29,11 @@ public class VideogameController {
     @Autowired
     CredentialService credentialService;
     @Autowired
+    VideogameHelper videogameHelper;
+    @Autowired
     ControllerHelper ch;
+    @Autowired
+    VideogameRepository videogameRepo;
 
     /**
      * Retrieves a list of owned videogames for the current user, converting the data from the Steam API
@@ -44,33 +50,25 @@ public class VideogameController {
      * @throws JsonProcessingException if there is an error processing the JSON response from the Steam API
      */
     @GetMapping
-    public List<SingleOwnedGameDTO> getListOwnedGamesDto() throws JsonProcessingException
+    public List<SingleOwnedGameDTO> getListOwnedGamesDto(@RequestParam( required=false ) String name_like) throws JsonProcessingException
     {
         Profile profile=credentialService.getUserByToken().getProfile();
         List<Videogame> gamesDb=profile.getVideogames();
+        List<Videogame> gamesDbFiltered=gamesDb;
+        if(name_like!=null&&!name_like.isBlank())
+            gamesDbFiltered=videogameRepo.findByProfileAndNameVideogameContainingIgnoreCase(profile,name_like);
+        Set<Long> appIds=profile.getVideogames().stream().map(Videogame::getId).collect(Collectors.toSet());
         List<SingleOwnedGameDTO> games=dtoSteamConverter.toListOfOwnedGames(steamAPIService.getPlayerGames(profile.getUser().getSteamId()),
                                                                             gamesDb);
         if(gamesDb!=null&&(gamesDb.isEmpty() || gamesDb.size() != games.size()))
         {
-            ch.clearVideogameDbByProfile(profile);
-            for (SingleOwnedGameDTO game : games)
-            {
-                Videogame v = new Videogame();
-                v.setPreferred(false);
-                v.setNumberOfStars(0);
-                v.setIconImgUrl(game.getIconImgUrl());
-                v.setAppId(game.getAppId());
-                v.setNameVideogame(game.getVideogameName());
-                v.setProfile(profile);
-                profile.getVideogames().add(v);
-                ch.videogameService.save(v);
-            }
+            videogameHelper.fillVideogameDb(appIds,games,profile);
         }
-		if (games != null)
-		{
-            games=games.stream().sorted(Comparator.comparing(SingleOwnedGameDTO::isPreferred).reversed()).toList();
-        }
-        return games;
+
+        return gamesDbFiltered.stream()
+                .map(game -> new SingleOwnedGameDTO(game.getAppId(), game.getNameVideogame(), game.getIconImgUrl(), game.getNumberOfStars(), game.isPreferred() ))
+                .sorted(Comparator.comparing(SingleOwnedGameDTO::isPreferred).reversed())
+                .toList();
     }
 
     /**
@@ -82,12 +80,9 @@ public class VideogameController {
      * and converts them into a list of SingleOwnedGameDTO objects.
      *
      * @return a List of SingleOwnedGameDTO objects representing the preferred games owned by the user
-     * @throws JsonProcessingException if there is an error processing the JSON response
      */
-    @GetMapping("/preferred")
-    public List<SingleOwnedGameDTO> getListPreferredOwnedGamesDto() throws JsonProcessingException
+    private List<SingleOwnedGameDTO> getSingleOwnedGameDTOS(Profile profile)
     {
-        Profile profile=credentialService.getUserByToken().getProfile();
         List<Videogame> gamesPreferred=profile.getVideogames().stream().filter(v -> v.isPreferred()).toList();
         List<SingleOwnedGameDTO> res=new ArrayList<>();
         for(Videogame v : gamesPreferred)
@@ -96,17 +91,19 @@ public class VideogameController {
         }
         return res;
     }
+
+    @GetMapping("/preferred")
+    public List<SingleOwnedGameDTO> getListPreferredOwnedGamesDto()
+	{
+        Profile profile=credentialService.getUserByToken().getProfile();
+        return getSingleOwnedGameDTOS(profile);
+    }
+
     @GetMapping("/preferred/{profileId}")
-    public List<SingleOwnedGameDTO> getListPreferredOwnedGamesDtoWithId(@PathVariable Long profileId) throws JsonProcessingException
-    {
+    public List<SingleOwnedGameDTO> getListPreferredOwnedGamesDtoWithId(@PathVariable Long profileId)
+	{
         Profile profile=ch.profileService.getOneById(profileId);
-        List<Videogame> gamesPreferred=profile.getVideogames().stream().filter(v -> v.isPreferred()).toList();
-        List<SingleOwnedGameDTO> res=new ArrayList<>();
-        for(Videogame v : gamesPreferred)
-        {
-            res.add(dtoSteamConverter.toOwnedGame(v));
-        }
-        return res;
+        return getSingleOwnedGameDTOS(profile);
     }
 
 

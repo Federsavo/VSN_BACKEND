@@ -59,10 +59,9 @@ public class ProfileController {
      * is returned without last played game details.
      *
      * @return A {@link ProfileDTOResp} object containing the user's profile information.
-     * @throws IOException If an I/O error occurs during data retrieval or processing.
-     */
+	 */
     @GetMapping
-    ProfileDTOResp getProfile() throws IOException
+    ProfileDTOResp getProfile()
 	{
         Profile profile=credentialService.getUserByToken().getProfile();
         try

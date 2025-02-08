@@ -90,7 +90,6 @@ public class FileDataService
 		if(fileData.isPresent())
 		{
 			String filePath = fileData.get().getFilePath();
-			System.out.println(filePath);
 			byte[] image = Files.readAllBytes(new File(filePath).toPath());
 			return image;
 		}

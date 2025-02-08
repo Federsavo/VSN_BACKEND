@@ -94,12 +94,12 @@ public class CredentialService
 
 		String token = req.getRequest().getHeader("token");
 		if(token == null)
-			throw new InvalidUsernameException("Token non valido");
+			throw new InvalidUsernameException("Token not valid");
 
 		long id = Long.parseLong(token.split("-")[1]);
 		Optional<User> u = userRepo.findById(id);
 		if(u.isEmpty())
-			throw new InvalidUsernameException("Token non valido");
+			throw new InvalidUsernameException("Token not valid");
 
 		return u.get();
 	}

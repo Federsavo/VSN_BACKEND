@@ -8,6 +8,17 @@ public class SingleOwnedGameDTO
 	private int numberOfStars;//da 1 a 10
 	private boolean preferred;
 
+	public SingleOwnedGameDTO() {}
+
+	public SingleOwnedGameDTO(Long appId, String videogameName, String iconImgUrl, int numberOfStars, boolean preferred)
+	{
+		this.appId = appId;
+		this.videogameName = videogameName;
+		this.iconImgUrl = iconImgUrl;
+		this.numberOfStars = numberOfStars;
+		this.preferred = preferred;
+	}
+
 	public Long getAppId()
 	{
 		return appId;
