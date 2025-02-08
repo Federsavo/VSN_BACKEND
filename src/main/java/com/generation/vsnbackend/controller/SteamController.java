@@ -84,7 +84,6 @@ public class SteamController {
             Profile profile = credentialService.getUserByToken().getProfile();
             String steamId = profile.getUser().getSteamId();
             Set<String> setAchievements = dtoSteamConverter.toSetOfObtainedAchievements(steamAPIService.getPlayerAchievements(steamId, appid));
-            System.out.println(setAchievements);
             return dtoSteamConverter.toListOfObtainedAchievements(steamAPIService.getAchievementsInfo(appid), setAchievements);
         }
         catch (NoAchievementException e)
