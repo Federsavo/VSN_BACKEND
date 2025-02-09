@@ -261,6 +261,12 @@ public class DTOSteamConverter {
 
     }
 
+    /**
+     * Extracts and concatenates genre descriptions from a JsonNode containing an array of genres.
+     *
+     * @param genresNode A JsonNode representing an array of genres, where each genre has a "description" field.
+     * @return A comma-separated string of genre descriptions, or an empty string if no genres are present.
+     */
     public String attachGenres(JsonNode genresNode)
 	{
         int numberOfGenres = genresNode.size();
