@@ -348,14 +348,24 @@ public class DTOSteamConverter {
         {
             videogameDetailDTO.setDevelopers(videogameSteam.path("data").path("developers").get(0).asText());
             videogameDetailDTO.setPublishers(videogameSteam.path("data").path("publishers").get(0).asText());
-            DateTimeFormatter formatter;
-            if(Character.isDigit(videogameSteam.path("data").path("release_date").path("date").asText().charAt(1)))
-                formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy",  Locale.ENGLISH);
-            else {
-                formatter = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale.ENGLISH);
-            }
-            videogameDetailDTO.setReleaseDate(String.valueOf(LocalDate.parse(videogameSteam.path("data").path("release_date").path("date").asText(), formatter)));
             videogameDetailDTO.setStarReviews(0);
+
+            DateTimeFormatter formatter;
+
+            boolean comingSoon = videogameSteam.path("data").path("release_date").path("coming_soon").asBoolean(false);
+            JsonNode date=videogameSteam.path("data").path("release_date").path("date");
+
+            if(comingSoon)
+                videogameDetailDTO.setReleaseDate(date.asText());
+            else{
+                if (Character.isDigit(date.asText().charAt(1)))
+                    formatter = DateTimeFormatter.ofPattern("dd MMM, yyyy", Locale.ENGLISH);
+                else
+                {
+                    formatter = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale.ENGLISH);
+                }
+                videogameDetailDTO.setReleaseDate(String.valueOf(LocalDate.parse(date.asText(), formatter)));
+            }
         }
         return videogameDetailDTO;
     }

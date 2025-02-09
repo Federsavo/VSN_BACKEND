@@ -124,8 +124,9 @@ public class VideogameController {
      */
     @GetMapping("/{appId}")
     public VideogameDetailDTO getVideogameDetail(@PathVariable("appId") Long appId) throws JsonProcessingException {
+        Profile profile=credentialService.getUserByToken().getProfile();
         String videogameDetailJson = steamAPIService.getOneVideogameDetail(appId);
-        Videogame videogame = ch.findOneVideogameByAppId(appId);
+        Videogame videogame = ch.findOneVideogameByAppId(appId,profile);
         if(videogame!=null)
         {
             videogame = dtoSteamConverter.toVideogameFromSteam(videogameDetailJson, videogame);
@@ -150,7 +151,8 @@ public class VideogameController {
     @PutMapping
     public Response updateVideogame(@RequestBody SingleOwnedGameDTO req)
     {
-        Videogame videogame=ch.findOneVideogameByAppId(req.getAppId());
+        Profile profile=credentialService.getUserByToken().getProfile();
+        Videogame videogame=ch.findOneVideogameByAppId(req.getAppId(),profile);
         if(videogame!=null)
         {
             videogame.setNumberOfStars(req.getNumberOfStars());

@@ -37,14 +37,15 @@ public class ControllerHelper
 	/**
 	 *This method finds and returns a videogame by its app ID in db
 	 * @param appId the unique ID of the videogame to find (inherited from Steam)
+	 * @param profile the profile who owns the videogame
 	 * @return the videogame with the specified app ID, or null if not found
 	 */
-	public Videogame findOneVideogameByAppId(Long appId)
+	public Videogame findOneVideogameByAppId(Long appId,Profile profile)
 	{
 		List<Videogame> videogames=videogameService.getList();
 		for(Videogame videogame : videogames)
 		{
-			if(videogame.getAppId().equals(appId))
+			if(videogame.getAppId().equals(appId)&&videogame.getProfile().equals(profile))
 				return videogame;
 		}
 		return null;
@@ -103,7 +104,7 @@ public class ControllerHelper
 	public int getAverageNumberOfStars(Long appId)
 	{
 		List<Videogame> videogames=videogameService.getList();
-		return (int) videogames.stream().filter(v-> Objects.equals(v.getAppId(), appId))
+		return (int) videogames.stream().filter(v-> v.getAppId().equals(appId))
 				.mapToInt(Videogame::getNumberOfStars)
 				.average()
 				.orElse(0);
