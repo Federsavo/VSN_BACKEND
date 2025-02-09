@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.generation.vsnbackend.controller.SteamAPIService;
+import com.generation.vsnbackend.controller.helper.ControllerHelper;
 import com.generation.vsnbackend.model.entities.Videogame;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,8 @@ public class DTOSteamConverter {
 
     @Autowired
     SteamAPIService steamAPIService;
+    @Autowired
+    ControllerHelper ch;
 
     /**
      * Converts a JSON string representing player data into a PlayerDTO object.
@@ -236,7 +239,7 @@ public class DTOSteamConverter {
     public Videogame toVideogameFromSteam (String json, Videogame videogame) throws JsonProcessingException {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode rootNode = objectMapper.readTree(json);
-        JsonNode videogameSteam = rootNode.path(videogame.getAppId().toString()); // Assicurati che questo sia corretto
+        JsonNode videogameSteam = rootNode.path(videogame.getAppId().toString());
 
 
         videogame.setDevelopers(videogameSteam.path("data").path("developers").get(0).asText());
@@ -251,34 +254,36 @@ public class DTOSteamConverter {
         }
         videogame.setReleaseDate(LocalDate.parse(videogameSteam.path("data").path("release_date").path("date").asText(), formatter));
 
-
-        // Extract genres from the JSON and concatenate them into a single string
-        String generi="";
-        int numberOfGenres = videogameSteam.path("data").path("genres").size();
-        for(int i=0;i<numberOfGenres;i++) {
-            if (videogameSteam.path("data").path("genres").get(i) != null)
-                generi += videogameSteam.path("data").path("genres").get(i).path("description").asText() + ",";
-            else {
-                // Se non ci sono più elementi nell'array "genres", usciamo dal ciclo
-                break;
-            }
-        }
-        // Remove the trailing comma and space from the genres string
-        if (!generi.isEmpty()) {
-            generi = generi.substring(0, generi.length() - 1);
-        }
-
-        videogame.setGenre(generi);
+        String genres=attachGenres(videogameSteam.path("data").path("genres"));
+        videogame.setGenre(genres);
 
         return videogame;
 
+    }
+
+    public String attachGenres(JsonNode genresNode)
+	{
+        int numberOfGenres = genresNode.size();
+        String genres="";
+        for(int i=0;i<numberOfGenres;i++)
+        {
+            JsonNode genre = genresNode.get(i);
+            if(genre!=null)
+                genres += genre.path("description").asText() + ",";
+            else
+                break;
+        }
+        if (!genres.isEmpty()) {
+            genres = genres.substring(0, genres.length() - 1);
+        }
+        return genres;
     }
 
     /**
      * Converts a Videogame object and its associated JSON data from the Steam API
      * into a VideogameDetailDTO object, encapsulating detailed information about the videogame.
      *
-     * @param appId appId of the videogame I want the detail.
+     * @param appId appId of the videogame.
      * @param videogame The Videogame object containing basic information about the videogame.
      * @param json The JSON string containing detailed videogame information structured according to the Steam API.
      * @return A VideogameDetailDTO object populated with details from the Videogame and the provided JSON.
@@ -293,6 +298,7 @@ public class DTOSteamConverter {
         JsonNode videogameSteam = rootNode.path(appId.toString());
 
         videogameDetailDTO.setAppId(appId);
+        videogameDetailDTO.setNameVideogame(videogameSteam.path("data").path("name").asText());
         videogameDetailDTO.setRequiredAge(Integer.parseInt( videogameSteam.path("data").path("required_age").asText()));
         videogameDetailDTO.setDetailedDescription(videogameSteam.path("data").path("detailed_description").asText());
         videogameDetailDTO.setShortDescription(videogameSteam.path("data").path("short_description").asText());
@@ -300,6 +306,7 @@ public class DTOSteamConverter {
         videogameDetailDTO.setHeaderImageUrl(videogameSteam.path("data").path("header_image").asText());
         videogameDetailDTO.setWebsite(videogameSteam.path("data").path("website").asText());
         videogameDetailDTO.setPrice(videogameSteam.path("data").path("price_overview").path("final_formatted").asText());
+        videogameDetailDTO.setGenre(attachGenres(videogameSteam.path("data").path("genres")));
 
         // Collect supported platforms
         String platform="";
@@ -320,7 +327,6 @@ public class DTOSteamConverter {
             platform = platform.substring(0, platform.length() - 1);
         }
         videogameDetailDTO.setPlatforms(platform);
-
         if(videogame!=null)
         {
             videogameDetailDTO.setId(videogame.getId());
@@ -330,7 +336,7 @@ public class DTOSteamConverter {
             videogameDetailDTO.setPreferred(videogame.isPreferred());
             videogameDetailDTO.setReleaseDate(String.valueOf(videogame.getReleaseDate()));
             videogameDetailDTO.setGenre(videogame.getGenre());
-            videogameDetailDTO.setStarReviews(videogame.getStarReviews());
+            videogameDetailDTO.setStarReviews(ch.getAverageNumberOfStars(appId));
         }
         else
         {
@@ -343,10 +349,9 @@ public class DTOSteamConverter {
                 formatter = DateTimeFormatter.ofPattern("d MMM, yyyy", Locale.ENGLISH);
             }
             videogameDetailDTO.setReleaseDate(String.valueOf(LocalDate.parse(videogameSteam.path("data").path("release_date").path("date").asText(), formatter)));
+            videogameDetailDTO.setStarReviews(0);
         }
-
         return videogameDetailDTO;
-
     }
 
     /**

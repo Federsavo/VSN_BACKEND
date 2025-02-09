@@ -89,4 +89,24 @@ public class ControllerHelper
 		return null;
 	}
 
+	/**
+	 * Calculates the average number of stars for all videogames with a given appId.
+	 *
+	 * This method filters the list of videogames to select only those that have an `appId`
+	 * matching the provided parameter. Then, it extracts the number of stars for each videogame
+	 * and computes the average of these values. If no videogames are found with the specified
+	 * `appId`, the method returns 0.
+	 *
+	 * @param appId the application ID for which the average number of stars should be calculated.
+	 * @return the average number of stars for the videogames with the given appId, or 0 if none are found.
+	 */
+	public int getAverageNumberOfStars(Long appId)
+	{
+		List<Videogame> videogames=videogameService.getList();
+		return (int) videogames.stream().filter(v-> Objects.equals(v.getAppId(), appId))
+				.mapToInt(Videogame::getNumberOfStars)
+				.average()
+				.orElse(0);
+	}
+
 }

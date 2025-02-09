@@ -1,11 +1,9 @@
 package com.generation.vsnbackend.model.entities;
 
 import jakarta.persistence.*;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -77,18 +75,6 @@ public class Videogame extends BaseEntity {
         this.releaseDate = releaseDate;
     }
 
-    //da 1 a 10
-    public int getStarReviews() {
-        int media=0;
-        for (Review review : reviews) {
-            media+=review.getNumberOfStar();
-        }
-        if(!reviews.isEmpty())
-            media = media / reviews.size();
-
-        return media;
-    }
-
 
     public List<Review> getReviews() {
         return reviews;
@@ -154,7 +140,6 @@ public class Videogame extends BaseEntity {
                         "numberOfStars:" + numberOfStars + "\n" +
                         "iconImgUrl:" + iconImgUrl + "\n" +
                         "profile:" + profile + "\n" +
-                        "reviews:" + reviews + "\n" +
-                        "";
+                        "reviews:" + reviews + "\n";
     }
 }
