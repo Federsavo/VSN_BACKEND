@@ -6,4 +6,5 @@ public class ImageNotFoundException extends RuntimeException
 	{
 		super(message);
 	}
+	public ImageNotFoundException(){}
 }

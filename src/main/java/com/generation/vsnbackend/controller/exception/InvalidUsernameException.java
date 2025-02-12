@@ -6,4 +6,5 @@ public class InvalidUsernameException extends RuntimeException
 	{
 		super(message);
 	}
+	public InvalidUsernameException(){}
 }

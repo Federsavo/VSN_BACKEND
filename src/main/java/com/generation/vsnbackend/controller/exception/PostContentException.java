@@ -4,4 +4,5 @@ public class PostContentException extends RuntimeException {
   public PostContentException(String message) {
     super(message);
   }
+  public PostContentException() {}
 }

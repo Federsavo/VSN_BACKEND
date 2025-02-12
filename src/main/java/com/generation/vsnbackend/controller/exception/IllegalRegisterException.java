@@ -6,4 +6,5 @@ public class IllegalRegisterException extends RuntimeException
 	{
 		super(message);
 	}
+	public IllegalRegisterException(){}
 }
