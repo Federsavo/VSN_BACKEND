@@ -175,11 +175,14 @@ public class DTOSteamConverter {
         for(int i=0; i<achievementsNode.size(); i++)
         {
             JsonNode node = achievementsNode.get(i);
-            if(achievementsNames.contains(node.path("name").asText()))
+            String name=node.path("name").asText();
+            if(achievementsNames.contains(name))
             {
                 AchievementDTO achievementDTO = new AchievementDTO();
                 achievementDTO.setAchievementName(node.path("displayName").asText());
                 achievementDTO.setDescription(node.path("description").asText());
+                if(node.path("hidden").asInt()==1)
+                    achievementDTO.setDescription("This achievement description is hidden.");
                 achievementDTO.setIconUrl(node.path("icon").asText());
                 achievements.add(achievementDTO);
             }
